@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NIPPARD // Hypertrophy</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --card: #161616;
+    --border: #222;
+    --accent: #e8ff3b;
+    --accent2: #ff4d2e;
+    --text: #f0f0f0;
+    --muted: #666;
+    --green: #3bff8a;
+    --red: #ff4d2e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+  /* HEADER */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--accent); }
+  .logo span { color: var(--text); }
+  .day-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* NAV TABS */
+  .tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .tab { flex: 1; padding: 14px 8px; text-align: center; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* PAGES */
+  .page { display: none; padding: 20px; max-width: 480px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* WEEK SELECTOR */
+  .week-row { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+  .week-btn { flex-shrink: 0; padding: 8px 16px; background: var(--card); border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; transition: all .2s; letter-spacing: 1px; }
+  .week-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+
+  /* PROGRAM DAY CARDS */
+  .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
+  .day-card:hover { border-color: #333; }
+  .day-card.today { border-color: var(--accent); }
+  .day-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; }
+  .day-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+  .day-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+  .day-tag { padding: 4px 10px; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .tag-push { background: rgba(232,255,59,0.15); color: var(--accent); }
+  .tag-pull { background: rgba(59,255,138,0.15); color: var(--green); }
+  .tag-legs { background: rgba(255,77,46,0.15); color: var(--accent2); }
+  .tag-rest { background: rgba(102,102,102,0.15); color: var(--muted); }
+  .day-body { padding: 0 16px 16px; }
+  .exercise-preview { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ex-chip { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); background: #1a1a1a; padding: 4px 8px; border-radius: 2px; }
+
+  /* WORKOUT PAGE */
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; margin-bottom: 4px; }
+  .section-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px; }
+
+  .exercise-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  .ex-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--muted); min-width: 24px; }
+  .ex-info { flex: 1; }
+  .ex-name { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; }
+  .ex-spec { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: .5px; }
+  .ex-tip-btn { width: 28px; height: 28px; border-radius: 50%; background: #1e1e1e; border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+  .sets-table { width: 100%; }
+  .sets-head { display: grid; grid-template-columns: 40px 1fr 1fr 40px; gap: 8px; padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 40px; gap: 8px; padding: 10px 16px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
+  .set-row:last-child { border-bottom: none; }
+  .set-row.done { background: rgba(59,255,138,0.04); }
+  .set-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+  .set-input { background: #1a1a1a; border: 1px solid var(--border); border-radius: 4px; padding: 8px; font-family: 'DM Mono', monospace; font-size: 14px; color: var(--text); text-align: center; width: 100%; outline: none; transition: border-color .2s; }
+  .set-input:focus { border-color: var(--accent); }
+  .check-btn { width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--border); background: #1a1a1a; color: var(--muted); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; margin: 0 auto; }
+  .check-btn.done { background: var(--green); border-color: var(--green); color: #000; }
+
+  /* REST TIMER */
+  .rest-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 2px solid var(--accent); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 200; transform: translateY(100%); transition: transform .3s; }
+  .rest-bar.visible { transform: translateY(0); }
+  .rest-time { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); letter-spacing: 2px; }
+  .rest-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+  .rest-skip { padding: 10px 20px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; letter-spacing: 1px; }
+
+  /* PROGRESS INDICATOR */
+  .progress-ring { position: relative; width: 56px; height: 56px; }
+  .progress-ring svg { transform: rotate(-90deg); }
+  .progress-ring circle { fill: none; stroke-width: 3; }
+  .progress-ring .bg { stroke: var(--border); }
+  .progress-ring .fg { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset .3s; }
+  .progress-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text); }
+
+  /* TIP MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 300; display: none; align-items: flex-end; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; padding: 24px 20px 40px; width: 100%; max-width: 480px; margin: 0 auto; animation: slideUp .25s ease; }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; margin-bottom: 12px; color: var(--accent); }
+  .modal-body { font-size: 14px; line-height: 1.7; color: #ccc; }
+  .modal-close { display: block; width: 100%; margin-top: 20px; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 4px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; cursor: pointer; }
+
+  /* STATS PAGE */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); line-height: 1; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+  .recent-log { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .log-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .log-item:last-child { border-bottom: none; }
+  .log-name { font-size: 13px; font-weight: 600; }
+  .log-detail { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .volume-bar-wrap { margin-top: 20px; }
+  .vbar-label { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+  .vbar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
+  .vbar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width .6s ease; }
+
+  /* START WORKOUT BTN */
+  .cta-btn { display: block; width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; border-radius: 6px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; cursor: pointer; margin-top: 8px; transition: opacity .2s; }
+  .cta-btn:hover { opacity: .9; }
+  .cta-btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); margin-top: 8px; }
+
+  /* NIPPARD PRINCIPLES */
+  .principle { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .principle:last-child { border-bottom: none; }
+  .p-icon { font-size: 20px; flex-shrink: 0; }
+  .p-title { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
+  .p-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">NIPP<span>ARD</span></div>
+    <div class="day-badge" id="headerDay">Science-Based Hypertrophy</div>
+  </div>
+  <div class="progress-ring">
+    <svg width="56" height="56">
+      <circle class="bg" cx="28" cy="28" r="24"/>
+      <circle class="fg" id="progressCircle" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/>
+    </svg>
+    <div class="progress-text" id="progressText">0%</div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showPage('program')">PROGRAM</div>
+  <div class="tab" onclick="showPage('workout')">WORKOUT</div>
+  <div class="tab" onclick="showPage('stats')">STATS</div>
+</div>
+
+<!-- PROGRAM PAGE -->
+<div class="page active" id="page-program">
+  <br>
+  <div class="week-row" id="weekRow"></div>
+
+  <div id="programDays"></div>
+
+  <div style="margin-top: 24px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:14px;">NIPPARD PRINCIPLES</div>
+    <div class="principle">
+      <div class="p-icon">📈</div>
+      <div><div class="p-title">Progressive Overload</div><div class="p-desc">Add weight or reps each week. The #1 driver of hypertrophy. Track everything.</div></div>
+    </div>
+    <div class="principle">
+      <div class="p-icon">🎯</div>
+      <div><div class="p-title">10–20 Sets Per Muscle / Week</div><div class="p-desc">Stay in the MEV–MRV range. Beginners: 10–12 sets. Advanced: up to 20.</div></div>
+    </div>
+    <div class="principle">
+      <div class="p-icon">⏱️</div>
+      <div><div class="p-title">Rest 2–3 Min Between Sets</div><div class="p-desc">Full recovery = more reps next set = more volume = more gains.</div></div>
+    </div>
+    <div class="principle">
+      <div class="p-icon">💪</div>
+      <div><div class="p-title">Train 6–30 Rep Range</div><div class="p-desc">Most growth happens 6–20 reps. Use heavier loads for compounds, lighter for isolation.</div></div>
+    </div>
+    <div class="principle">
+      <div class="p-icon">🔁</div>
+      <div><div class="p-title">RIR 0–3 (Near Failure)</div><div class="p-desc">Reps In Reserve. Get within 0–3 reps of failure on most sets for max stimulus.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKOUT PAGE -->
+<div class="page" id="page-workout">
+  <br>
+  <div class="section-title" id="workoutTitle">PUSH A</div>
+  <div class="section-sub" id="workoutSub">CHEST · SHOULDERS · TRICEPS</div>
+
+  <div id="exerciseList"></div>
+
+  <button class="cta-btn" id="finishBtn" onclick="finishWorkout()">FINISH WORKOUT</button>
+</div>
+
+<!-- STATS PAGE -->
+<div class="page" id="page-stats">
+  <br>
+  <div class="section-title">PROGRESS</div>
+  <div class="section-sub">WEEK 1 OVERVIEW</div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="statWorkouts">0</div><div class="stat-label">Workouts Done</div></div>
+    <div class="stat-card"><div class="stat-num" id="statSets">0</div><div class="stat-label">Total Sets</div></div>
+    <div class="stat-card"><div class="stat-num" id="statVol">0</div><div class="stat-label">Total Volume (lbs)</div></div>
+    <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day Streak 🔥</div></div>
+  </div>
+
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;">WEEKLY VOLUME BY MUSCLE</div>
+  <div class="volume-bar-wrap" id="volumeBars"></div>
+
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:12px;margin-top:8px;">RECENT SETS</div>
+  <div class="recent-log" id="recentLog">
+    <div style="padding:24px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">No sets logged yet. Start a workout!</div>
+  </div>
+</div>
+
+<!-- REST TIMER BAR -->
+<div class="rest-bar" id="restBar">
+  <div>
+    <div class="rest-label">REST TIMER</div>
+    <div class="rest-time" id="restTime">2:00</div>
+  </div>
+  <button class="rest-skip" onclick="skipRest()">SKIP ✕</button>
+</div>
+
+<!-- TIP MODAL -->
+<div class="modal-overlay" id="tipModal" onclick="closeTip(event)">
+  <div class="modal">
+    <div class="modal-title" id="tipTitle">Exercise Tip</div>
+    <div class="modal-body" id="tipBody"></div>
+    <button class="modal-close" onclick="closeTipModal()">GOT IT</button>
+  </div>
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────
+const PROGRAM = [
+  {
+    day: 1, name: "PUSH A", tag: "push", tagClass: "tag-push",
+    muscles: "CHEST · SHOULDERS · TRICEPS",
+    exercises: [
+      { name: "Barbell Bench Press", sets: 4, reps: "6–8", rir: "RIR 2", tip: "Set up with a slight arch, retract scapulae, drive feet into the floor. Lower the bar to lower chest, touch lightly, press back. Jeff recommends a 2–3 sec eccentric for max chest stretch.", muscle: "Chest" },
+      { name: "Incline DB Press", sets: 3, reps: "10–12", rir: "RIR 2", tip: "30–45° incline hits upper chest more. Allow a deep stretch at the bottom. Don't flare elbows excessively — keep ~45–60° from torso.", muscle: "Chest" },
+      { name: "Cable Lateral Raise", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Cable keeps tension at the top unlike dumbbells. Lead with elbows, not wrists. Slight forward lean. Jeff likes cross-body for long head emphasis.", muscle: "Shoulders" },
+      { name: "OHP (Seated DB)", sets: 3, reps: "10–12", rir: "RIR 2", tip: "Neutral spine, slight arch is fine. Press overhead without excessive lumbar extension. Full ROM — lower to ear height.", muscle: "Shoulders" },
+      { name: "Tricep Rope Pushdown", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Hinge forward slightly. Spread rope at bottom for peak contraction. Keep elbows locked to sides. Control the eccentric.", muscle: "Triceps" },
+      { name: "Overhead Tricep Extension", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Overhead position stretches the long head — highest growth stimulus for triceps. Keep elbows in, don't flare.", muscle: "Triceps" }
+    ]
+  },
+  {
+    day: 2, name: "PULL A", tag: "pull", tagClass: "tag-pull",
+    muscles: "BACK · BICEPS · REAR DELTS",
+    exercises: [
+      { name: "Barbell Row (Pendlay)", sets: 4, reps: "6–8", rir: "RIR 2", tip: "Bar dead-stops on floor each rep. Flat back, hip hinge, explode the bar to lower chest. Resets remove momentum — pure strength & mass builder.", muscle: "Back" },
+      { name: "Lat Pulldown (Wide Grip)", sets: 4, reps: "10–12", rir: "RIR 2", tip: "Lean back slightly, pull to upper chest, feel lats stretch at top. Don't use momentum. Jeff programs this for width — full ROM is key.", muscle: "Back" },
+      { name: "Seated Cable Row", sets: 3, reps: "10–12", rir: "RIR 2", tip: "Use a neutral grip. Pull elbows back and squeeze mid-back. Don't over-lean — torso stays mostly vertical. Great for thickness.", muscle: "Back" },
+      { name: "DB Bicep Curl", sets: 3, reps: "10–12", rir: "RIR 1", tip: "Supinate (rotate palm up) at the top for full peak contraction. Don't swing. Jeff prefers incline curls for long head stretch — try it!", muscle: "Biceps" },
+      { name: "Hammer Curl", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Neutral grip hits brachialis and brachioradialis — adds arm thickness. Keep elbows pinned to sides.", muscle: "Biceps" },
+      { name: "Face Pull", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Rope to forehead, elbows high and flared. External rotation at end. Crucial for shoulder health and rear delt growth.", muscle: "Rear Delts" }
+    ]
+  },
+  {
+    day: 3, name: "LEGS A", tag: "legs", tagClass: "tag-legs",
+    muscles: "QUADS · HAMSTRINGS · GLUTES · CALVES",
+    exercises: [
+      { name: "Barbell Back Squat", sets: 4, reps: "6–8", rir: "RIR 2", tip: "Bar on traps, brace core, break at hips and knees simultaneously. Hit at least parallel — ideally ATG. Jeff emphasizes tempo: 3 sec down.", muscle: "Quads" },
+      { name: "Romanian Deadlift", sets: 3, reps: "8–10", rir: "RIR 2", tip: "Hip hinge, soft knee, push hips back. Bar stays close to legs. Feel hamstrings load — go until you feel a solid stretch, not lower back rounding.", muscle: "Hamstrings" },
+      { name: "Leg Press", sets: 3, reps: "10–15", rir: "RIR 1", tip: "High and wide foot placement for more glute/ham. Low and narrow for quads. Full range — don't lock knees at top. Control the negative.", muscle: "Quads" },
+      { name: "Leg Curl (Seated)", sets: 4, reps: "10–12", rir: "RIR 1", tip: "Seated variant stretches the hamstring at the hip — higher stretch-mediated hypertrophy. Point toes to recruit more biceps femoris.", muscle: "Hamstrings" },
+      { name: "Hip Thrust", sets: 3, reps: "10–15", rir: "RIR 1", tip: "Shoulder blades on bench, bar over hip crease (pad it!). Drive through heels, posterior pelvic tilt at top. Pause 1 sec contracted.", muscle: "Glutes" },
+      { name: "Standing Calf Raise", sets: 4, reps: "10–15", rir: "RIR 1", tip: "Full ROM — deep stretch at bottom (gastrocnemius crosses knee). Pause 2 sec at bottom, explode up. Calves are stubborn: train near failure.", muscle: "Calves" }
+    ]
+  },
+  {
+    day: 4, name: "REST", tag: "rest", tagClass: "tag-rest",
+    muscles: "ACTIVE RECOVERY",
+    exercises: []
+  },
+  {
+    day: 5, name: "PUSH B", tag: "push", tagClass: "tag-push",
+    muscles: "CHEST · SHOULDERS · TRICEPS",
+    exercises: [
+      { name: "Incline Barbell Press", sets: 4, reps: "6–8", rir: "RIR 2", tip: "30° incline targets upper chest. Don't go too steep or you shift to shoulders. Arch, retract, press.", muscle: "Chest" },
+      { name: "Cable Fly (Low to High)", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Low cable for upper chest. Maintain slight elbow bend throughout. Squeeze at top — feel the stretch at bottom.", muscle: "Chest" },
+      { name: "DB Lateral Raise", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Lead with pinkies up. Don't let momentum take over. Jeff often does these as a drop set for extra volume.", muscle: "Shoulders" },
+      { name: "Machine Shoulder Press", sets: 3, reps: "10–12", rir: "RIR 2", tip: "Machine allows you to push harder safely. Full ROM, controlled eccentric. Great for progressive overload tracking.", muscle: "Shoulders" },
+      { name: "Skull Crusher", sets: 3, reps: "10–12", rir: "RIR 2", tip: "EZ bar to forehead, elbows stay locked in place. Great long head builder. Follow with a close-grip press for a tricep superset.", muscle: "Triceps" },
+      { name: "Cable Tricep Kickback", sets: 3, reps: "15–20", rir: "RIR 1", tip: "Constant cable tension beats dumbbell here. Hinge forward, lock upper arm parallel to floor, extend fully.", muscle: "Triceps" }
+    ]
+  },
+  {
+    day: 6, name: "PULL B", tag: "pull", tagClass: "tag-pull",
+    muscles: "BACK · BICEPS · REAR DELTS",
+    exercises: [
+      { name: "Weighted Pull-Up", sets: 4, reps: "6–10", rir: "RIR 2", tip: "Full hang at bottom, chin clears bar at top. Slight forward lean engages lats more. If no added weight yet, do bodyweight to failure.", muscle: "Back" },
+      { name: "Chest-Supported DB Row", sets: 4, reps: "10–12", rir: "RIR 2", tip: "Takes lower back out of the equation. Full stretch at bottom. Row to hip, not chest — elbows past torso.", muscle: "Back" },
+      { name: "Straight-Arm Pulldown", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Arms straight throughout — this isolates the lat. Hinge at hip slightly. Great mind-muscle connection exercise.", muscle: "Back" },
+      { name: "Incline DB Curl", sets: 4, reps: "10–12", rir: "RIR 1", tip: "Maximizes long head stretch — highest EMG activation for bicep peak. Let arm hang fully back, curl controlled.", muscle: "Biceps" },
+      { name: "Preacher Curl", sets: 3, reps: "10–12", rir: "RIR 1", tip: "Locks out momentum. Machine version is great for progressive overload. Full extension — don't cut the stretch short.", muscle: "Biceps" },
+      { name: "Rear Delt Fly (Pec Deck)", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Reverse the pec deck, arms slightly below shoulder height. Focus on pulling elbows BACK and squeezing rear delts.", muscle: "Rear Delts" }
+    ]
+  },
+  {
+    day: 7, name: "LEGS B", tag: "legs", tagClass: "tag-legs",
+    muscles: "QUADS · HAMSTRINGS · GLUTES · CALVES",
+    exercises: [
+      { name: "Hack Squat / Leg Press", sets: 4, reps: "8–12", rir: "RIR 2", tip: "Hack squat: quad dominant, no spinal compression. Great for hypertrophy with heavier loading.", muscle: "Quads" },
+      { name: "Nordic Hamstring Curl", sets: 3, reps: "6–10", rir: "RIR 2", tip: "One of the best exercises for hamstring hypertrophy AND injury prevention. Eccentric only is fine. Brutally effective.", muscle: "Hamstrings" },
+      { name: "Bulgarian Split Squat", sets: 3, reps: "10–12", rir: "RIR 1", tip: "Rear foot elevated on bench. Trunk upright = quads; lean forward = glutes. One of Jeff's favorites for unilateral mass.", muscle: "Quads" },
+      { name: "Glute Kickback (Cable)", sets: 3, reps: "15–20", rir: "RIR 1", tip: "Ankle attachment, slight forward lean, kick straight back. Squeeze at top. Constant tension on glutes.", muscle: "Glutes" },
+      { name: "Leg Extension", sets: 3, reps: "15–20", rir: "RIR 1", tip: "Isolation for quad peak. Don't avoid — research shows it's safe with full ROM. Pause at top for extra contraction.", muscle: "Quads" },
+      { name: "Seated Calf Raise", sets: 4, reps: "10–15", rir: "RIR 1", tip: "Targets soleus (seated = knee bent). Pair with standing raises for complete calf development. Deep stretch every rep.", muscle: "Calves" }
+    ]
+  }
+];
+
+// ─── STATE ────────────────────────────────────────────────
+let state = JSON.parse(localStorage.getItem('nippardState') || '{}');
+if (!state.currentDay) state.currentDay = 0;
+if (!state.currentWeek) state.currentWeek = 1;
+if (!state.completedWorkouts) state.completedWorkouts = 0;
+if (!state.logs) state.logs = [];
+if (!state.streak) state.streak = 0;
+
+let activeSets = {}; // {exIdx: [{weight, reps, done}]}
+let restInterval = null;
+let restRemaining = 0;
+
+function saveState() { localStorage.setItem('nippardState', JSON.stringify(state)); }
+
+// ─── PAGES ────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'program') renderProgram();
+  if (name === 'workout') renderWorkout();
+  if (name === 'stats') renderStats();
+}
+
+// ─── PROGRAM PAGE ─────────────────────────────────────────
+function renderProgram() {
+  // Weeks
+  const wr = document.getElementById('weekRow');
+  wr.innerHTML = '';
+  for (let w = 1; w <= 8; w++) {
+    const btn = document.createElement('div');
+    btn.className = 'week-btn' + (w === state.currentWeek ? ' active' : '');
+    btn.textContent = 'WK ' + w;
+    btn.onclick = () => { state.currentWeek = w; saveState(); renderProgram(); };
+    wr.appendChild(btn);
+  }
+  // Days
+  const pd = document.getElementById('programDays');
+  pd.innerHTML = '';
+  PROGRAM.forEach((d, i) => {
+    const isToday = i === state.currentDay;
+    const div = document.createElement('div');
+    div.className = 'day-card' + (isToday ? ' today' : '');
+    const exChips = d.exercises.slice(0, 4).map(e => `<span class="ex-chip">${e.name}</span>`).join('');
+    div.innerHTML = `
+      <div class="day-header">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;">DAY ${d.day}${isToday ? ' · TODAY' : ''}</div>
+          <div class="day-title">${d.name}</div>
+          <div class="day-meta">${d.muscles}</div>
+        </div>
+        <span class="day-tag ${d.tagClass}">${d.tag.toUpperCase()}</span>
+      </div>
+      ${d.exercises.length ? `<div class="day-body"><div class="exercise-preview">${exChips}${d.exercises.length > 4 ? `<span class="ex-chip">+${d.exercises.length - 4} more</span>` : ''}</div></div>` : ''}
+    `;
+    if (d.exercises.length) {
+      div.querySelector('.day-header').onclick = () => {
+        state.currentDay = i; saveState();
+        // switch to workout tab
+        document.querySelectorAll('.tab')[1].click();
+      };
+    }
+    pd.appendChild(div);
+  });
+}
+
+// ─── WORKOUT PAGE ─────────────────────────────────────────
+function renderWorkout() {
+  const day = PROGRAM[state.currentDay];
+  document.getElementById('workoutTitle').textContent = day.name;
+  document.getElementById('workoutSub').textContent = day.muscles;
+  document.getElementById('headerDay').textContent = day.name;
+
+  const list = document.getElementById('exerciseList');
+  list.innerHTML = '';
+
+  if (day.exercises.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:40px;font-family:'DM Mono',monospace;font-size:14px;color:var(--muted);">REST DAY 💤<br><br>Active recovery, walk, stretch.</div>`;
+    return;
+  }
+
+  day.exercises.forEach((ex, ei) => {
+    if (!activeSets[ei]) {
+      activeSets[ei] = Array.from({length: ex.sets}, () => ({weight: '', reps: '', done: false}));
+    }
+    const card = document.createElement('div');
+    card.className = 'exercise-card';
+    let rowsHTML = activeSets[ei].map((s, si) => `
+      <div class="set-row ${s.done ? 'done' : ''}" id="setrow-${ei}-${si}">
+        <div class="set-num">${si + 1}</div>
+        <input class="set-input" type="number" min="0" step="2.5" placeholder="lbs" value="${s.weight}"
+          oninput="updateSet(${ei},${si},'weight',this.value)">
+        <input class="set-input" type="number" min="0" placeholder="reps" value="${s.reps}"
+          oninput="updateSet(${ei},${si},'reps',this.value)">
+        <button class="check-btn ${s.done ? 'done' : ''}" id="check-${ei}-${si}" onclick="completeSet(${ei},${si})">✓</button>
+      </div>
+    `).join('');
+    card.innerHTML = `
+      <div class="ex-header">
+        <div class="ex-num">${ei + 1}</div>
+        <div class="ex-info">
+          <div class="ex-name">${ex.name}</div>
+          <div class="ex-spec">${ex.sets} SETS · ${ex.reps} REPS · ${ex.rir}</div>
+        </div>
+        <button class="ex-tip-btn" onclick="showTip(${ei})">💡</button>
+      </div>
+      <div class="sets-table">
+        <div class="sets-head"><span>SET</span><span>WEIGHT</span><span>REPS</span><span>✓</span></div>
+        ${rowsHTML}
+      </div>
+    `;
+    list.appendChild(card);
+  });
+  updateProgress();
+}
+
+function updateSet(ei, si, field, val) {
+  activeSets[ei][si][field] = val;
+}
+
+function completeSet(ei, si) {
+  const s = activeSets[ei][si];
+  s.done = !s.done;
+  if (s.done) {
+    // Log
+    const day = PROGRAM[state.currentDay];
+    const ex = day.exercises[ei];
+    state.logs.push({
+      date: new Date().toLocaleDateString(),
+      name: ex.name,
+      weight: s.weight || '?',
+      reps: s.reps || '?',
+      muscle: ex.muscle
+    });
+    saveState();
+    startRest(180); // 3 min default
+  }
+  document.getElementById(`setrow-${ei}-${si}`).className = 'set-row ' + (s.done ? 'done' : '');
+  document.getElementById(`check-${ei}-${si}`).className = 'check-btn ' + (s.done ? 'done' : '');
+  updateProgress();
+}
+
+function updateProgress() {
+  const day = PROGRAM[state.currentDay];
+  if (!day.exercises.length) return;
+  let total = 0, done = 0;
+  day.exercises.forEach((ex, ei) => {
+    if (activeSets[ei]) activeSets[ei].forEach(s => { total++; if (s.done) done++; });
+  });
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const circ = 150.8;
+  document.getElementById('progressCircle').style.strokeDashoffset = circ - (circ * pct / 100);
+  document.getElementById('progressText').textContent = pct + '%';
+}
+
+function finishWorkout() {
+  state.completedWorkouts++;
+  state.streak++;
+  // Advance day
+  state.currentDay = (state.currentDay + 1) % PROGRAM.length;
+  activeSets = {};
+  saveState();
+  alert('Workout complete! Great work 💪\n\nNext up: ' + PROGRAM[state.currentDay].name);
+  renderWorkout();
+  updateProgress();
+}
+
+// ─── TIP MODAL ────────────────────────────────────────────
+function showTip(ei) {
+  const ex = PROGRAM[state.currentDay].exercises[ei];
+  document.getElementById('tipTitle').textContent = ex.name.toUpperCase();
+  document.getElementById('tipBody').textContent = ex.tip;
+  document.getElementById('tipModal').classList.add('open');
+}
+function closeTip(e) { if (e.target === document.getElementById('tipModal')) closeTipModal(); }
+function closeTipModal() { document.getElementById('tipModal').classList.remove('open'); }
+
+// ─── REST TIMER ───────────────────────────────────────────
+function startRest(seconds) {
+  if (restInterval) clearInterval(restInterval);
+  restRemaining = seconds;
+  document.getElementById('restBar').classList.add('visible');
+  updateRestDisplay();
+  restInterval = setInterval(() => {
+    restRemaining--;
+    if (restRemaining <= 0) { skipRest(); } else { updateRestDisplay(); }
+  }, 1000);
+}
+function updateRestDisplay() {
+  const m = Math.floor(restRemaining / 60);
+  const s = restRemaining % 60;
+  document.getElementById('restTime').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+}
+function skipRest() {
+  clearInterval(restInterval);
+  restInterval = null;
+  document.getElementById('restBar').classList.remove('visible');
+}
+
+// ─── STATS PAGE ───────────────────────────────────────────
+function renderStats() {
+  document.getElementById('statWorkouts').textContent = state.completedWorkouts || 0;
+  document.getElementById('statSets').textContent = state.logs.length;
+  document.getElementById('statStreak').textContent = state.streak || 0;
+
+  const totalVol = state.logs.reduce((a, l) => {
+    const w = parseFloat(l.weight) || 0;
+    const r = parseFloat(l.reps) || 0;
+    return a + (w * r);
+  }, 0);
+  document.getElementById('statVol').textContent = Math.round(totalVol).toLocaleString();
+
+  // Volume by muscle
+  const muscleVol = {};
+  state.logs.forEach(l => {
+    const w = parseFloat(l.weight) || 0;
+    const r = parseFloat(l.reps) || 0;
+    muscleVol[l.muscle] = (muscleVol[l.muscle] || 0) + (w * r);
+  });
+  const maxVol = Math.max(...Object.values(muscleVol), 1);
+  const vb = document.getElementById('volumeBars');
+  vb.innerHTML = Object.entries(muscleVol).map(([m, v]) => `
+    <div class="vbar-label"><span>${m.toUpperCase()}</span><span>${Math.round(v)} lbs</span></div>
+    <div class="vbar"><div class="vbar-fill" style="width:${(v/maxVol*100)}%"></div></div>
+  `).join('') || '<div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);">Log some sets to see volume breakdown!</div>';
+
+  // Recent sets
+  const rl = document.getElementById('recentLog');
+  const recent = [...state.logs].reverse().slice(0, 8);
+  rl.innerHTML = recent.length ? recent.map(l => `
+    <div class="log-item">
+      <div><div class="log-name">${l.name}</div><div class="log-detail">${l.date}</div></div>
+      <div class="log-detail">${l.weight}lbs × ${l.reps}</div>
+    </div>
+  `).join('') : '<div style="padding:24px;text-align:center;font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);">No sets logged yet. Start a workout!</div>';
+}
+
+// ─── INIT ─────────────────────────────────────────────────
+renderProgram();
+</script>
+</body>
+</html>
