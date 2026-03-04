@@ -7,49 +7,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --card: #161616;
-    --border: #222;
-    --accent: #e8ff3b;
-    --accent2: #ff4d2e;
-    --text: #f0f0f0;
-    --muted: #666;
-    --green: #3bff8a;
-    --red: #ff4d2e;
+    --bg: #0a0a0a; --surface: #111111; --card: #161616; --border: #222;
+    --accent: #e8ff3b; --accent2: #ff4d2e; --text: #f0f0f0; --muted: #666; --green: #3bff8a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
-
-  /* HEADER */
-  header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 100;
-  }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
   .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--accent); }
   .logo span { color: var(--text); }
   .day-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-
-  /* NAV TABS */
   .tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); }
   .tab { flex: 1; padding: 14px 8px; text-align: center; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-  /* PAGES */
   .page { display: none; padding: 20px; max-width: 480px; margin: 0 auto; }
   .page.active { display: block; }
-
-  /* WEEK SELECTOR */
   .week-row { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
   .week-btn { flex-shrink: 0; padding: 8px 16px; background: var(--card); border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; transition: all .2s; letter-spacing: 1px; }
   .week-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
-
-  /* PROGRAM DAY CARDS */
+  .week-btn.deload { border-color: var(--accent2); color: var(--accent2); }
   .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
-  .day-card:hover { border-color: #333; }
   .day-card.today { border-color: var(--accent); }
   .day-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; }
   .day-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
@@ -62,11 +38,8 @@
   .day-body { padding: 0 16px 16px; }
   .exercise-preview { display: flex; flex-wrap: wrap; gap: 6px; }
   .ex-chip { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); background: #1a1a1a; padding: 4px 8px; border-radius: 2px; }
-
-  /* WORKOUT PAGE */
   .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; margin-bottom: 4px; }
   .section-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px; }
-
   .exercise-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
   .ex-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
   .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--muted); min-width: 24px; }
@@ -74,10 +47,8 @@
   .ex-name { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; }
   .ex-spec { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: .5px; }
   .ex-tip-btn { width: 28px; height: 28px; border-radius: 50%; background: #1e1e1e; border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-  .sets-table { width: 100%; }
-  .sets-head { display: grid; grid-template-columns: 40px 1fr 1fr 40px; gap: 8px; padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 40px; gap: 8px; padding: 10px 16px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
+  .sets-head { display: grid; grid-template-columns: 36px 1fr 1fr 40px; gap: 8px; padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .set-row { display: grid; grid-template-columns: 36px 1fr 1fr 40px; gap: 8px; padding: 10px 16px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
   .set-row:last-child { border-bottom: none; }
   .set-row.done { background: rgba(59,255,138,0.04); }
   .set-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
@@ -85,23 +56,18 @@
   .set-input:focus { border-color: var(--accent); }
   .check-btn { width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--border); background: #1a1a1a; color: var(--muted); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; margin: 0 auto; }
   .check-btn.done { background: var(--green); border-color: var(--green); color: #000; }
-
-  /* REST TIMER */
-  .rest-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 2px solid var(--accent); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 200; transform: translateY(100%); transition: transform .3s; }
+  .prev-hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); text-align: center; margin-top: 2px; opacity: 0.7; }
+  .rest-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 2px solid var(--accent); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 200; transform: translateY(100%); transition: transform .3s; max-width: 480px; margin: 0 auto; }
   .rest-bar.visible { transform: translateY(0); }
   .rest-time { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); letter-spacing: 2px; }
   .rest-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
   .rest-skip { padding: 10px 20px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; letter-spacing: 1px; }
-
-  /* PROGRESS INDICATOR */
   .progress-ring { position: relative; width: 56px; height: 56px; }
   .progress-ring svg { transform: rotate(-90deg); }
   .progress-ring circle { fill: none; stroke-width: 3; }
   .progress-ring .bg { stroke: var(--border); }
   .progress-ring .fg { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset .3s; }
   .progress-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text); }
-
-  /* TIP MODAL */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 300; display: none; align-items: flex-end; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--surface); border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; padding: 24px 20px 40px; width: 100%; max-width: 480px; margin: 0 auto; animation: slideUp .25s ease; }
@@ -109,8 +75,6 @@
   .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; margin-bottom: 12px; color: var(--accent); }
   .modal-body { font-size: 14px; line-height: 1.7; color: #ccc; }
   .modal-close { display: block; width: 100%; margin-top: 20px; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 4px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; cursor: pointer; }
-
-  /* STATS PAGE */
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
   .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
   .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); line-height: 1; }
@@ -120,24 +84,18 @@
   .log-item:last-child { border-bottom: none; }
   .log-name { font-size: 13px; font-weight: 600; }
   .log-detail { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-  .volume-bar-wrap { margin-top: 20px; }
   .vbar-label { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
   .vbar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
   .vbar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width .6s ease; }
-
-  /* START WORKOUT BTN */
   .cta-btn { display: block; width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; border-radius: 6px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; cursor: pointer; margin-top: 8px; transition: opacity .2s; }
   .cta-btn:hover { opacity: .9; }
-  .cta-btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); margin-top: 8px; }
-
-  /* NIPPARD PRINCIPLES */
   .principle { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
   .principle:last-child { border-bottom: none; }
   .p-icon { font-size: 20px; flex-shrink: 0; }
   .p-title { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
   .p-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-
-  /* SCROLLBAR */
+  .meso-badge { display: inline-block; padding: 4px 10px; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; background: rgba(232,255,59,0.15); color: var(--accent); margin-bottom: 16px; }
+  .deload-banner { background: rgba(255,77,46,0.1); border: 1px solid var(--accent2); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent2); letter-spacing: 1px; }
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -165,81 +123,54 @@
   <div class="tab" onclick="showPage('stats')">STATS</div>
 </div>
 
-<!-- PROGRAM PAGE -->
 <div class="page active" id="page-program">
   <br>
   <div class="week-row" id="weekRow"></div>
-
   <div id="programDays"></div>
-
-  <div style="margin-top: 24px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+  <div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:14px;">NIPPARD PRINCIPLES</div>
-    <div class="principle">
-      <div class="p-icon">📈</div>
-      <div><div class="p-title">Progressive Overload</div><div class="p-desc">Add weight or reps each week. The #1 driver of hypertrophy. Track everything.</div></div>
-    </div>
-    <div class="principle">
-      <div class="p-icon">🎯</div>
-      <div><div class="p-title">10–20 Sets Per Muscle / Week</div><div class="p-desc">Stay in the MEV–MRV range. Beginners: 10–12 sets. Advanced: up to 20.</div></div>
-    </div>
-    <div class="principle">
-      <div class="p-icon">⏱️</div>
-      <div><div class="p-title">Rest 2–3 Min Between Sets</div><div class="p-desc">Full recovery = more reps next set = more volume = more gains.</div></div>
-    </div>
-    <div class="principle">
-      <div class="p-icon">💪</div>
-      <div><div class="p-title">Train 6–30 Rep Range</div><div class="p-desc">Most growth happens 6–20 reps. Use heavier loads for compounds, lighter for isolation.</div></div>
-    </div>
-    <div class="principle">
-      <div class="p-icon">🔁</div>
-      <div><div class="p-title">RIR 0–3 (Near Failure)</div><div class="p-desc">Reps In Reserve. Get within 0–3 reps of failure on most sets for max stimulus.</div></div>
-    </div>
+    <div class="principle"><div class="p-icon">📈</div><div><div class="p-title">Progressive Overload</div><div class="p-desc">Add weight or reps each week. The #1 driver of hypertrophy. Track everything.</div></div></div>
+    <div class="principle"><div class="p-icon">🎯</div><div><div class="p-title">10–20 Sets Per Muscle / Week</div><div class="p-desc">Stay in the MEV–MRV range. Beginners: 10–12 sets. Advanced: up to 20.</div></div></div>
+    <div class="principle"><div class="p-icon">⏱️</div><div><div class="p-title">Rest 3 Min Between Sets</div><div class="p-desc">Full recovery = more reps next set = more volume = more gains.</div></div></div>
+    <div class="principle"><div class="p-icon">💪</div><div><div class="p-title">Train 6–30 Rep Range</div><div class="p-desc">Most growth happens 6–20 reps. Heavier for compounds, lighter for isolation.</div></div></div>
+    <div class="principle"><div class="p-icon">🔁</div><div><div class="p-title">RIR 0–3 (Near Failure)</div><div class="p-desc">Get within 0–3 reps of failure on most sets for max stimulus.</div></div></div>
+    <div class="principle"><div class="p-icon">🔄</div><div><div class="p-title">Rotate Every 4 Weeks</div><div class="p-desc">Swap accessory exercises each mesocycle to prevent adaptation and keep gains coming.</div></div></div>
   </div>
 </div>
 
-<!-- WORKOUT PAGE -->
 <div class="page" id="page-workout">
   <br>
+  <div id="deloadBanner" style="display:none;" class="deload-banner">⚡ DELOAD WEEK — Use 50% of normal weight. Focus on form and recovery.</div>
   <div class="section-title" id="workoutTitle">PUSH A</div>
   <div class="section-sub" id="workoutSub">CHEST · SHOULDERS · TRICEPS</div>
-
   <div id="exerciseList"></div>
-
   <button class="cta-btn" id="finishBtn" onclick="finishWorkout()">FINISH WORKOUT</button>
 </div>
 
-<!-- STATS PAGE -->
 <div class="page" id="page-stats">
   <br>
   <div class="section-title">PROGRESS</div>
-  <div class="section-sub">WEEK 1 OVERVIEW</div>
-
+  <div class="section-sub" id="statsSub">OVERVIEW</div>
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-num" id="statWorkouts">0</div><div class="stat-label">Workouts Done</div></div>
     <div class="stat-card"><div class="stat-num" id="statSets">0</div><div class="stat-label">Total Sets</div></div>
     <div class="stat-card"><div class="stat-num" id="statVol">0</div><div class="stat-label">Total Volume (lbs)</div></div>
     <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day Streak 🔥</div></div>
   </div>
-
   <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;">WEEKLY VOLUME BY MUSCLE</div>
-  <div class="volume-bar-wrap" id="volumeBars"></div>
-
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:12px;margin-top:8px;">RECENT SETS</div>
-  <div class="recent-log" id="recentLog">
-    <div style="padding:24px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">No sets logged yet. Start a workout!</div>
-  </div>
+  <div id="volumeBars"></div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:12px;margin-top:8px;">RECENT WORKOUTS</div>
+  <div class="recent-log" id="recentLog"></div>
 </div>
 
-<!-- REST TIMER BAR -->
 <div class="rest-bar" id="restBar">
   <div>
     <div class="rest-label">REST TIMER</div>
-    <div class="rest-time" id="restTime">2:00</div>
+    <div class="rest-time" id="restTime">3:00</div>
   </div>
   <button class="rest-skip" onclick="skipRest()">SKIP ✕</button>
 </div>
 
-<!-- TIP MODAL -->
 <div class="modal-overlay" id="tipModal" onclick="closeTip(event)">
   <div class="modal">
     <div class="modal-title" id="tipTitle">Exercise Tip</div>
@@ -249,100 +180,282 @@
 </div>
 
 <script>
-// ─── DATA ────────────────────────────────────────────────
-const PROGRAM = [
+// ─── MESOCYCLE PROGRAMS ───────────────────────────────────
+// Each meso has 7 days (PPL + rest + PPL). Staple compounds stay, accessories rotate.
+
+const MESOS = [
+  // MESO 1 — Weeks 1–4
   {
-    day: 1, name: "PUSH A", tag: "push", tagClass: "tag-push",
-    muscles: "CHEST · SHOULDERS · TRICEPS",
-    exercises: [
-      { name: "Barbell Bench Press", sets: 4, reps: "6–8", rir: "RIR 2", tip: "Set up with a slight arch, retract scapulae, drive feet into the floor. Lower the bar to lower chest, touch lightly, press back. Jeff recommends a 2–3 sec eccentric for max chest stretch.", muscle: "Chest" },
-      { name: "Incline DB Press", sets: 3, reps: "10–12", rir: "RIR 2", tip: "30–45° incline hits upper chest more. Allow a deep stretch at the bottom. Don't flare elbows excessively — keep ~45–60° from torso.", muscle: "Chest" },
-      { name: "Cable Lateral Raise", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Cable keeps tension at the top unlike dumbbells. Lead with elbows, not wrists. Slight forward lean. Jeff likes cross-body for long head emphasis.", muscle: "Shoulders" },
-      { name: "OHP (Seated DB)", sets: 3, reps: "10–12", rir: "RIR 2", tip: "Neutral spine, slight arch is fine. Press overhead without excessive lumbar extension. Full ROM — lower to ear height.", muscle: "Shoulders" },
-      { name: "Tricep Rope Pushdown", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Hinge forward slightly. Spread rope at bottom for peak contraction. Keep elbows locked to sides. Control the eccentric.", muscle: "Triceps" },
-      { name: "Overhead Tricep Extension", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Overhead position stretches the long head — highest growth stimulus for triceps. Keep elbows in, don't flare.", muscle: "Triceps" }
+    label: "MESO 1",
+    days: [
+      { day:1, name:"PUSH A", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Set up with a slight arch, retract scapulae, drive feet into the floor. Lower to lower chest, 2–3 sec eccentric.",muscle:"Chest",staple:true},
+        {name:"Incline DB Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"30–45° incline hits upper chest. Allow a deep stretch at the bottom.",muscle:"Chest"},
+        {name:"Cable Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Cable keeps tension at the top. Lead with elbows, slight forward lean.",muscle:"Shoulders"},
+        {name:"Seated DB OHP",sets:3,reps:"10–12",rir:"RIR 2",tip:"Neutral spine, press overhead without excessive lumbar extension. Full ROM.",muscle:"Shoulders"},
+        {name:"Tricep Rope Pushdown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Hinge forward slightly. Spread rope at bottom for peak contraction.",muscle:"Triceps"},
+        {name:"Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Overhead position stretches the long head — highest growth stimulus for triceps.",muscle:"Triceps"}
+      ]},
+      { day:2, name:"PULL A", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+        {name:"Barbell Row (Pendlay)",sets:4,reps:"6–8",rir:"RIR 2",tip:"Bar dead-stops on floor each rep. Flat back, hip hinge, explode bar to lower chest.",muscle:"Back",staple:true},
+        {name:"Lat Pulldown (Wide Grip)",sets:4,reps:"10–12",rir:"RIR 2",tip:"Lean back slightly, pull to upper chest. Full ROM is key for width.",muscle:"Back"},
+        {name:"Seated Cable Row",sets:3,reps:"10–12",rir:"RIR 2",tip:"Neutral grip. Pull elbows back and squeeze mid-back.",muscle:"Back"},
+        {name:"DB Bicep Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Supinate at the top for full peak contraction. Don't swing.",muscle:"Biceps"},
+        {name:"Hammer Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"Neutral grip hits brachialis — adds arm thickness.",muscle:"Biceps"},
+        {name:"Face Pull",sets:4,reps:"15–20",rir:"RIR 1",tip:"Rope to forehead, elbows high and flared. External rotation at end. Key for shoulder health.",muscle:"Rear Delts"}
+      ]},
+      { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Bar on traps, brace core, break at hips and knees simultaneously. Hit parallel minimum. 3 sec down.",muscle:"Quads",staple:true},
+        {name:"Romanian Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Hip hinge, soft knee, push hips back. Bar stays close to legs.",muscle:"Hamstrings",staple:true},
+        {name:"Leg Press",sets:3,reps:"10–15",rir:"RIR 1",tip:"High/wide foot = more glute. Low/narrow = more quad. Full range.",muscle:"Quads"},
+        {name:"Seated Leg Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Seated stretches hamstring at hip for more growth.",muscle:"Hamstrings"},
+        {name:"Hip Thrust",sets:3,reps:"10–15",rir:"RIR 1",tip:"Shoulder blades on bench, bar over hip crease. Drive through heels, pause 1 sec at top.",muscle:"Glutes"},
+        {name:"Standing Calf Raise",sets:4,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"}
+      ]},
+      { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
+      { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple compound. Focus on progressive overload from Push A.",muscle:"Chest",staple:true},
+        {name:"Cable Fly (Low to High)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Low cable for upper chest. Maintain slight elbow bend. Squeeze at top.",muscle:"Chest"},
+        {name:"DB Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lead with pinkies up. Don't let momentum take over.",muscle:"Shoulders"},
+        {name:"Machine Shoulder Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Full ROM, controlled eccentric. Great for progressive overload tracking.",muscle:"Shoulders"},
+        {name:"Skull Crusher",sets:3,reps:"10–12",rir:"RIR 2",tip:"EZ bar to forehead, elbows stay locked. Great long head builder.",muscle:"Triceps"},
+        {name:"Cable Tricep Kickback",sets:3,reps:"15–20",rir:"RIR 1",tip:"Constant cable tension. Hinge forward, lock upper arm parallel to floor, extend fully.",muscle:"Triceps"}
+      ]},
+      { day:6, name:"PULL B", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+        {name:"Weighted Pull-Up",sets:4,reps:"6–10",rir:"RIR 2",tip:"Full hang at bottom, chin clears bar at top. Slight forward lean engages lats more.",muscle:"Back",staple:true},
+        {name:"Chest-Supported DB Row",sets:4,reps:"10–12",rir:"RIR 2",tip:"Takes lower back out of it. Full stretch at bottom. Row to hip, not chest.",muscle:"Back"},
+        {name:"Straight-Arm Pulldown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms straight throughout — isolates the lat. Great mind-muscle connection.",muscle:"Back"},
+        {name:"Incline DB Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Maximizes long head stretch. Let arm hang fully back, curl controlled.",muscle:"Biceps"},
+        {name:"Preacher Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Locks out momentum. Full extension — don't cut the stretch short.",muscle:"Biceps"},
+        {name:"Rear Delt Fly (Pec Deck)",sets:4,reps:"15–20",rir:"RIR 1",tip:"Reverse the pec deck. Pull elbows BACK and squeeze rear delts.",muscle:"Rear Delts"}
+      ]},
+      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple compound. Focus on progressive overload from Legs A.",muscle:"Quads",staple:true},
+        {name:"Nordic Hamstring Curl",sets:3,reps:"6–10",rir:"RIR 2",tip:"One of the best for hamstring hypertrophy AND injury prevention.",muscle:"Hamstrings"},
+        {name:"Bulgarian Split Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"Rear foot elevated. Trunk upright = quads; lean forward = glutes.",muscle:"Quads"},
+        {name:"Glute Kickback (Cable)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, slight forward lean, kick straight back. Squeeze at top.",muscle:"Glutes"},
+        {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"Isolation for quad peak. Pause at top for extra contraction.",muscle:"Quads"},
+        {name:"Seated Calf Raise",sets:4,reps:"10–15",rir:"RIR 1",tip:"Targets soleus. Pair with standing raises for complete calf development.",muscle:"Calves"}
+      ]}
     ]
   },
+
+  // MESO 2 — Weeks 5–8 (accessories rotate)
   {
-    day: 2, name: "PULL A", tag: "pull", tagClass: "tag-pull",
-    muscles: "BACK · BICEPS · REAR DELTS",
-    exercises: [
-      { name: "Barbell Row (Pendlay)", sets: 4, reps: "6–8", rir: "RIR 2", tip: "Bar dead-stops on floor each rep. Flat back, hip hinge, explode the bar to lower chest. Resets remove momentum — pure strength & mass builder.", muscle: "Back" },
-      { name: "Lat Pulldown (Wide Grip)", sets: 4, reps: "10–12", rir: "RIR 2", tip: "Lean back slightly, pull to upper chest, feel lats stretch at top. Don't use momentum. Jeff programs this for width — full ROM is key.", muscle: "Back" },
-      { name: "Seated Cable Row", sets: 3, reps: "10–12", rir: "RIR 2", tip: "Use a neutral grip. Pull elbows back and squeeze mid-back. Don't over-lean — torso stays mostly vertical. Great for thickness.", muscle: "Back" },
-      { name: "DB Bicep Curl", sets: 3, reps: "10–12", rir: "RIR 1", tip: "Supinate (rotate palm up) at the top for full peak contraction. Don't swing. Jeff prefers incline curls for long head stretch — try it!", muscle: "Biceps" },
-      { name: "Hammer Curl", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Neutral grip hits brachialis and brachioradialis — adds arm thickness. Keep elbows pinned to sides.", muscle: "Biceps" },
-      { name: "Face Pull", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Rope to forehead, elbows high and flared. External rotation at end. Crucial for shoulder health and rear delt growth.", muscle: "Rear Delts" }
+    label: "MESO 2",
+    days: [
+      { day:1, name:"PUSH A", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Chest",staple:true},
+        {name:"DB Flat Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Deeper stretch than barbell. Let elbows drop below chest level for full pec stretch.",muscle:"Chest"},
+        {name:"Machine Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Machine keeps constant tension throughout. Pause at top for 1 sec.",muscle:"Shoulders"},
+        {name:"Arnold Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Rotate from palms facing you to palms facing forward as you press. Hits all three delt heads.",muscle:"Shoulders"},
+        {name:"Close-Grip Bench Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"Elbows tucked, hands shoulder-width. Great mass builder for triceps.",muscle:"Triceps"},
+        {name:"Single-Arm Tricep Pushdown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Eliminates dominant arm compensation. Full extension, control the negative.",muscle:"Triceps"}
+      ]},
+      { day:2, name:"PULL A", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+        {name:"Barbell Row (Pendlay)",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Back",staple:true},
+        {name:"Single-Arm DB Row",sets:4,reps:"10–12",rir:"RIR 2",tip:"Brace on bench, full stretch at bottom. Row to hip. Big range of motion.",muscle:"Back"},
+        {name:"Cable Pullover",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms straight, pull from overhead to hips. Pure lat isolation.",muscle:"Back"},
+        {name:"EZ Bar Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Slightly supinated grip. Don't swing. Control the negative.",muscle:"Biceps"},
+        {name:"Cable Curl (Low Pulley)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Constant tension from cable. Supinate at top. Great pump.",muscle:"Biceps"},
+        {name:"Band Pull-Apart",sets:4,reps:"20–25",rir:"RIR 1",tip:"Pull band to chest level, arms straight. Rear delts and rotator cuff health.",muscle:"Rear Delts"}
+      ]},
+      { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Quads",staple:true},
+        {name:"Romanian Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Hamstrings",staple:true},
+        {name:"Hack Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"Quad dominant, no spinal compression. Great for heavier loading.",muscle:"Quads"},
+        {name:"Lying Leg Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris involvement. Full stretch at top.",muscle:"Hamstrings"},
+        {name:"Cable Pull-Through",sets:3,reps:"15–20",rir:"RIR 1",tip:"Hip hinge movement. Squeeze glutes hard at lockout.",muscle:"Glutes"},
+        {name:"Donkey Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Hip flexed position increases gastrocnemius stretch. Deep stretch every rep.",muscle:"Calves"}
+      ]},
+      { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
+      { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Push A numbers.",muscle:"Chest",staple:true},
+        {name:"Incline Cable Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Set cables low, press/fly upward. Constant tension on upper chest throughout.",muscle:"Chest"},
+        {name:"Upright Row (Cable)",sets:4,reps:"12–15",rir:"RIR 1",tip:"Pull to chin, elbows above hands. Great medial delt builder.",muscle:"Shoulders"},
+        {name:"DB Front Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Slight lean back, raise to eye level. Controls the negative for more stimulus.",muscle:"Shoulders"},
+        {name:"Tricep Dips (Weighted)",sets:3,reps:"8–12",rir:"RIR 2",tip:"Slight forward lean for more tricep emphasis. Full lockout at top.",muscle:"Triceps"},
+        {name:"Overhead Cable Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Cable from behind head. Full stretch at bottom, extend fully at top.",muscle:"Triceps"}
+      ]},
+      { day:6, name:"PULL B", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+        {name:"Weighted Pull-Up",sets:4,reps:"6–10",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Back",staple:true},
+        {name:"T-Bar Row",sets:4,reps:"8–10",rir:"RIR 2",tip:"Chest on pad, pull to lower chest. Great for mid-back thickness.",muscle:"Back"},
+        {name:"Lat Pulldown (Neutral Grip)",sets:3,reps:"10–12",rir:"RIR 1",tip:"Neutral grip allows more shoulder extension — great for lat length.",muscle:"Back"},
+        {name:"Spider Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Chest on incline bench facing down. Eliminates all momentum. Pure bicep.",muscle:"Biceps"},
+        {name:"Reverse Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"Overhand grip. Hits brachioradialis and brachialis for complete arm development.",muscle:"Biceps"},
+        {name:"Cable Rear Delt Fly",sets:4,reps:"15–20",rir:"RIR 1",tip:"Cross cables, pull apart at shoulder height. Squeeze rear delts at end range.",muscle:"Rear Delts"}
+      ]},
+      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Legs A numbers.",muscle:"Quads",staple:true},
+        {name:"Stiff-Leg Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Legs completely straight — maximum hamstring stretch. Don't round back.",muscle:"Hamstrings"},
+        {name:"Front Squat",sets:3,reps:"8–10",rir:"RIR 2",tip:"More upright torso = more quad emphasis. Bar on front delts, elbows up.",muscle:"Quads"},
+        {name:"Sumo Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Wide stance, toes pointed out. More glute and adductor involvement.",muscle:"Glutes"},
+        {name:"Sissy Squat",sets:3,reps:"12–15",rir:"RIR 1",tip:"Lean back, drive knees forward. Extreme quad stretch at bottom.",muscle:"Quads"},
+        {name:"Standing Calf Raise",sets:4,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"}
+      ]}
     ]
   },
+
+  // MESO 3 — Weeks 9–12 (fresh exercises again)
   {
-    day: 3, name: "LEGS A", tag: "legs", tagClass: "tag-legs",
-    muscles: "QUADS · HAMSTRINGS · GLUTES · CALVES",
-    exercises: [
-      { name: "Barbell Back Squat", sets: 4, reps: "6–8", rir: "RIR 2", tip: "Bar on traps, brace core, break at hips and knees simultaneously. Hit at least parallel — ideally ATG. Jeff emphasizes tempo: 3 sec down.", muscle: "Quads" },
-      { name: "Romanian Deadlift", sets: 3, reps: "8–10", rir: "RIR 2", tip: "Hip hinge, soft knee, push hips back. Bar stays close to legs. Feel hamstrings load — go until you feel a solid stretch, not lower back rounding.", muscle: "Hamstrings" },
-      { name: "Leg Press", sets: 3, reps: "10–15", rir: "RIR 1", tip: "High and wide foot placement for more glute/ham. Low and narrow for quads. Full range — don't lock knees at top. Control the negative.", muscle: "Quads" },
-      { name: "Leg Curl (Seated)", sets: 4, reps: "10–12", rir: "RIR 1", tip: "Seated variant stretches the hamstring at the hip — higher stretch-mediated hypertrophy. Point toes to recruit more biceps femoris.", muscle: "Hamstrings" },
-      { name: "Hip Thrust", sets: 3, reps: "10–15", rir: "RIR 1", tip: "Shoulder blades on bench, bar over hip crease (pad it!). Drive through heels, posterior pelvic tilt at top. Pause 1 sec contracted.", muscle: "Glutes" },
-      { name: "Standing Calf Raise", sets: 4, reps: "10–15", rir: "RIR 1", tip: "Full ROM — deep stretch at bottom (gastrocnemius crosses knee). Pause 2 sec at bottom, explode up. Calves are stubborn: train near failure.", muscle: "Calves" }
-    ]
-  },
-  {
-    day: 4, name: "REST", tag: "rest", tagClass: "tag-rest",
-    muscles: "ACTIVE RECOVERY",
-    exercises: []
-  },
-  {
-    day: 5, name: "PUSH B", tag: "push", tagClass: "tag-push",
-    muscles: "CHEST · SHOULDERS · TRICEPS",
-    exercises: [
-      { name: "Incline Barbell Press", sets: 4, reps: "6–8", rir: "RIR 2", tip: "30° incline targets upper chest. Don't go too steep or you shift to shoulders. Arch, retract, press.", muscle: "Chest" },
-      { name: "Cable Fly (Low to High)", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Low cable for upper chest. Maintain slight elbow bend throughout. Squeeze at top — feel the stretch at bottom.", muscle: "Chest" },
-      { name: "DB Lateral Raise", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Lead with pinkies up. Don't let momentum take over. Jeff often does these as a drop set for extra volume.", muscle: "Shoulders" },
-      { name: "Machine Shoulder Press", sets: 3, reps: "10–12", rir: "RIR 2", tip: "Machine allows you to push harder safely. Full ROM, controlled eccentric. Great for progressive overload tracking.", muscle: "Shoulders" },
-      { name: "Skull Crusher", sets: 3, reps: "10–12", rir: "RIR 2", tip: "EZ bar to forehead, elbows stay locked in place. Great long head builder. Follow with a close-grip press for a tricep superset.", muscle: "Triceps" },
-      { name: "Cable Tricep Kickback", sets: 3, reps: "15–20", rir: "RIR 1", tip: "Constant cable tension beats dumbbell here. Hinge forward, lock upper arm parallel to floor, extend fully.", muscle: "Triceps" }
-    ]
-  },
-  {
-    day: 6, name: "PULL B", tag: "pull", tagClass: "tag-pull",
-    muscles: "BACK · BICEPS · REAR DELTS",
-    exercises: [
-      { name: "Weighted Pull-Up", sets: 4, reps: "6–10", rir: "RIR 2", tip: "Full hang at bottom, chin clears bar at top. Slight forward lean engages lats more. If no added weight yet, do bodyweight to failure.", muscle: "Back" },
-      { name: "Chest-Supported DB Row", sets: 4, reps: "10–12", rir: "RIR 2", tip: "Takes lower back out of the equation. Full stretch at bottom. Row to hip, not chest — elbows past torso.", muscle: "Back" },
-      { name: "Straight-Arm Pulldown", sets: 3, reps: "12–15", rir: "RIR 1", tip: "Arms straight throughout — this isolates the lat. Hinge at hip slightly. Great mind-muscle connection exercise.", muscle: "Back" },
-      { name: "Incline DB Curl", sets: 4, reps: "10–12", rir: "RIR 1", tip: "Maximizes long head stretch — highest EMG activation for bicep peak. Let arm hang fully back, curl controlled.", muscle: "Biceps" },
-      { name: "Preacher Curl", sets: 3, reps: "10–12", rir: "RIR 1", tip: "Locks out momentum. Machine version is great for progressive overload. Full extension — don't cut the stretch short.", muscle: "Biceps" },
-      { name: "Rear Delt Fly (Pec Deck)", sets: 4, reps: "15–20", rir: "RIR 1", tip: "Reverse the pec deck, arms slightly below shoulder height. Focus on pulling elbows BACK and squeezing rear delts.", muscle: "Rear Delts" }
-    ]
-  },
-  {
-    day: 7, name: "LEGS B", tag: "legs", tagClass: "tag-legs",
-    muscles: "QUADS · HAMSTRINGS · GLUTES · CALVES",
-    exercises: [
-      { name: "Hack Squat / Leg Press", sets: 4, reps: "8–12", rir: "RIR 2", tip: "Hack squat: quad dominant, no spinal compression. Great for hypertrophy with heavier loading.", muscle: "Quads" },
-      { name: "Nordic Hamstring Curl", sets: 3, reps: "6–10", rir: "RIR 2", tip: "One of the best exercises for hamstring hypertrophy AND injury prevention. Eccentric only is fine. Brutally effective.", muscle: "Hamstrings" },
-      { name: "Bulgarian Split Squat", sets: 3, reps: "10–12", rir: "RIR 1", tip: "Rear foot elevated on bench. Trunk upright = quads; lean forward = glutes. One of Jeff's favorites for unilateral mass.", muscle: "Quads" },
-      { name: "Glute Kickback (Cable)", sets: 3, reps: "15–20", rir: "RIR 1", tip: "Ankle attachment, slight forward lean, kick straight back. Squeeze at top. Constant tension on glutes.", muscle: "Glutes" },
-      { name: "Leg Extension", sets: 3, reps: "15–20", rir: "RIR 1", tip: "Isolation for quad peak. Don't avoid — research shows it's safe with full ROM. Pause at top for extra contraction.", muscle: "Quads" },
-      { name: "Seated Calf Raise", sets: 4, reps: "10–15", rir: "RIR 1", tip: "Targets soleus (seated = knee bent). Pair with standing raises for complete calf development. Deep stretch every rep.", muscle: "Calves" }
+    label: "MESO 3",
+    days: [
+      { day:1, name:"PUSH A", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+        {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers. Perfect form.",muscle:"Chest",staple:true},
+        {name:"Incline DB Press",sets:3,reps:"8–10",rir:"RIR 1",tip:"Heavier this meso. Deep stretch, explosive press.",muscle:"Chest"},
+        {name:"Seated Cable Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Seated eliminates momentum entirely. Pure medial delt.",muscle:"Shoulders"},
+        {name:"Push Press",sets:3,reps:"6–8",rir:"RIR 2",tip:"Use leg drive to get the bar moving, finish with shoulders. Builds overhead strength.",muscle:"Shoulders"},
+        {name:"JM Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"Hybrid between skull crusher and close-grip press. Massive tricep builder.",muscle:"Triceps"},
+        {name:"Tricep Pushdown (Straight Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Straight bar allows more wrist supination. Full lockout, control the negative.",muscle:"Triceps"}
+      ]},
+      { day:2, name:"PULL A", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+        {name:"Barbell Row (Pendlay)",sets:4,reps:"5–7",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers.",muscle:"Back",staple:true},
+        {name:"Meadows Row",sets:4,reps:"8–10",rir:"RIR 2",tip:"Landmine row with one arm. Incredible range of motion and lat stretch.",muscle:"Back"},
+        {name:"Wide Grip Seated Row",sets:3,reps:"10–12",rir:"RIR 1",tip:"Wide grip targets mid traps and rhomboids more.",muscle:"Back"},
+        {name:"Concentration Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Elbow braced on inner thigh. Zero momentum. Peak contraction focus.",muscle:"Biceps"},
+        {name:"21s (DB Curl)",sets:3,reps:"21",rir:"RIR 0",tip:"7 bottom half + 7 top half + 7 full reps. Brutal pump and time under tension.",muscle:"Biceps"},
+        {name:"Prone Rear Delt Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lie face down on incline bench. Arms slightly bent, raise to shoulder height.",muscle:"Rear Delts"}
+      ]},
+      { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers.",muscle:"Quads",staple:true},
+        {name:"Romanian Deadlift",sets:3,reps:"6–8",rir:"RIR 1",tip:"Heavier this meso. Full stretch, controlled negative.",muscle:"Hamstrings",staple:true},
+        {name:"V-Squat Machine",sets:3,reps:"10–12",rir:"RIR 1",tip:"Similar to hack squat but different bar path. Great quad isolation.",muscle:"Quads"},
+        {name:"Hamstring Curl (Machine)",sets:4,reps:"10–12",rir:"RIR 1",tip:"Try both seated and lying across meso 3 to see which you feel more.",muscle:"Hamstrings"},
+        {name:"Barbell Hip Thrust",sets:3,reps:"8–12",rir:"RIR 1",tip:"Heavier this meso. Pause 2 sec at top. Posterior pelvic tilt.",muscle:"Glutes"},
+        {name:"Single-Leg Calf Raise",sets:4,reps:"10–12",rir:"RIR 0",tip:"Bodyweight or holding a DB. More ROM and balance challenge than bilateral.",muscle:"Calves"}
+      ]},
+      { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
+      { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+        {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Push A numbers.",muscle:"Chest",staple:true},
+        {name:"Pec Deck Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Machine keeps constant tension. Pause 1 sec at stretch for max stimulus.",muscle:"Chest"},
+        {name:"Plate Front Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Plate allows neutral grip. Raise to eye level, control the negative.",muscle:"Shoulders"},
+        {name:"Barbell OHP",sets:3,reps:"6–8",rir:"RIR 2",tip:"Standing or seated. Press overhead, bar in front. Core stays tight.",muscle:"Shoulders"},
+        {name:"Tate Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"DBs start together above chest, flare elbows out to sides. Unique tricep angle.",muscle:"Triceps"},
+        {name:"Cable Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Long head focus. Full stretch overhead, extend fully.",muscle:"Triceps"}
+      ]},
+      { day:6, name:"PULL B", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+        {name:"Weighted Pull-Up",sets:4,reps:"6–8",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers.",muscle:"Back",staple:true},
+        {name:"Seal Row",sets:4,reps:"8–10",rir:"RIR 2",tip:"Chest on elevated bench, full dead-stop each rep. Zero momentum.",muscle:"Back"},
+        {name:"Close-Grip Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"Hands close together. Elbows to sides, big lat stretch at top.",muscle:"Back"},
+        {name:"Zottman Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Curl up with supinated grip, lower with pronated. Hits bicep and brachioradialis.",muscle:"Biceps"},
+        {name:"Cable Curl (High Pulley)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms extended out, curl toward your ears. Keeps tension at full contraction.",muscle:"Biceps"},
+        {name:"Face Pull (Heavy)",sets:4,reps:"12–15",rir:"RIR 1",tip:"Go heavier this meso. Still focus on external rotation at the end.",muscle:"Rear Delts"}
+      ]},
+      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Legs A numbers.",muscle:"Quads",staple:true},
+        {name:"Good Morning",sets:3,reps:"8–10",rir:"RIR 2",tip:"Bar on traps, hip hinge. Incredible hamstring and lower back builder.",muscle:"Hamstrings"},
+        {name:"Walking Lunges",sets:3,reps:"10–12",rir:"RIR 1",tip:"Long stride for glutes, short stride for quads. Add weight as you progress.",muscle:"Quads"},
+        {name:"Glute-Ham Raise",sets:3,reps:"8–10",rir:"RIR 1",tip:"One of the best posterior chain exercises. Lower slowly, push back up.",muscle:"Glutes"},
+        {name:"Spanish Squat (Band)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Band around fixed object, squat with shins vertical. Destroys the quads.",muscle:"Quads"},
+        {name:"Tibialis Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Lean against wall, raise toes repeatedly. Prevents shin splints, balances calf work.",muscle:"Calves"}
+      ]}
     ]
   }
 ];
 
-// ─── STATE ────────────────────────────────────────────────
-let state = JSON.parse(localStorage.getItem('nippardState') || '{}');
-if (!state.currentDay) state.currentDay = 0;
-if (!state.currentWeek) state.currentWeek = 1;
-if (!state.completedWorkouts) state.completedWorkouts = 0;
-if (!state.logs) state.logs = [];
-if (!state.streak) state.streak = 0;
+// DELOAD — Week 13
+const DELOAD_DAYS = [
+  { day:1, name:"PUSH A (DELOAD)", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+    {name:"Barbell Bench Press",sets:3,reps:"8–10",rir:"RIR 4",tip:"DELOAD: Use ~50% of your normal weight. Focus on perfect form and feeling the muscle.",muscle:"Chest",staple:true},
+    {name:"Incline DB Press",sets:2,reps:"10–12",rir:"RIR 4",tip:"Light weight, feel the stretch. No ego.",muscle:"Chest"},
+    {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 4",tip:"Very light. Mind-muscle connection only.",muscle:"Shoulders"},
+    {name:"Tricep Pushdown",sets:2,reps:"15–20",rir:"RIR 4",tip:"Light pump work only.",muscle:"Triceps"}
+  ]},
+  { day:2, name:"PULL A (DELOAD)", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+    {name:"Barbell Row",sets:3,reps:"8–10",rir:"RIR 4",tip:"DELOAD: 50% weight. Focus on form.",muscle:"Back",staple:true},
+    {name:"Lat Pulldown",sets:2,reps:"12–15",rir:"RIR 4",tip:"Light, feel the lat.",muscle:"Back"},
+    {name:"DB Bicep Curl",sets:3,reps:"12–15",rir:"RIR 4",tip:"Light pump work.",muscle:"Biceps"},
+    {name:"Face Pull",sets:3,reps:"20–25",rir:"RIR 4",tip:"Light and slow. Shoulder health.",muscle:"Rear Delts"}
+  ]},
+  { day:3, name:"LEGS A (DELOAD)", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES", exercises:[
+    {name:"Barbell Back Squat",sets:3,reps:"8–10",rir:"RIR 4",tip:"DELOAD: 50% weight. Perfect form only.",muscle:"Quads",staple:true},
+    {name:"Romanian Deadlift",sets:2,reps:"10–12",rir:"RIR 4",tip:"Light, feel the hamstring stretch.",muscle:"Hamstrings",staple:true},
+    {name:"Leg Press",sets:2,reps:"15–20",rir:"RIR 4",tip:"Light pump work.",muscle:"Quads"},
+    {name:"Standing Calf Raise",sets:3,reps:"15–20",rir:"RIR 4",tip:"Light, focus on full ROM.",muscle:"Calves"}
+  ]},
+  { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
+  { day:5, name:"PUSH B (DELOAD)", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
+    {name:"Barbell Bench Press",sets:3,reps:"8–10",rir:"RIR 4",tip:"DELOAD: 50% weight.",muscle:"Chest",staple:true},
+    {name:"DB Lateral Raise",sets:3,reps:"15–20",rir:"RIR 4",tip:"Very light.",muscle:"Shoulders"},
+    {name:"Skull Crusher",sets:2,reps:"12–15",rir:"RIR 4",tip:"Light pump.",muscle:"Triceps"}
+  ]},
+  { day:6, name:"PULL B (DELOAD)", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
+    {name:"Weighted Pull-Up",sets:3,reps:"8–10",rir:"RIR 4",tip:"Bodyweight only for deload.",muscle:"Back",staple:true},
+    {name:"Seated Cable Row",sets:2,reps:"12–15",rir:"RIR 4",tip:"Light, feel the stretch.",muscle:"Back"},
+    {name:"Hammer Curl",sets:3,reps:"12–15",rir:"RIR 4",tip:"Light pump.",muscle:"Biceps"}
+  ]},
+  { day:7, name:"LEGS B (DELOAD)", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES", exercises:[
+    {name:"Barbell Back Squat",sets:3,reps:"8–10",rir:"RIR 4",tip:"DELOAD: 50% weight.",muscle:"Quads",staple:true},
+    {name:"Romanian Deadlift",sets:2,reps:"10–12",rir:"RIR 4",tip:"Light and controlled.",muscle:"Hamstrings",staple:true},
+    {name:"Leg Press",sets:2,reps:"15–20",rir:"RIR 4",tip:"Light pump.",muscle:"Quads"}
+  ]}
+];
 
-let activeSets = {}; // {exIdx: [{weight, reps, done}]}
+// Build flat week structure: weeks 1-4 = meso1, 5-8 = meso2, 9-12 = meso3, 13 = deload
+function getDayForWeekAndDayIndex(week, dayIdx) {
+  if (week >= 1 && week <= 4) return MESOS[0].days[dayIdx];
+  if (week >= 5 && week <= 8) return MESOS[1].days[dayIdx];
+  if (week >= 9 && week <= 12) return MESOS[2].days[dayIdx];
+  if (week === 13) return DELOAD_DAYS[dayIdx];
+  // Loop back — start meso 1 again
+  const loopWeek = ((week - 1) % 13) + 1;
+  return getDayForWeekAndDayIndex(loopWeek, dayIdx);
+}
+
+function getMesoLabel(week) {
+  if (week <= 4) return "MESO 1 · WK " + week;
+  if (week <= 8) return "MESO 2 · WK " + week;
+  if (week <= 12) return "MESO 3 · WK " + week;
+  return "DELOAD WEEK";
+}
+
+// ─── STATE ────────────────────────────────────────────────
+let state = JSON.parse(localStorage.getItem('nippardState_v3') || 'null') || {
+  currentDayIdx: 0,
+  currentWeek: 1,
+  completedWorkouts: 0,
+  streak: 0,
+  logs: [],        // {date, dayName, week, exercises: [{name, sets:[{weight,reps}]}]}
+  prevData: {}     // key: "exName_dayName" → [{weight,reps}] last time
+};
+
+function saveState() { localStorage.setItem('nippardState_v3', JSON.stringify(state)); }
+
+let activeSets = {}; // {ei: [{weight, reps, done}]}
 let restInterval = null;
 let restRemaining = 0;
 
-function saveState() { localStorage.setItem('nippardState', JSON.stringify(state)); }
+// ─── HELPERS ──────────────────────────────────────────────
+function roundTo2_5(val) {
+  return Math.ceil(val / 2.5) * 2.5;
+}
+
+function avgRoundUp(arr) {
+  if (!arr || arr.length === 0) return null;
+  const sum = arr.reduce((a, b) => a + b, 0);
+  return Math.ceil(sum / arr.length);
+}
+
+function getPrevData(exName, dayName) {
+  return state.prevData[exName + '_' + dayName] || null;
+}
+
+function getSuggestedWeight(exName, dayName) {
+  const prev = getPrevData(exName, dayName);
+  if (!prev || prev.length === 0) return null;
+  const weights = prev.map(s => parseFloat(s.weight)).filter(w => !isNaN(w) && w > 0);
+  if (weights.length === 0) return null;
+  const avg = weights.reduce((a, b) => a + b, 0) / weights.length;
+  return roundTo2_5(avg);
+}
+
+function getSuggestedReps(exName, dayName) {
+  const prev = getPrevData(exName, dayName);
+  if (!prev || prev.length === 0) return null;
+  const reps = prev.map(s => parseFloat(s.reps)).filter(r => !isNaN(r) && r > 0);
+  if (reps.length === 0) return null;
+  return avgRoundUp(reps);
+}
 
 // ─── PAGES ────────────────────────────────────────────────
 function showPage(name) {
@@ -357,28 +470,36 @@ function showPage(name) {
 
 // ─── PROGRAM PAGE ─────────────────────────────────────────
 function renderProgram() {
-  // Weeks
   const wr = document.getElementById('weekRow');
   wr.innerHTML = '';
-  for (let w = 1; w <= 8; w++) {
+  for (let w = 1; w <= 13; w++) {
     const btn = document.createElement('div');
-    btn.className = 'week-btn' + (w === state.currentWeek ? ' active' : '');
-    btn.textContent = 'WK ' + w;
+    const isDeload = w === 13;
+    btn.className = 'week-btn' + (w === state.currentWeek ? ' active' : '') + (isDeload ? ' deload' : '');
+    btn.textContent = isDeload ? 'DELOAD' : 'WK ' + w;
     btn.onclick = () => { state.currentWeek = w; saveState(); renderProgram(); };
     wr.appendChild(btn);
   }
-  // Days
+
   const pd = document.getElementById('programDays');
   pd.innerHTML = '';
-  PROGRAM.forEach((d, i) => {
-    const isToday = i === state.currentDay;
+
+  // Meso badge
+  const badge = document.createElement('div');
+  badge.className = 'meso-badge';
+  badge.textContent = getMesoLabel(state.currentWeek);
+  pd.appendChild(badge);
+
+  for (let i = 0; i < 7; i++) {
+    const d = getDayForWeekAndDayIndex(state.currentWeek, i);
+    const isToday = i === state.currentDayIdx && state.currentWeek === state.currentWeek;
     const div = document.createElement('div');
-    div.className = 'day-card' + (isToday ? ' today' : '');
+    div.className = 'day-card' + (i === state.currentDayIdx ? ' today' : '');
     const exChips = d.exercises.slice(0, 4).map(e => `<span class="ex-chip">${e.name}</span>`).join('');
     div.innerHTML = `
       <div class="day-header">
         <div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;">DAY ${d.day}${isToday ? ' · TODAY' : ''}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;">DAY ${d.day}${i === state.currentDayIdx ? ' · TODAY' : ''}</div>
           <div class="day-title">${d.name}</div>
           <div class="day-meta">${d.muscles}</div>
         </div>
@@ -388,51 +509,79 @@ function renderProgram() {
     `;
     if (d.exercises.length) {
       div.querySelector('.day-header').onclick = () => {
-        state.currentDay = i; saveState();
-        // switch to workout tab
+        state.currentDayIdx = i;
+        saveState();
         document.querySelectorAll('.tab')[1].click();
       };
     }
     pd.appendChild(div);
-  });
+  }
 }
 
 // ─── WORKOUT PAGE ─────────────────────────────────────────
 function renderWorkout() {
-  const day = PROGRAM[state.currentDay];
+  const day = getDayForWeekAndDayIndex(state.currentWeek, state.currentDayIdx);
+  const isDeload = state.currentWeek === 13;
+
   document.getElementById('workoutTitle').textContent = day.name;
   document.getElementById('workoutSub').textContent = day.muscles;
-  document.getElementById('headerDay').textContent = day.name;
+  document.getElementById('headerDay').textContent = getMesoLabel(state.currentWeek);
+  document.getElementById('deloadBanner').style.display = isDeload ? 'block' : 'none';
 
   const list = document.getElementById('exerciseList');
   list.innerHTML = '';
 
   if (day.exercises.length === 0) {
     list.innerHTML = `<div style="text-align:center;padding:40px;font-family:'DM Mono',monospace;font-size:14px;color:var(--muted);">REST DAY 💤<br><br>Active recovery, walk, stretch.</div>`;
+    document.getElementById('finishBtn').style.display = 'none';
     return;
   }
 
+  document.getElementById('finishBtn').style.display = 'block';
+
   day.exercises.forEach((ex, ei) => {
     if (!activeSets[ei]) {
-      activeSets[ei] = Array.from({length: ex.sets}, () => ({weight: '', reps: '', done: false}));
+      const sugW = getSuggestedWeight(ex.name, day.name);
+      const sugR = getSuggestedReps(ex.name, day.name);
+      activeSets[ei] = Array.from({ length: ex.sets }, () => ({
+        weight: sugW ? String(sugW) : '',
+        reps: sugR ? String(sugR) : '',
+        done: false
+      }));
     }
+
+    const prev = getPrevData(ex.name, day.name);
     const card = document.createElement('div');
     card.className = 'exercise-card';
-    let rowsHTML = activeSets[ei].map((s, si) => `
-      <div class="set-row ${s.done ? 'done' : ''}" id="setrow-${ei}-${si}">
-        <div class="set-num">${si + 1}</div>
-        <input class="set-input" type="number" min="0" step="2.5" placeholder="lbs" value="${s.weight}"
-          oninput="updateSet(${ei},${si},'weight',this.value)">
-        <input class="set-input" type="number" min="0" placeholder="reps" value="${s.reps}"
-          oninput="updateSet(${ei},${si},'reps',this.value)">
-        <button class="check-btn ${s.done ? 'done' : ''}" id="check-${ei}-${si}" onclick="completeSet(${ei},${si})">✓</button>
-      </div>
-    `).join('');
+
+    let rowsHTML = activeSets[ei].map((s, si) => {
+      const prevSet = prev && prev[si] ? prev[si] : null;
+      const prevHint = prevSet ? `prev: ${prevSet.weight}lbs × ${prevSet.reps}` : '';
+      return `
+        <div class="set-row ${s.done ? 'done' : ''}" id="setrow-${ei}-${si}">
+          <div class="set-num">${si + 1}</div>
+          <div>
+            <input class="set-input" type="number" min="0" step="2.5" placeholder="${s.weight || 'lbs'}" value="${s.weight}"
+              oninput="updateSet(${ei},${si},'weight',this.value)">
+            ${prevHint ? `<div class="prev-hint">${prevHint}</div>` : ''}
+          </div>
+          <div>
+            <input class="set-input" type="number" min="0" placeholder="${s.reps || 'reps'}" value="${s.reps}"
+              oninput="updateSet(${ei},${si},'reps',this.value)">
+            ${prevHint ? `<div class="prev-hint">&nbsp;</div>` : ''}
+          </div>
+          <button class="check-btn ${s.done ? 'done' : ''}" id="check-${ei}-${si}" onclick="completeSet(${ei},${si})">✓</button>
+        </div>
+      `;
+    }).join('');
+
+    const stapleTag = ex.staple ? `<span style="font-family:'DM Mono',monospace;font-size:9px;background:rgba(232,255,59,0.15);color:var(--accent);padding:2px 6px;border-radius:2px;margin-left:6px;letter-spacing:1px;">STAPLE</span>` : '';
+
     card.innerHTML = `
       <div class="ex-header">
         <div class="ex-num">${ei + 1}</div>
         <div class="ex-info">
-          <div class="ex-name">${ex.name}</div>
+          <div class="ex-name">${ex.name}${stapleTag}</div>
           <div class="ex-spec">${ex.sets} SETS · ${ex.reps} REPS · ${ex.rir}</div>
         </div>
         <button class="ex-tip-btn" onclick="showTip(${ei})">💡</button>
@@ -455,18 +604,19 @@ function completeSet(ei, si) {
   const s = activeSets[ei][si];
   s.done = !s.done;
   if (s.done) {
-    // Log
-    const day = PROGRAM[state.currentDay];
+    const day = getDayForWeekAndDayIndex(state.currentWeek, state.currentDayIdx);
     const ex = day.exercises[ei];
     state.logs.push({
       date: new Date().toLocaleDateString(),
+      dayName: day.name,
+      week: state.currentWeek,
       name: ex.name,
       weight: s.weight || '?',
       reps: s.reps || '?',
       muscle: ex.muscle
     });
     saveState();
-    startRest(180); // 3 min default
+    startRest(180);
   }
   document.getElementById(`setrow-${ei}-${si}`).className = 'set-row ' + (s.done ? 'done' : '');
   document.getElementById(`check-${ei}-${si}`).className = 'check-btn ' + (s.done ? 'done' : '');
@@ -474,7 +624,7 @@ function completeSet(ei, si) {
 }
 
 function updateProgress() {
-  const day = PROGRAM[state.currentDay];
+  const day = getDayForWeekAndDayIndex(state.currentWeek, state.currentDayIdx);
   if (!day.exercises.length) return;
   let total = 0, done = 0;
   day.exercises.forEach((ex, ei) => {
@@ -487,20 +637,43 @@ function updateProgress() {
 }
 
 function finishWorkout() {
+  const day = getDayForWeekAndDayIndex(state.currentWeek, state.currentDayIdx);
+
+  // Save prev data for each exercise
+  day.exercises.forEach((ex, ei) => {
+    if (activeSets[ei]) {
+      const key = ex.name + '_' + day.name;
+      state.prevData[key] = activeSets[ei].map(s => ({ weight: s.weight, reps: s.reps }));
+    }
+  });
+
   state.completedWorkouts++;
   state.streak++;
-  // Advance day
-  state.currentDay = (state.currentDay + 1) % PROGRAM.length;
+
+  // Advance to next day
+  let nextDayIdx = state.currentDayIdx + 1;
+  let nextWeek = state.currentWeek;
+  if (nextDayIdx >= 7) {
+    nextDayIdx = 0;
+    nextWeek = state.currentWeek + 1;
+    if (nextWeek > 13) nextWeek = 1; // loop back
+  }
+  state.currentDayIdx = nextDayIdx;
+  state.currentWeek = nextWeek;
+
   activeSets = {};
   saveState();
-  alert('Workout complete! Great work 💪\n\nNext up: ' + PROGRAM[state.currentDay].name);
+
+  const nextDay = getDayForWeekAndDayIndex(nextWeek, nextDayIdx);
+  alert('Workout complete! Great work 💪\n\nNext up: ' + nextDay.name + '\n' + getMesoLabel(nextWeek));
   renderWorkout();
   updateProgress();
 }
 
 // ─── TIP MODAL ────────────────────────────────────────────
 function showTip(ei) {
-  const ex = PROGRAM[state.currentDay].exercises[ei];
+  const day = getDayForWeekAndDayIndex(state.currentWeek, state.currentDayIdx);
+  const ex = day.exercises[ei];
   document.getElementById('tipTitle').textContent = ex.name.toUpperCase();
   document.getElementById('tipBody').textContent = ex.tip;
   document.getElementById('tipModal').classList.add('open');
@@ -535,6 +708,7 @@ function renderStats() {
   document.getElementById('statWorkouts').textContent = state.completedWorkouts || 0;
   document.getElementById('statSets').textContent = state.logs.length;
   document.getElementById('statStreak').textContent = state.streak || 0;
+  document.getElementById('statsSub').textContent = getMesoLabel(state.currentWeek);
 
   const totalVol = state.logs.reduce((a, l) => {
     const w = parseFloat(l.weight) || 0;
@@ -543,7 +717,6 @@ function renderStats() {
   }, 0);
   document.getElementById('statVol').textContent = Math.round(totalVol).toLocaleString();
 
-  // Volume by muscle
   const muscleVol = {};
   state.logs.forEach(l => {
     const w = parseFloat(l.weight) || 0;
@@ -553,16 +726,18 @@ function renderStats() {
   const maxVol = Math.max(...Object.values(muscleVol), 1);
   const vb = document.getElementById('volumeBars');
   vb.innerHTML = Object.entries(muscleVol).map(([m, v]) => `
-    <div class="vbar-label"><span>${m.toUpperCase()}</span><span>${Math.round(v)} lbs</span></div>
-    <div class="vbar"><div class="vbar-fill" style="width:${(v/maxVol*100)}%"></div></div>
+    <div class="vbar-label"><span>${m.toUpperCase()}</span><span>${Math.round(v).toLocaleString()} lbs</span></div>
+    <div class="vbar"><div class="vbar-fill" style="width:${(v / maxVol * 100)}%"></div></div>
   `).join('') || '<div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);">Log some sets to see volume breakdown!</div>';
 
-  // Recent sets
   const rl = document.getElementById('recentLog');
-  const recent = [...state.logs].reverse().slice(0, 8);
+  const recent = [...state.logs].reverse().slice(0, 10);
   rl.innerHTML = recent.length ? recent.map(l => `
     <div class="log-item">
-      <div><div class="log-name">${l.name}</div><div class="log-detail">${l.date}</div></div>
+      <div>
+        <div class="log-name">${l.name}</div>
+        <div class="log-detail">${l.dayName} · ${l.date}</div>
+      </div>
       <div class="log-detail">${l.weight}lbs × ${l.reps}</div>
     </div>
   `).join('') : '<div style="padding:24px;text-align:center;font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);">No sets logged yet. Start a workout!</div>';
@@ -570,6 +745,7 @@ function renderStats() {
 
 // ─── INIT ─────────────────────────────────────────────────
 renderProgram();
+renderWorkout();
 </script>
 </body>
 </html>
