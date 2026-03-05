@@ -47,8 +47,12 @@
   .ex-name { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; }
   .ex-spec { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: .5px; }
   .ex-tip-btn { width: 28px; height: 28px; border-radius: 50%; background: #1e1e1e; border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .sets-head { display: grid; grid-template-columns: 36px 1fr 1fr 40px; gap: 8px; padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  .set-row { display: grid; grid-template-columns: 36px 1fr 1fr 40px; gap: 8px; padding: 10px 16px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
+  .sets-head { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 8px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .stepper { display: flex; align-items: center; background: #1a1a1a; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .stepper-btn { width: 28px; height: 36px; background: #222; border: none; color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; -webkit-tap-highlight-color: transparent; }
+  .stepper-btn:active { background: #333; }
+  .stepper-val { flex: 1; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); text-align: center; min-width: 36px; padding: 0 2px; }
+  .set-row { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 8px 12px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
   .set-row:last-child { border-bottom: none; }
   .set-row.done { background: rgba(59,255,138,0.04); }
   .set-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
@@ -557,18 +561,26 @@ function renderWorkout() {
     let rowsHTML = activeSets[ei].map((s, si) => {
       const prevSet = prev && prev[si] ? prev[si] : null;
       const prevHint = prevSet ? `prev: ${prevSet.weight}lbs × ${prevSet.reps}` : '';
+      const wVal = s.weight || '0';
+      const rVal = s.reps || '0';
       return `
         <div class="set-row ${s.done ? 'done' : ''}" id="setrow-${ei}-${si}">
           <div class="set-num">${si + 1}</div>
           <div>
-            <input class="set-input" type="number" min="0" step="2.5" placeholder="${s.weight || 'lbs'}" value="${s.weight}"
-              oninput="updateSet(${ei},${si},'weight',this.value)">
-            ${prevHint ? `<div class="prev-hint">${prevHint}</div>` : ''}
+            <div class="stepper">
+              <button class="stepper-btn" onclick="stepVal(${ei},${si},'weight',-2.5)">−</button>
+              <div class="stepper-val" id="wval-${ei}-${si}">${wVal}</div>
+              <button class="stepper-btn" onclick="stepVal(${ei},${si},'weight',2.5)">+</button>
+            </div>
+            ${prevHint ? `<div class="prev-hint">${prevSet.weight}lbs prev</div>` : ''}
           </div>
           <div>
-            <input class="set-input" type="number" min="0" placeholder="${s.reps || 'reps'}" value="${s.reps}"
-              oninput="updateSet(${ei},${si},'reps',this.value)">
-            ${prevHint ? `<div class="prev-hint">&nbsp;</div>` : ''}
+            <div class="stepper">
+              <button class="stepper-btn" onclick="stepVal(${ei},${si},'reps',-1)">−</button>
+              <div class="stepper-val" id="rval-${ei}-${si}">${rVal}</div>
+              <button class="stepper-btn" onclick="stepVal(${ei},${si},'reps',1)">+</button>
+            </div>
+            ${prevHint ? `<div class="prev-hint">${prevSet.reps} prev</div>` : ''}
           </div>
           <button class="check-btn ${s.done ? 'done' : ''}" id="check-${ei}-${si}" onclick="completeSet(${ei},${si})">✓</button>
         </div>
@@ -594,6 +606,21 @@ function renderWorkout() {
     list.appendChild(card);
   });
   updateProgress();
+}
+
+function stepVal(ei, si, field, delta) {
+  const s = activeSets[ei][si];
+  let current = parseFloat(s[field]) || 0;
+  let next = current + delta;
+  if (field === 'weight') {
+    next = Math.max(0, Math.round(next / 2.5) * 2.5);
+    s[field] = String(next);
+    document.getElementById(`wval-${ei}-${si}`).textContent = next;
+  } else {
+    next = Math.max(0, Math.round(next));
+    s[field] = String(next);
+    document.getElementById(`rval-${ei}-${si}`).textContent = next;
+  }
 }
 
 function updateSet(ei, si, field, val) {
