@@ -51,7 +51,7 @@
   .stepper { display: flex; align-items: center; background: #1a1a1a; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .stepper-btn { width: 28px; height: 36px; background: #222; border: none; color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; -webkit-tap-highlight-color: transparent; }
   .stepper-btn:active { background: #333; }
-  .stepper-val { flex: 1; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); text-align: center; min-width: 36px; padding: 0 2px; }
+  .stepper-val { flex: 1; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); text-align: center; min-width: 36px; padding: 0 2px; background: transparent; border: none; outline: none; width: 100%; }
   .set-row { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 8px 12px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
   .set-row:last-child { border-bottom: none; }
   .set-row.done { background: rgba(59,255,138,0.04); }
@@ -569,7 +569,7 @@ function renderWorkout() {
           <div>
             <div class="stepper">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'weight',-2.5)">−</button>
-              <div class="stepper-val" id="wval-${ei}-${si}">${wVal}</div>
+              <input class="stepper-val" type="number" id="wval-${ei}-${si}" value="${wVal}" min="0" step="2.5" inputmode="decimal" oninput="activeSets[${ei}][${si}].weight=this.value">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'weight',2.5)">+</button>
             </div>
             ${prevHint ? `<div class="prev-hint">${prevSet.weight}lbs prev</div>` : ''}
@@ -577,7 +577,7 @@ function renderWorkout() {
           <div>
             <div class="stepper">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'reps',-1)">−</button>
-              <div class="stepper-val" id="rval-${ei}-${si}">${rVal}</div>
+              <input class="stepper-val" type="number" id="rval-${ei}-${si}" value="${rVal}" min="0" step="1" inputmode="numeric" oninput="activeSets[${ei}][${si}].reps=this.value">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'reps',1)">+</button>
             </div>
             ${prevHint ? `<div class="prev-hint">${prevSet.reps} prev</div>` : ''}
@@ -615,11 +615,11 @@ function stepVal(ei, si, field, delta) {
   if (field === 'weight') {
     next = Math.max(0, Math.round(next / 2.5) * 2.5);
     s[field] = String(next);
-    document.getElementById(`wval-${ei}-${si}`).textContent = next;
+    document.getElementById(`wval-${ei}-${si}`).value = next;
   } else {
     next = Math.max(0, Math.round(next));
     s[field] = String(next);
-    document.getElementById(`rval-${ei}-${si}`).textContent = next;
+    document.getElementById(`rval-${ei}-${si}`).value = next;
   }
 }
 
