@@ -569,7 +569,7 @@ function renderWorkout() {
           <div>
             <div class="stepper">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'weight',-2.5)">−</button>
-              <input class="stepper-val" type="number" id="wval-${ei}-${si}" value="${wVal}" min="0" step="2.5" inputmode="decimal" oninput="activeSets[${ei}][${si}].weight=this.value">
+              <input class="stepper-val" type="number" id="wval-${ei}-${si}" value="${wVal}" min="0" step="2.5" inputmode="decimal" onfocus="if(this.value=='0')this.value=''" onblur="if(this.value=='')this.value='0'" oninput="activeSets[${ei}][${si}].weight=this.value">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'weight',2.5)">+</button>
             </div>
             ${prevHint ? `<div class="prev-hint">${prevSet.weight}lbs prev</div>` : ''}
@@ -577,7 +577,7 @@ function renderWorkout() {
           <div>
             <div class="stepper">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'reps',-1)">−</button>
-              <input class="stepper-val" type="number" id="rval-${ei}-${si}" value="${rVal}" min="0" step="1" inputmode="numeric" oninput="activeSets[${ei}][${si}].reps=this.value">
+              <input class="stepper-val" type="number" id="rval-${ei}-${si}" value="${rVal}" min="0" step="1" inputmode="numeric" onfocus="if(this.value=='0')this.value=''" onblur="if(this.value=='')this.value='0'" oninput="activeSets[${ei}][${si}].reps=this.value">
               <button class="stepper-btn" onclick="stepVal(${ei},${si},'reps',1)">+</button>
             </div>
             ${prevHint ? `<div class="prev-hint">${prevSet.reps} prev</div>` : ''}
