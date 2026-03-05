@@ -848,6 +848,7 @@ function renderStats() {
             <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;">${w.date} · ${getMesoLabel(w.week)}</div>
           </div>
           <button onclick="openEditWorkout(${w.id})" style="padding:8px 14px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;">EDIT ✏️</button>
+          <button onclick="deleteWorkout(${w.id})" style="padding:8px 14px;background:transparent;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;">DEL ✕</button>
         </div>
         <div style="padding:10px 16px;">
           ${w.exercises.map(ex => `
@@ -1048,6 +1049,16 @@ function closeStatModal(e) {
   if (e.target === document.getElementById('statModal')) document.getElementById('statModal').classList.remove('open');
 }
 
+function deleteWorkout(id) {
+  if (confirm('Delete this workout from your history?')) {
+    state.workoutHistory = (state.workoutHistory || []).filter(w => w.id !== id);
+    if (state.completedWorkouts > 0) state.completedWorkouts--;
+    if (state.streak > 0) state.streak--;
+    saveState();
+    renderStats();
+  }
+}
+
 function openEditWorkout(id) {
   const workout = (state.workoutHistory || []).find(w => w.id === id);
   if (!workout) return;
@@ -1177,6 +1188,15 @@ function logPR() {
   document.getElementById('prReps').value = '0';
   document.getElementById('prExerciseSearch').value = '';
   document.getElementById('prExercise').value = '';
+}
+
+function deletePR(id) {
+  if (confirm('Delete this PR?')) {
+    state.prs = state.prs.filter(p => p.id !== id);
+    saveState();
+    renderPRHistory();
+    renderStats();
+  }
 }
 
 function pinPR(name) {
