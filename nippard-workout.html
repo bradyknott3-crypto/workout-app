@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -157,9 +156,9 @@
   <div class="section-title">PROGRESS</div>
   <div class="section-sub" id="statsSub">OVERVIEW</div>
   <div class="stats-grid">
-    <div class="stat-card" onclick="showStatDetail('workouts')" style="cursor:pointer">
-      <div class="stat-num" id="statWorkouts">0</div>
-      <div class="stat-label">Workouts Done 📅</div>
+    <div class="stat-card" onclick="showStatDetail('maxes')" style="cursor:pointer">
+      <div class="stat-num" id="statMaxes">0</div>
+      <div class="stat-label">Pinned Total 📌</div>
     </div>
     <div class="stat-card" onclick="showStatDetail('sets')" style="cursor:pointer">
       <div class="stat-num" id="statSets">0</div>
@@ -191,7 +190,6 @@
 </div>
 
 <!-- EDIT WORKOUT MODAL -->
-
 <div class="modal-overlay" id="editModal" onclick="closeEditModal(event)">
   <div class="modal" style="max-height:85vh;overflow-y:auto;">
     <div class="modal-title" id="editModalTitle">EDIT WORKOUT</div>
@@ -456,8 +454,10 @@ let state = JSON.parse(localStorage.getItem('nippardState_v3') || 'null') || {
   completedWorkouts: 0,
   streak: 0,
   logs: [],
-  workoutHistory: [], // [{id, date, dayName, week, exercises:[{name,muscle,sets:[{weight,reps}]}]}]
-  prevData: {}
+  workoutHistory: [],
+  prevData: {},
+  prs: [],
+  pinnedPRs: []  // up to 3 exercise names
 };
 
 function saveState() { localStorage.setItem('nippardState_v3', JSON.stringify(state)); }
@@ -799,10 +799,19 @@ function skipRest() {
 let editingWorkoutId = null;
 
 function renderStats() {
-  document.getElementById('statWorkouts').textContent = state.completedWorkouts || 0;
   document.getElementById('statSets').textContent = state.logs.length;
   document.getElementById('statStreak').textContent = state.streak || 0;
   document.getElementById('statsSub').textContent = getMesoLabel(state.currentWeek);
+
+  // Pinned PRs total
+  const pinned = state.pinnedPRs || [];
+  const prs = state.prs || [];
+  let total = 0;
+  pinned.forEach(name => {
+    const best = prs.filter(p => p.exercise === name).sort((a,b) => b.weight - a.weight)[0];
+    if (best) total += best.weight;
+  });
+  document.getElementById('statMaxes').textContent = total ? total.toLocaleString() : '—';
 
   const totalVol = state.logs.reduce((a, l) => {
     return a + (parseFloat(l.weight) || 0) * (parseFloat(l.reps) || 0);
@@ -863,24 +872,95 @@ function showStatDetail(type) {
   const body = document.getElementById('statModalBody');
   modal.classList.add('open');
 
-  if (type === 'workouts') {
-    title.textContent = 'WORKOUT CALENDAR';
-    const dates = (state.workoutHistory || []).map(w => w.date);
-    const now = new Date();
-    let html = '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--muted);margin-bottom:16px;">Last 30 days</div>';
-    html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px;">';
-    ['SUN','MON','TUE','WED','THU','FRI','SAT'].forEach(d => {
-      html += `<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-align:center;">${d}</div>`;
-    });
-    html += '</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">';
-    for (let i = 29; i >= 0; i--) {
-      const d = new Date(now); d.setDate(d.getDate() - i);
-      const ds = d.toLocaleDateString();
-      const hit = dates.includes(ds);
-      html += `<div style="height:32px;border-radius:4px;background:${hit ? 'var(--accent)' : 'var(--card)'};border:1px solid ${hit ? 'var(--accent)' : 'var(--border)'};display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:${hit ? '#000' : 'var(--muted)'};">${d.getDate()}</div>`;
+  if (type === 'maxes') {
+    title.textContent = 'PERSONAL RECORDS';
+    const prs = state.prs || [];
+    const pinned = state.pinnedPRs || [];
+
+    // Pinned section
+    let html = '';
+    if (pinned.length) {
+      html += '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;">📌 PINNED</div>';
+      pinned.forEach(name => {
+        const best = prs.filter(p => p.exercise === name).sort((a,b) => b.e1rm - a.e1rm)[0];
+        html += `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);">
+            <div>
+              <div style="font-weight:600;font-size:13px;">${name}</div>
+              <button onclick="unpinPR('${name.replace(/'/g,"\\'")}');showStatDetail('maxes')" style="background:transparent;border:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--accent2);cursor:pointer;padding:0;margin-top:2px;">UNPIN</button>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);">${best ? best.weight + ' lbs' : '—'}</div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);">${best ? best.reps + ' reps · e1rm ' + best.e1rm : 'not logged'}</div>
+            </div>
+          </div>`;
+      });
+      html += '<div style="margin-bottom:16px;"></div>';
+    } else {
+      html += '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--muted);margin-bottom:16px;">No pinned exercises yet — pin up to 3 from your PR history below.</div>';
     }
-    html += '</div>';
+
+    // 1RM Calculator
+    html += `
+      <div style="background:#1a1a1a;border-radius:8px;padding:14px;margin-bottom:16px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;margin-bottom:10px;">E1RM CALCULATOR</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;">WEIGHT</div>
+            <div class="stepper">
+              <button class="stepper-btn" onclick="stepCalc('weight',-2.5)">−</button>
+              <input class="stepper-val" type="number" id="calcWeight" value="0" min="0" step="2.5" inputmode="decimal" onfocus="if(this.value=='0')this.value=''" onblur="if(this.value=='')this.value='0'" oninput="calcE1RM()">
+              <button class="stepper-btn" onclick="stepCalc('weight',2.5)">+</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;">REPS</div>
+            <div class="stepper">
+              <button class="stepper-btn" onclick="stepCalc('reps',-1)">−</button>
+              <input class="stepper-val" type="number" id="calcReps" value="0" min="1" step="1" inputmode="numeric" onfocus="if(this.value=='0')this.value=''" onblur="if(this.value=='')this.value='0'" oninput="calcE1RM()">
+              <button class="stepper-btn" onclick="stepCalc('reps',1)">+</button>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;padding:10px 0;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;">ESTIMATED 1RM</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent);" id="e1rmResult">—</div>
+        </div>
+      </div>
+
+      <!-- Log PR -->
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;margin-bottom:10px;">LOG A PR</div>
+      <div style="position:relative;margin-bottom:10px;">
+        <input type="text" id="prExerciseSearch" placeholder="Search exercise..." oninput="filterExercises()" onfocus="showExerciseList()" style="width:100%;background:#1a1a1a;border:1px solid var(--border);border-radius:4px;padding:10px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);outline:none;">
+        <div id="exerciseDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:4px;max-height:160px;overflow-y:auto;z-index:50;"></div>
+      </div>
+      <input type="hidden" id="prExercise">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;">WEIGHT (LBS)</div>
+          <div class="stepper">
+            <button class="stepper-btn" onclick="stepPR('weight',-2.5)">−</button>
+            <input class="stepper-val" type="number" id="prWeight" value="0" min="0" step="2.5" inputmode="decimal" onfocus="if(this.value=='0')this.value=''" onblur="if(this.value=='')this.value='0'">
+            <button class="stepper-btn" onclick="stepPR('weight',2.5)">+</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;">REPS</div>
+          <div class="stepper">
+            <button class="stepper-btn" onclick="stepPR('reps',-1)">−</button>
+            <input class="stepper-val" type="number" id="prReps" value="0" min="0" step="1" inputmode="numeric" onfocus="if(this.value=='0')this.value=''" onblur="if(this.value=='')this.value='0'">
+            <button class="stepper-btn" onclick="stepPR('reps',1)">+</button>
+          </div>
+        </div>
+      </div>
+      <button onclick="logPR()" style="display:block;width:100%;padding:12px;background:var(--accent);color:#000;border:none;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;margin-bottom:16px;">LOG PR</button>
+
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;margin-bottom:10px;">ALL PRs</div>
+      <div id="prHistory"></div>
+    `;
+
     body.innerHTML = html;
+    renderPRHistory();
   }
 
   if (type === 'sets') {
@@ -933,22 +1013,30 @@ function showStatDetail(type) {
   }
 
   if (type === 'streak') {
-    title.textContent = 'STREAK HISTORY';
-    const history = state.workoutHistory || [];
-    let html = `<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:16px;">Current streak: ${state.streak} days 🔥</div>`;
-    html += history.slice(0,20).map(w => `
-      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
-        <div style="font-weight:600;font-size:13px;">${w.dayName}</div>
-        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${w.date}</div>
-      </div>`).join('');
-    body.innerHTML = html || '<div style="color:var(--muted);font-family:\'DM Mono\',monospace;font-size:12px;">No workouts yet!</div>';
+    title.textContent = 'WORKOUT CALENDAR';
+    const dates = (state.workoutHistory || []).map(w => w.date);
+    const now = new Date();
+    let html = `<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:16px;">Current streak: ${state.streak || 0} days 🔥 · Last 30 days</div>`;
+    html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px;">';
+    ['SUN','MON','TUE','WED','THU','FRI','SAT'].forEach(d => {
+      html += `<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-align:center;">${d}</div>`;
+    });
+    html += '</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">';
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(now); d.setDate(d.getDate() - i);
+      const ds = d.toLocaleDateString();
+      const hit = dates.includes(ds);
+      html += `<div style="height:32px;border-radius:4px;background:${hit ? 'var(--accent)' : 'var(--card)'};border:1px solid ${hit ? 'var(--accent)' : 'var(--border)'};display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:${hit ? '#000' : 'var(--muted)'};">${d.getDate()}</div>`;
+    }
+    html += '</div>';
+    body.innerHTML = html;
   }
 }
 
 function clearAllData() {
   if (confirm('Are you sure? This will delete ALL your workout history and progress. This cannot be undone.')) {
     localStorage.removeItem('nippardState_v3');
-    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{} };
+    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{}, prs:[], pinnedPRs:[] };
     activeSets = {};
     saveState();
     renderStats();
@@ -1005,10 +1093,172 @@ function closeEditModal(e) {
   if (e.target === document.getElementById('editModal')) document.getElementById('editModal').classList.remove('open');
 }
 
+// ─── MAXES PAGE ───────────────────────────────────────────
+function getAllExercises() {
+  const names = new Set();
+  MESOS.forEach(m => m.days.forEach(d => d.exercises.forEach(e => names.add(e.name))));
+  DELOAD_DAYS.forEach(d => d.exercises.forEach(e => names.add(e.name)));
+  return [...names].sort();
+}
+
+function filterExercises() {
+  const query = document.getElementById('prExerciseSearch').value.toLowerCase();
+  const all = getAllExercises();
+  const filtered = query ? all.filter(n => n.toLowerCase().includes(query)) : all;
+  renderExerciseDropdown(filtered);
+  document.getElementById('exerciseDropdown').style.display = 'block';
+}
+
+function showExerciseList() {
+  renderExerciseDropdown(getAllExercises());
+  document.getElementById('exerciseDropdown').style.display = 'block';
+}
+
+function renderExerciseDropdown(list) {
+  const dd = document.getElementById('exerciseDropdown');
+  dd.innerHTML = list.map(n => `
+    <div onclick="selectExercise('${n.replace(/'/g, "\\'")}')" style="padding:10px 12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border);" onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='transparent'">${n}</div>
+  `).join('') || '<div style="padding:10px 12px;font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);">No results</div>';
+}
+
+function selectExercise(name) {
+  document.getElementById('prExerciseSearch').value = name;
+  document.getElementById('prExercise').value = name;
+  document.getElementById('exerciseDropdown').style.display = 'none';
+}
+
+// Close dropdown when tapping outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#prExerciseSearch') && !e.target.closest('#exerciseDropdown')) {
+    const dd = document.getElementById('exerciseDropdown');
+    if (dd) dd.style.display = 'none';
+  }
+});
+
+function stepCalc(field, delta) {
+  const el = document.getElementById(field === 'weight' ? 'calcWeight' : 'calcReps');
+  let val = parseFloat(el.value) || 0;
+  val = Math.max(0, val + delta);
+  if (field === 'weight') val = Math.round(val / 2.5) * 2.5;
+  el.value = val;
+  calcE1RM();
+}
+
+function calcE1RM() {
+  const w = parseFloat(document.getElementById('calcWeight').value) || 0;
+  const r = parseFloat(document.getElementById('calcReps').value) || 0;
+  const res = document.getElementById('e1rmResult');
+  if (!w || !r) { res.textContent = '—'; return; }
+  if (r === 1) { res.textContent = w + ' lbs'; return; }
+  const e1rm = Math.round(w * (1 + r / 30) / 2.5) * 2.5;
+  res.textContent = e1rm;
+}
+
+function stepPR(field, delta) {
+  const el = document.getElementById(field === 'weight' ? 'prWeight' : 'prReps');
+  let val = parseFloat(el.value) || 0;
+  val = Math.max(0, val + delta);
+  if (field === 'weight') val = Math.round(val / 2.5) * 2.5;
+  el.value = val;
+}
+
+function logPR() {
+  const exercise = document.getElementById('prExercise').value || document.getElementById('prExerciseSearch').value;
+  const weight = parseFloat(document.getElementById('prWeight').value) || 0;
+  const reps = parseFloat(document.getElementById('prReps').value) || 0;
+  if (!exercise) { alert('Select an exercise!'); return; }
+  if (!weight || !reps) { alert('Enter weight and reps!'); return; }
+  const e1rm = reps === 1 ? weight : Math.round(weight * (1 + reps / 30) / 2.5) * 2.5;
+  if (!state.prs) state.prs = [];
+  state.prs.unshift({ id: Date.now(), exercise, weight, reps, date: new Date().toLocaleDateString(), e1rm });
+  saveState();
+  renderPRHistory();
+  document.getElementById('prWeight').value = '0';
+  document.getElementById('prReps').value = '0';
+  document.getElementById('prExerciseSearch').value = '';
+  document.getElementById('prExercise').value = '';
+}
+
+function pinPR(name) {
+  if (!state.pinnedPRs) state.pinnedPRs = [];
+  if (state.pinnedPRs.includes(name)) return;
+  if (state.pinnedPRs.length >= 3) { alert('You can only pin 3 exercises. Unpin one first!'); return; }
+  state.pinnedPRs.push(name);
+  saveState();
+}
+
+function unpinPR(name) {
+  if (!state.pinnedPRs) return;
+  state.pinnedPRs = state.pinnedPRs.filter(n => n !== name);
+  saveState();
+}
+
+function editPR(id) {
+  const pr = (state.prs || []).find(p => p.id === id);
+  if (!pr) return;
+  const newWeight = prompt('Edit weight (lbs):', pr.weight);
+  if (newWeight === null) return;
+  const newReps = prompt('Edit reps:', pr.reps);
+  if (newReps === null) return;
+  pr.weight = parseFloat(newWeight) || pr.weight;
+  pr.reps = parseFloat(newReps) || pr.reps;
+  pr.e1rm = pr.reps === 1 ? pr.weight : Math.round(pr.weight * (1 + pr.reps / 30) / 2.5) * 2.5;
+  saveState();
+  renderPRHistory();
+  renderStats();
+}
+
+function renderPRHistory() {
+  const prs = state.prs || [];
+  const pinned = state.pinnedPRs || [];
+  const container = document.getElementById('prHistory');
+  if (!container) return;
+
+  if (!prs.length) {
+    container.innerHTML = '<div style="padding:16px;text-align:center;font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);">No PRs logged yet. Start lifting! 💪</div>';
+    return;
+  }
+
+  const grouped = {};
+  prs.forEach(p => {
+    if (!grouped[p.exercise]) grouped[p.exercise] = [];
+    grouped[p.exercise].push(p);
+  });
+
+  container.innerHTML = Object.entries(grouped).map(([ex, records]) => {
+    const best = records.reduce((a, b) => a.e1rm > b.e1rm ? a : b);
+    const isPinned = pinned.includes(ex);
+    const canPin = !isPinned && pinned.length < 3;
+    return `
+      <div style="background:var(--card);border:1px solid ${isPinned ? 'var(--accent)' : 'var(--border)'};border-radius:8px;margin-bottom:12px;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);">
+          <div>
+            <div style="font-weight:600;font-size:13px;">${ex} ${isPinned ? '📌' : ''}</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;">BEST E1RM: <span style="color:var(--accent)">${best.e1rm} lbs</span></div>
+          </div>
+          <button onclick="${isPinned ? `unpinPR('${ex.replace(/'/g,"\\'")}')` : `pinPR('${ex.replace(/'/g,"\\'")}')` };showStatDetail('maxes')" 
+            style="padding:6px 10px;background:transparent;border:1px solid ${isPinned ? 'var(--accent2)' : 'var(--border)'};color:${isPinned ? 'var(--accent2)' : 'var(--muted)'};border-radius:4px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;${!canPin && !isPinned ? 'opacity:0.3;' : ''}">
+            ${isPinned ? 'UNPIN' : 'PIN 📌'}
+          </button>
+        </div>
+        ${records.map(p => `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #1a1a1a;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${p.date}</div>
+            <div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;">${p.weight}lbs × ${p.reps} <span style="color:var(--muted);font-size:10px;">(e1rm: ${p.e1rm})</span></div>
+            <div style="display:flex;gap:8px;">
+              <button onclick="editPR(${p.id})" style="background:transparent;border:none;color:var(--accent);font-size:14px;cursor:pointer;">✏️</button>
+              <button onclick="deletePR(${p.id})" style="background:transparent;border:none;color:var(--accent2);font-size:14px;cursor:pointer;">✕</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }).join('');
+}
+
 // ─── INIT ─────────────────────────────────────────────────
 renderProgram();
 renderWorkout();
 </script>
-
 </body>
 </html>
