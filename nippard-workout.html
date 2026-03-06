@@ -462,6 +462,23 @@ let state = JSON.parse(localStorage.getItem('nippardState_v3') || 'null') || {
 
 function saveState() { localStorage.setItem('nippardState_v3', JSON.stringify(state)); }
 
+function saveActiveSets() {
+  localStorage.setItem('nippardActiveSets', JSON.stringify({
+    sets: activeSets,
+    dayIdx: state.currentDayIdx,
+    week: state.currentWeek
+  }));
+}
+
+function loadActiveSets() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('nippardActiveSets') || 'null');
+    if (saved && saved.dayIdx === state.currentDayIdx && saved.week === state.currentWeek) {
+      activeSets = saved.sets || {};
+    }
+  } catch(e) { activeSets = {}; }
+}
+
 let activeSets = {}; // {ei: [{weight, reps, done}]}
 let restInterval = null;
 let restRemaining = 0;
@@ -561,6 +578,7 @@ function renderProgram() {
 
 // ─── WORKOUT PAGE ─────────────────────────────────────────
 function renderWorkout() {
+  loadActiveSets();
   const day = getDayForWeekAndDayIndex(state.currentWeek, state.currentDayIdx);
   const isDeload = state.currentWeek === 13;
 
@@ -658,10 +676,12 @@ function stepVal(ei, si, field, delta) {
     s[field] = String(next);
     document.getElementById(`rval-${ei}-${si}`).value = next;
   }
+  saveActiveSets();
 }
 
 function updateSet(ei, si, field, val) {
   activeSets[ei][si][field] = val;
+  saveActiveSets();
 }
 
 function completeSet(ei, si) {
@@ -682,6 +702,7 @@ function completeSet(ei, si) {
     saveState();
     startRest(180);
   }
+  saveActiveSets();
   document.getElementById(`setrow-${ei}-${si}`).className = 'set-row ' + (s.done ? 'done' : '');
   document.getElementById(`check-${ei}-${si}`).className = 'check-btn ' + (s.done ? 'done' : '');
   updateProgress();
@@ -754,6 +775,7 @@ function finishWorkout() {
   state.currentWeek = nextWeek;
 
   activeSets = {};
+  localStorage.removeItem('nippardActiveSets');
   saveState();
 
   const nextDay = getDayForWeekAndDayIndex(nextWeek, nextDayIdx);
