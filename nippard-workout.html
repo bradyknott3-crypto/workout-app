@@ -7,99 +7,120 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a; --surface: #111111; --card: #161616; --border: #222;
-    --accent: #e8ff3b; --accent2: #ff4d2e; --text: #f0f0f0; --muted: #666; --green: #3bff8a;
+    --bg: #0d0d0d; --surface: #141414; --card: #1a1a1a; --border: #2a2a2a;
+    --accent: #e8ff3b; --accent2: #ff4d2e; --text: #f0f0f0; --muted: #777; --green: #3bff8a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
-  header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--accent); }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; font-size: 16px; }
+
+  /* HEADER */
+  header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; color: var(--accent); }
   .logo span { color: var(--text); }
-  .day-badge { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .day-badge { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* TABS */
   .tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); }
-  .tab { flex: 1; padding: 14px 8px; text-align: center; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
+  .tab { flex: 1; padding: 13px 8px; text-align: center; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .page { display: none; padding: 20px; max-width: 480px; margin: 0 auto; }
+
+  /* PAGE */
+  .page { display: none; padding: 16px; max-width: 480px; margin: 0 auto; padding-bottom: 80px; }
   .page.active { display: block; }
-  .week-row { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
-  .week-btn { flex-shrink: 0; padding: 8px 16px; background: var(--card); border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; transition: all .2s; letter-spacing: 1px; }
-  .week-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+
+  /* WEEK ROW */
+  .week-row { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+  .week-btn { flex-shrink: 0; padding: 7px 13px; background: var(--card); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; }
+  .week-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
   .week-btn.deload { border-color: var(--accent2); color: var(--accent2); }
-  .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
+  .week-btn.week-done { background: var(--green); color: #000; border-color: var(--green); }
+
+  /* DAY CARDS */
+  .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
   .day-card.today { border-color: var(--accent); }
-  .day-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; }
-  .day-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
-  .day-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
-  .day-tag { padding: 4px 10px; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
-  .tag-push { background: rgba(232,255,59,0.15); color: var(--accent); }
-  .tag-pull { background: rgba(59,255,138,0.15); color: var(--green); }
-  .tag-legs { background: rgba(255,77,46,0.15); color: var(--accent2); }
-  .tag-rest { background: rgba(102,102,102,0.15); color: var(--muted); }
-  .day-body { padding: 0 16px 16px; }
-  .exercise-preview { display: flex; flex-wrap: wrap; gap: 6px; }
-  .ex-chip { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); background: #1a1a1a; padding: 4px 8px; border-radius: 2px; }
-  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; margin-bottom: 4px; }
-  .section-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 20px; }
-  .exercise-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
-  .ex-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
-  .ex-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--muted); min-width: 24px; }
+  .day-card.day-done { border-color: var(--green); }
+  .day-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; }
+  .day-title { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+  .day-meta { font-size: 12px; color: var(--muted); }
+  .day-tag { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-push { background: rgba(232,255,59,0.12); color: var(--accent); }
+  .tag-pull { background: rgba(59,255,138,0.12); color: var(--green); }
+  .tag-legs { background: rgba(255,77,46,0.12); color: var(--accent2); }
+  .tag-rest { background: rgba(102,102,102,0.12); color: var(--muted); }
+  .day-body { padding: 0 16px 14px; }
+  .exercise-preview { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ex-chip { font-size: 11px; color: var(--muted); background: #222; padding: 3px 8px; border-radius: 4px; }
+
+  /* WORKOUT TAB */
+  .section-title { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+  .section-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .exercise-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+  .ex-header { display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-bottom: 1px solid var(--border); }
+  .ex-num { font-size: 16px; font-weight: 700; color: var(--muted); min-width: 22px; }
   .ex-info { flex: 1; }
-  .ex-name { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; }
-  .ex-spec { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: .5px; }
-  .ex-tip-btn { width: 28px; height: 28px; border-radius: 50%; background: #1e1e1e; border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .sets-head { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 8px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  .stepper { display: flex; align-items: center; background: #1a1a1a; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-  .stepper-btn { width: 28px; height: 36px; background: #222; border: none; color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; -webkit-tap-highlight-color: transparent; }
+  .ex-name { font-weight: 700; font-size: 15px; }
+  .ex-spec { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .ex-tip-btn { width: 28px; height: 28px; border-radius: 50%; background: #222; border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sets-head { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 8px 12px; font-size: 11px; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .stepper { display: flex; align-items: center; background: #222; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .stepper-btn { width: 34px; height: 38px; background: #2a2a2a; border: none; color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
   .stepper-btn:active { background: #333; }
-  .stepper-val { flex: 1; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); text-align: center; min-width: 36px; padding: 0 2px; background: transparent; border: none; outline: none; width: 100%; }
-  .set-row { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 8px 12px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
+  .stepper-val { flex: 1; font-size: 15px; font-weight: 600; color: var(--text); text-align: center; padding: 0 2px; background: transparent; border: none; outline: none; width: 100%; }
+  .set-row { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 9px 12px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
   .set-row:last-child { border-bottom: none; }
-  .set-row.done { background: rgba(59,255,138,0.04); }
-  .set-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
-  .set-input { background: #1a1a1a; border: 1px solid var(--border); border-radius: 4px; padding: 8px; font-family: 'DM Mono', monospace; font-size: 14px; color: var(--text); text-align: center; width: 100%; outline: none; transition: border-color .2s; }
-  .set-input:focus { border-color: var(--accent); }
-  .check-btn { width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--border); background: #1a1a1a; color: var(--muted); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; margin: 0 auto; }
+  .set-row.done { background: rgba(59,255,138,0.05); }
+  .set-num { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .prev-hint { font-size: 10px; color: var(--muted); text-align: center; margin-top: 2px; opacity: 0.6; }
+  .check-btn { width: 34px; height: 34px; border-radius: 6px; border: 1px solid var(--border); background: #222; color: var(--muted); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; margin: 0 auto; }
   .check-btn.done { background: var(--green); border-color: var(--green); color: #000; }
-  .prev-hint { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); text-align: center; margin-top: 2px; opacity: 0.7; }
+  .cta-btn { display: block; width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; border-radius: 10px; font-size: 18px; font-weight: 700; letter-spacing: 1px; cursor: pointer; margin-top: 10px; }
+
+  /* REST BAR */
   .rest-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 2px solid var(--accent); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 200; transform: translateY(100%); transition: transform .3s; max-width: 480px; margin: 0 auto; }
   .rest-bar.visible { transform: translateY(0); }
-  .rest-time { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); letter-spacing: 2px; }
-  .rest-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
-  .rest-skip { padding: 10px 20px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; letter-spacing: 1px; }
-  .progress-ring { position: relative; width: 56px; height: 56px; }
+  .rest-time { font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: var(--accent); letter-spacing: 2px; }
+  .rest-label { font-size: 11px; color: var(--muted); }
+  .rest-skip { padding: 10px 20px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+  /* PROGRESS RING */
+  .progress-ring { position: relative; width: 52px; height: 52px; }
   .progress-ring svg { transform: rotate(-90deg); }
   .progress-ring circle { fill: none; stroke-width: 3; }
   .progress-ring .bg { stroke: var(--border); }
   .progress-ring .fg { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset .3s; }
-  .progress-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text); }
+  .progress-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--text); }
+
+  /* MODALS */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 300; display: none; align-items: flex-end; }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border-top: 1px solid var(--border); border-radius: 16px 16px 0 0; padding: 24px 20px 40px; width: 100%; max-width: 480px; margin: 0 auto; animation: slideUp .25s ease; }
+  .modal { background: var(--surface); border-top: 1px solid var(--border); border-radius: 18px 18px 0 0; padding: 24px 18px 40px; width: 100%; max-width: 480px; margin: 0 auto; animation: slideUp .25s ease; }
   @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; margin-bottom: 12px; color: var(--accent); }
-  .modal-body { font-size: 14px; line-height: 1.7; color: #ccc; }
-  .modal-close { display: block; width: 100%; margin-top: 20px; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 4px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; cursor: pointer; }
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
-  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent); line-height: 1; }
-  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
-  .recent-log { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .log-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .modal-title { font-size: 22px; font-weight: 700; margin-bottom: 14px; color: var(--accent); }
+  .modal-body { font-size: 15px; line-height: 1.7; color: #ccc; }
+  .modal-close { display: block; width: 100%; margin-top: 16px; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .stat-num { font-size: 36px; font-weight: 700; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 5px; }
+  .recent-log { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .log-item { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; border-bottom: 1px solid var(--border); }
   .log-item:last-child { border-bottom: none; }
-  .log-name { font-size: 13px; font-weight: 600; }
-  .log-detail { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-  .vbar-label { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
-  .vbar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
-  .vbar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width .6s ease; }
-  .cta-btn { display: block; width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; border-radius: 6px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; cursor: pointer; margin-top: 8px; transition: opacity .2s; }
-  .cta-btn:hover { opacity: .9; }
+  .log-name { font-size: 14px; font-weight: 600; }
+  .log-detail { font-size: 12px; color: var(--muted); }
+  .vbar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .vbar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
+  .vbar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width .6s ease; }
+
+  /* MISC */
+  .meso-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; background: rgba(232,255,59,0.12); color: var(--accent); margin-bottom: 14px; }
+  .deload-banner { background: rgba(255,77,46,0.08); border: 1px solid var(--accent2); border-radius: 8px; padding: 12px 15px; margin-bottom: 14px; font-size: 13px; color: var(--accent2); }
   .principle { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
   .principle:last-child { border-bottom: none; }
   .p-icon { font-size: 20px; flex-shrink: 0; }
-  .p-title { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
-  .p-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .meso-badge { display: inline-block; padding: 4px 10px; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; background: rgba(232,255,59,0.15); color: var(--accent); margin-bottom: 16px; }
-  .deload-banner { background: rgba(255,77,46,0.1); border: 1px solid var(--accent2); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent2); letter-spacing: 1px; }
+  .p-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+  .p-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -122,9 +143,9 @@
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="showPage('program')">PROGRAM</div>
-  <div class="tab" onclick="showPage('workout')">WORKOUT</div>
-  <div class="tab" onclick="showPage('stats')">STATS</div>
+  <div class="tab active" onclick="showPage('program')">Program</div>
+  <div class="tab" onclick="showPage('workout')">Workout</div>
+  <div class="tab" onclick="showPage('stats')">Stats</div>
 </div>
 
 <div class="page active" id="page-program">
@@ -153,8 +174,8 @@
 
 <div class="page" id="page-stats">
   <br>
-  <div class="section-title">PROGRESS</div>
-  <div class="section-sub" id="statsSub">OVERVIEW</div>
+  <div class="section-title" style="margin-top:8px;">Your Progress</div>
+  <div class="section-sub" id="statsSub">Tap a card for details</div>
   <div class="stats-grid">
     <div class="stat-card" onclick="showStatDetail('maxes')" style="cursor:pointer">
       <div class="stat-num" id="statMaxes">0</div>
@@ -166,19 +187,19 @@
     </div>
     <div class="stat-card" onclick="showStatDetail('volume')" style="cursor:pointer">
       <div class="stat-num" id="statVol">0</div>
-      <div class="stat-label">Total Volume (lbs) 📊</div>
+      <div class="stat-label">Total Volume 📊</div>
     </div>
     <div class="stat-card" onclick="showStatDetail('streak')" style="cursor:pointer">
       <div class="stat-num" id="statStreak">0</div>
-      <div class="stat-label">Day Streak 🔥</div>
+      <div class="stat-label">Streak 🔥</div>
     </div>
   </div>
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;">WEEKLY VOLUME BY MUSCLE</div>
+  <div style="font-size:16px;font-weight:700;margin-bottom:12px;">Weekly Sets by Muscle</div>
   <div id="volumeBars"></div>
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:12px;margin-top:8px;">RECENT WORKOUTS</div>
+  <div style="font-size:16px;font-weight:700;margin-bottom:12px;margin-top:20px;">Recent Workouts</div>
   <div id="recentLog"></div>
   <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);">
-    <button onclick="clearAllData()" style="display:block;width:100%;padding:14px;background:transparent;border:1px solid var(--accent2);color:var(--accent2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;">⚠️ CLEAR ALL DATA</button>
+    <button onclick="clearAllData()" style="display:block;width:100%;padding:14px;background:transparent;border:1px solid var(--accent2);color:var(--accent2);border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;">⚠️ Clear All Data</button>
   </div>
 </div>
 <div class="modal-overlay" id="statModal" onclick="closeStatModal(event)">
@@ -296,22 +317,25 @@ const MESOS = [
         {name:"Cable Pullover",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms straight, pull from overhead to hips. Pure lat isolation.",muscle:"Back"},
         {name:"EZ Bar Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Slightly supinated grip. Don't swing. Control the negative.",muscle:"Biceps"},
         {name:"Cable Curl (Low Pulley)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Constant tension from cable. Supinate at top. Great pump.",muscle:"Biceps"},
-        {name:"Band Pull-Apart",sets:4,reps:"20–25",rir:"RIR 1",tip:"Pull band to chest level, arms straight. Rear delts and rotator cuff health.",muscle:"Rear Delts"}
+        {name:"Band Pull-Apart",sets:4,reps:"20–25",rir:"RIR 1",tip:"Pull band to chest level, arms straight. Great for rear delt and rotator cuff health.",muscle:"Rear Delts"},
+        {name:"Rear Delt Cable Fly",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lean forward, pull elbows back and out. Squeeze hard at the end range.",muscle:"Rear Delts"}
       ]},
       { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
         {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Quads",staple:true},
-        {name:"Romanian Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Hamstrings",staple:true},
+        {name:"Romanian Deadlift",sets:4,reps:"8–10",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers. Add a set this meso.",muscle:"Hamstrings",staple:true},
         {name:"Hack Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"Quad dominant, no spinal compression. Great for heavier loading.",muscle:"Quads"},
-        {name:"Lying Leg Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris involvement. Full stretch at top.",muscle:"Hamstrings"},
+        {name:"Lying Leg Curl",sets:5,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris involvement. Full stretch at top.",muscle:"Hamstrings"},
         {name:"Cable Pull-Through",sets:3,reps:"15–20",rir:"RIR 1",tip:"Hip hinge movement. Squeeze glutes hard at lockout.",muscle:"Glutes"},
-        {name:"Donkey Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Hip flexed position increases gastrocnemius stretch. Deep stretch every rep.",muscle:"Calves"}
+        {name:"Glute Kickback (Cable)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, slight forward lean. Kick straight back, squeeze at top.",muscle:"Glutes"},
+        {name:"Donkey Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Hip flexed position increases gastrocnemius stretch. Deep stretch every rep.",muscle:"Calves"},
+        {name:"Seated Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Targets the soleus. Slow and controlled, full stretch at bottom.",muscle:"Calves"}
       ]},
       { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
       { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
         {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Push A numbers.",muscle:"Chest",staple:true},
         {name:"Incline Cable Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Set cables low, press/fly upward. Constant tension on upper chest throughout.",muscle:"Chest"},
-        {name:"Upright Row (Cable)",sets:4,reps:"12–15",rir:"RIR 1",tip:"Pull to chin, elbows above hands. Great medial delt builder.",muscle:"Shoulders"},
-        {name:"DB Front Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Slight lean back, raise to eye level. Controls the negative for more stimulus.",muscle:"Shoulders"},
+        {name:"Cable Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Single cable at hip height. Lead with elbow, pause at top. No momentum. Best medial delt builder.",muscle:"Shoulders"},
+        {name:"DB Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Lead with pinkies up, slight forward lean. Control the negative. Pure medial delt.",muscle:"Shoulders"},
         {name:"Tricep Dips (Weighted)",sets:3,reps:"8–12",rir:"RIR 2",tip:"Slight forward lean for more tricep emphasis. Full lockout at top.",muscle:"Triceps"},
         {name:"Overhead Cable Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Cable from behind head. Full stretch at bottom, extend fully at top.",muscle:"Triceps"}
       ]},
@@ -321,15 +345,18 @@ const MESOS = [
         {name:"Lat Pulldown (Neutral Grip)",sets:3,reps:"10–12",rir:"RIR 1",tip:"Neutral grip allows more shoulder extension — great for lat length.",muscle:"Back"},
         {name:"Spider Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Chest on incline bench facing down. Eliminates all momentum. Pure bicep.",muscle:"Biceps"},
         {name:"Reverse Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"Overhand grip. Hits brachioradialis and brachialis for complete arm development.",muscle:"Biceps"},
-        {name:"Cable Rear Delt Fly",sets:4,reps:"15–20",rir:"RIR 1",tip:"Cross cables, pull apart at shoulder height. Squeeze rear delts at end range.",muscle:"Rear Delts"}
+        {name:"Cable Rear Delt Fly",sets:4,reps:"15–20",rir:"RIR 1",tip:"Cross cables, pull apart at shoulder height. Squeeze rear delts at end range.",muscle:"Rear Delts"},
+        {name:"Face Pull",sets:4,reps:"15–20",rir:"RIR 1",tip:"Rope attachment, pull to forehead with external rotation. Shoulder health and rear delt growth.",muscle:"Rear Delts"}
       ]},
       { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
         {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Legs A numbers.",muscle:"Quads",staple:true},
-        {name:"Stiff-Leg Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Legs completely straight — maximum hamstring stretch. Don't round back.",muscle:"Hamstrings"},
+        {name:"Stiff-Leg Deadlift",sets:4,reps:"8–10",rir:"RIR 2",tip:"Legs completely straight — maximum hamstring stretch. Don't round back.",muscle:"Hamstrings"},
         {name:"Front Squat",sets:3,reps:"8–10",rir:"RIR 2",tip:"More upright torso = more quad emphasis. Bar on front delts, elbows up.",muscle:"Quads"},
         {name:"Sumo Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Wide stance, toes pointed out. More glute and adductor involvement.",muscle:"Glutes"},
-        {name:"Sissy Squat",sets:3,reps:"12–15",rir:"RIR 1",tip:"Lean back, drive knees forward. Extreme quad stretch at bottom.",muscle:"Quads"},
-        {name:"Standing Calf Raise",sets:4,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"}
+        {name:"Hip Thrust (Banded)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Add a band around the knees for extra glute activation. Drive knees out.",muscle:"Glutes"},
+        {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"Isolation for quad peak. Pause at top for extra contraction. Control the negative.",muscle:"Quads"},
+        {name:"Standing Calf Raise",sets:4,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"},
+        {name:"Seated Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Targets the soleus. Slow and controlled, full stretch at bottom, pause at top.",muscle:"Calves"}
       ]}
     ]
   },
@@ -342,7 +369,7 @@ const MESOS = [
         {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers. Perfect form.",muscle:"Chest",staple:true},
         {name:"Incline DB Press",sets:3,reps:"8–10",rir:"RIR 1",tip:"Heavier this meso. Deep stretch, explosive press.",muscle:"Chest"},
         {name:"Seated Cable Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Seated eliminates momentum entirely. Pure medial delt.",muscle:"Shoulders"},
-        {name:"Push Press",sets:3,reps:"6–8",rir:"RIR 2",tip:"Use leg drive to get the bar moving, finish with shoulders. Builds overhead strength.",muscle:"Shoulders"},
+        {name:"Push Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Use leg drive to get the bar moving, finish with shoulders. Builds overhead strength.",muscle:"Shoulders"},
         {name:"JM Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"Hybrid between skull crusher and close-grip press. Massive tricep builder.",muscle:"Triceps"},
         {name:"Tricep Pushdown (Straight Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Straight bar allows more wrist supination. Full lockout, control the negative.",muscle:"Triceps"}
       ]},
@@ -352,21 +379,24 @@ const MESOS = [
         {name:"Wide Grip Seated Row",sets:3,reps:"10–12",rir:"RIR 1",tip:"Wide grip targets mid traps and rhomboids more.",muscle:"Back"},
         {name:"Concentration Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Elbow braced on inner thigh. Zero momentum. Peak contraction focus.",muscle:"Biceps"},
         {name:"21s (DB Curl)",sets:3,reps:"21",rir:"RIR 0",tip:"7 bottom half + 7 top half + 7 full reps. Brutal pump and time under tension.",muscle:"Biceps"},
-        {name:"Prone Rear Delt Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lie face down on incline bench. Arms slightly bent, raise to shoulder height.",muscle:"Rear Delts"}
+        {name:"Prone Rear Delt Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lie face down on incline bench. Arms slightly bent, raise to shoulder height.",muscle:"Rear Delts"},
+        {name:"Band Pull-Apart",sets:4,reps:"20–25",rir:"RIR 1",tip:"Pull band to chest level, arms straight. Great rear delt finisher.",muscle:"Rear Delts"}
       ]},
       { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
         {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers.",muscle:"Quads",staple:true},
-        {name:"Romanian Deadlift",sets:3,reps:"6–8",rir:"RIR 1",tip:"Heavier this meso. Full stretch, controlled negative.",muscle:"Hamstrings",staple:true},
+        {name:"Romanian Deadlift",sets:4,reps:"6–8",rir:"RIR 1",tip:"Heavier this meso. Full stretch, controlled negative. Added a set.",muscle:"Hamstrings",staple:true},
         {name:"V-Squat Machine",sets:3,reps:"10–12",rir:"RIR 1",tip:"Similar to hack squat but different bar path. Great quad isolation.",muscle:"Quads"},
-        {name:"Hamstring Curl (Machine)",sets:4,reps:"10–12",rir:"RIR 1",tip:"Try both seated and lying across meso 3 to see which you feel more.",muscle:"Hamstrings"},
-        {name:"Barbell Hip Thrust",sets:3,reps:"8–12",rir:"RIR 1",tip:"Heavier this meso. Pause 2 sec at top. Posterior pelvic tilt.",muscle:"Glutes"},
-        {name:"Single-Leg Calf Raise",sets:4,reps:"10–12",rir:"RIR 0",tip:"Bodyweight or holding a DB. More ROM and balance challenge than bilateral.",muscle:"Calves"}
+        {name:"Hamstring Curl (Machine)",sets:5,reps:"10–12",rir:"RIR 1",tip:"Try both seated and lying across meso 3 to see which you feel more.",muscle:"Hamstrings"},
+        {name:"Barbell Hip Thrust",sets:4,reps:"8–12",rir:"RIR 1",tip:"Heavier this meso. Pause 2 sec at top. Posterior pelvic tilt.",muscle:"Glutes"},
+        {name:"Cable Glute Kickback",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, slight forward lean, kick straight back. Squeeze at top.",muscle:"Glutes"},
+        {name:"Single-Leg Calf Raise",sets:4,reps:"10–12",rir:"RIR 0",tip:"Bodyweight or holding a DB. More ROM and balance challenge than bilateral.",muscle:"Calves"},
+        {name:"Leg Press Calf Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Use the leg press platform. Full stretch at bottom, pause, explode up.",muscle:"Calves"}
       ]},
       { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
       { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
         {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Push A numbers.",muscle:"Chest",staple:true},
         {name:"Pec Deck Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Machine keeps constant tension. Pause 1 sec at stretch for max stimulus.",muscle:"Chest"},
-        {name:"Plate Front Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Plate allows neutral grip. Raise to eye level, control the negative.",muscle:"Shoulders"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Single cable at hip height. Lead with elbow, slight forward lean. Pure medial delt.",muscle:"Shoulders"},
         {name:"Barbell OHP",sets:3,reps:"6–8",rir:"RIR 2",tip:"Standing or seated. Press overhead, bar in front. Core stays tight.",muscle:"Shoulders"},
         {name:"Tate Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"DBs start together above chest, flare elbows out to sides. Unique tricep angle.",muscle:"Triceps"},
         {name:"Cable Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Long head focus. Full stretch overhead, extend fully.",muscle:"Triceps"}
@@ -377,15 +407,18 @@ const MESOS = [
         {name:"Close-Grip Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"Hands close together. Elbows to sides, big lat stretch at top.",muscle:"Back"},
         {name:"Zottman Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Curl up with supinated grip, lower with pronated. Hits bicep and brachioradialis.",muscle:"Biceps"},
         {name:"Cable Curl (High Pulley)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms extended out, curl toward your ears. Keeps tension at full contraction.",muscle:"Biceps"},
-        {name:"Face Pull (Heavy)",sets:4,reps:"12–15",rir:"RIR 1",tip:"Go heavier this meso. Still focus on external rotation at the end.",muscle:"Rear Delts"}
+        {name:"Face Pull (Heavy)",sets:4,reps:"12–15",rir:"RIR 1",tip:"Go heavier this meso. Still focus on external rotation at the end.",muscle:"Rear Delts"},
+        {name:"Rear Delt Fly (Pec Deck)",sets:4,reps:"15–20",rir:"RIR 1",tip:"Reverse the pec deck. Pull elbows BACK and squeeze rear delts hard.",muscle:"Rear Delts"}
       ]},
       { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
         {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Legs A numbers.",muscle:"Quads",staple:true},
-        {name:"Good Morning",sets:3,reps:"8–10",rir:"RIR 2",tip:"Bar on traps, hip hinge. Incredible hamstring and lower back builder.",muscle:"Hamstrings"},
+        {name:"Nordic Hamstring Curl",sets:4,reps:"6–10",rir:"RIR 2",tip:"One of the best for hamstring hypertrophy AND injury prevention. Lower slowly, fight the negative.",muscle:"Hamstrings"},
         {name:"Walking Lunges",sets:3,reps:"10–12",rir:"RIR 1",tip:"Long stride for glutes, short stride for quads. Add weight as you progress.",muscle:"Quads"},
         {name:"Glute-Ham Raise",sets:3,reps:"8–10",rir:"RIR 1",tip:"One of the best posterior chain exercises. Lower slowly, push back up.",muscle:"Glutes"},
+        {name:"Sumo Romanian Deadlift",sets:3,reps:"10–12",rir:"RIR 1",tip:"Wide stance RDL. Hits glutes and inner hamstrings from a different angle.",muscle:"Glutes"},
         {name:"Spanish Squat (Band)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Band around fixed object, squat with shins vertical. Destroys the quads.",muscle:"Quads"},
-        {name:"Tibialis Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Lean against wall, raise toes repeatedly. Prevents shin splints, balances calf work.",muscle:"Calves"}
+        {name:"Standing Calf Raise",sets:4,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"},
+        {name:"Leg Press Calf Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Use the leg press platform. Full stretch at bottom, pause, explode up. Great gastrocnemius builder.",muscle:"Calves"}
       ]}
     ]
   }
@@ -457,7 +490,9 @@ let state = JSON.parse(localStorage.getItem('nippardState_v3') || 'null') || {
   workoutHistory: [],
   prevData: {},
   prs: [],
-  pinnedPRs: []  // up to 3 exercise names
+  pinnedPRs: [],
+  completedDays: {},   // key: "week-dayIdx" → true
+  completedWeeks: []   // array of week numbers
 };
 
 function saveState() { localStorage.setItem('nippardState_v3', JSON.stringify(state)); }
@@ -533,8 +568,14 @@ function renderProgram() {
   for (let w = 1; w <= 13; w++) {
     const btn = document.createElement('div');
     const isDeload = w === 13;
-    btn.className = 'week-btn' + (w === state.currentWeek ? ' active' : '') + (isDeload ? ' deload' : '');
-    btn.textContent = isDeload ? 'DELOAD' : 'WK ' + w;
+    const isCompleted = (state.completedWeeks || []).includes(w);
+    const isCurrent = w === state.currentWeek;
+    let cls = 'week-btn';
+    if (isCurrent) cls += ' active';
+    if (isDeload && !isCurrent) cls += ' deload';
+    if (isCompleted) cls += ' week-done';
+    btn.className = cls;
+    btn.textContent = (isCompleted ? '✓ ' : '') + (isDeload ? 'DELOAD' : 'WK ' + w);
     btn.onclick = () => { state.currentWeek = w; saveState(); renderProgram(); };
     wr.appendChild(btn);
   }
@@ -542,7 +583,6 @@ function renderProgram() {
   const pd = document.getElementById('programDays');
   pd.innerHTML = '';
 
-  // Meso badge
   const badge = document.createElement('div');
   badge.className = 'meso-badge';
   badge.textContent = getMesoLabel(state.currentWeek);
@@ -550,18 +590,22 @@ function renderProgram() {
 
   for (let i = 0; i < 7; i++) {
     const d = getDayForWeekAndDayIndex(state.currentWeek, i);
-    const isToday = i === state.currentDayIdx && state.currentWeek === state.currentWeek;
+    const isToday = i === state.currentDayIdx;
+    const isDone = (state.completedDays || {})[state.currentWeek + '-' + i];
     const div = document.createElement('div');
-    div.className = 'day-card' + (i === state.currentDayIdx ? ' today' : '');
+    div.className = 'day-card' + (isToday ? ' today' : '') + (isDone ? ' day-done' : '');
     const exChips = d.exercises.slice(0, 4).map(e => `<span class="ex-chip">${e.name}</span>`).join('');
     div.innerHTML = `
       <div class="day-header">
         <div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;">DAY ${d.day}${i === state.currentDayIdx ? ' · TODAY' : ''}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;">DAY ${d.day}${isToday ? ' · TODAY' : ''}${isDone ? ' · DONE' : ''}</div>
           <div class="day-title">${d.name}</div>
           <div class="day-meta">${d.muscles}</div>
         </div>
-        <span class="day-tag ${d.tagClass}">${d.tag.toUpperCase()}</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${isDone ? '<span style="font-size:20px;">✅</span>' : ''}
+          <span class="day-tag ${d.tagClass}">${d.tag.toUpperCase()}</span>
+        </div>
       </div>
       ${d.exercises.length ? `<div class="day-body"><div class="exercise-preview">${exChips}${d.exercises.length > 4 ? `<span class="ex-chip">+${d.exercises.length - 4} more</span>` : ''}</div></div>` : ''}
     `;
@@ -574,6 +618,37 @@ function renderProgram() {
     }
     pd.appendChild(div);
   }
+
+  // Complete Week button
+  const weekDone = (state.completedWeeks || []).includes(state.currentWeek);
+  const completeBtn = document.createElement('button');
+  completeBtn.style.cssText = 'display:block;width:100%;margin-top:16px;padding:14px;border-radius:6px;font-family:\'Bebas Neue\',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;border:none;';
+  if (weekDone) {
+    completeBtn.style.background = 'var(--green)';
+    completeBtn.style.color = '#000';
+    completeBtn.textContent = '✓ WEEK ' + state.currentWeek + ' COMPLETE';
+    completeBtn.onclick = () => {
+      if (confirm('Unmark week ' + state.currentWeek + ' as complete?')) {
+        state.completedWeeks = (state.completedWeeks || []).filter(w => w !== state.currentWeek);
+        saveState(); renderProgram();
+      }
+    };
+  } else {
+    completeBtn.style.background = 'var(--accent)';
+    completeBtn.style.color = '#000';
+    completeBtn.textContent = 'COMPLETE WEEK ' + state.currentWeek;
+    completeBtn.onclick = () => {
+      if (confirm('Mark week ' + state.currentWeek + ' as complete and move to week ' + (state.currentWeek + 1) + '?')) {
+        if (!state.completedWeeks) state.completedWeeks = [];
+        if (!state.completedWeeks.includes(state.currentWeek)) state.completedWeeks.push(state.currentWeek);
+        const nextWeek = state.currentWeek < 13 ? state.currentWeek + 1 : 1;
+        state.currentWeek = nextWeek;
+        state.currentDayIdx = 0;
+        saveState(); renderProgram();
+      }
+    };
+  }
+  pd.appendChild(completeBtn);
 }
 
 // ─── WORKOUT PAGE ─────────────────────────────────────────
@@ -764,6 +839,10 @@ function finishWorkout() {
   state.completedWorkouts++;
   state.streak++;
 
+  // Mark day as completed
+  if (!state.completedDays) state.completedDays = {};
+  state.completedDays[state.currentWeek + '-' + state.currentDayIdx] = true;
+
   let nextDayIdx = state.currentDayIdx + 1;
   let nextWeek = state.currentWeek;
   if (nextDayIdx >= 7) {
@@ -840,17 +919,19 @@ function renderStats() {
   }, 0);
   document.getElementById('statVol').textContent = Math.round(totalVol).toLocaleString();
 
-  // Volume bars
-  const muscleVol = {};
-  state.logs.forEach(l => {
-    const v = (parseFloat(l.weight) || 0) * (parseFloat(l.reps) || 0);
-    muscleVol[l.muscle] = (muscleVol[l.muscle] || 0) + v;
-  });
-  const maxVol = Math.max(...Object.values(muscleVol), 1);
-  document.getElementById('volumeBars').innerHTML = Object.entries(muscleVol).map(([m, v]) => `
-    <div class="vbar-label"><span>${m.toUpperCase()}</span><span>${Math.round(v).toLocaleString()} lbs</span></div>
-    <div class="vbar"><div class="vbar-fill" style="width:${v / maxVol * 100}%"></div></div>
-  `).join('') || '<div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);padding-bottom:12px;">Log some sets to see volume!</div>';
+  // Sets by muscle vs target
+  const muscleTargets = { Chest:10, Back:14, Shoulders:14, Triceps:12, Biceps:12, 'Rear Delts':16, Quads:13, Hamstrings:13, Glutes:9, Calves:16 };
+  const muscleSets = {};
+  state.logs.forEach(l => { muscleSets[l.muscle] = (muscleSets[l.muscle] || 0) + 1; });
+  document.getElementById('volumeBars').innerHTML = Object.entries(muscleTargets).map(([m, target]) => {
+    const done = muscleSets[m] || 0;
+    const pct = Math.min(done / target * 100, 100);
+    const color = done >= target ? 'var(--green)' : done >= target * 0.7 ? 'var(--accent)' : 'var(--accent2)';
+    return `
+      <div class="vbar-label"><span>${m.toUpperCase()}</span><span style="color:${color}">${done} / ${target} sets</span></div>
+      <div class="vbar"><div class="vbar-fill" style="width:${pct}%;background:${color}"></div></div>
+    `;
+  }).join('');
 
   // Recent workouts
   const rl = document.getElementById('recentLog');
@@ -1059,7 +1140,7 @@ function showStatDetail(type) {
 function clearAllData() {
   if (confirm('Are you sure? This will delete ALL your workout history and progress. This cannot be undone.')) {
     localStorage.removeItem('nippardState_v3');
-    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{}, prs:[], pinnedPRs:[] };
+    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{}, prs:[], pinnedPRs:[], completedDays:{}, completedWeeks:[] };
     activeSets = {};
     saveState();
     renderStats();
