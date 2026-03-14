@@ -3,12 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>NIPPARD // Hypertrophy</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PPL">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23050d1a' rx='40'/><text x='90' y='115' font-family='Arial Black,Arial' font-weight='900' font-size='80' fill='%2300c8ff' text-anchor='middle'>PPL</text></svg>">
+<title>PPL</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0d; --surface: #141414; --card: #1a1a1a; --border: #2a2a2a;
-    --accent: #e8ff3b; --accent2: #ff4d2e; --text: #f0f0f0; --muted: #777; --green: #3bff8a;
+    --bg: #0a0a0a; --surface: #111111; --card: #161616; --border: #222;
+    --accent: #00c8ff; --accent2: #0066ff; --accent3: #00aaff; --text: #f0f0f0; --muted: #777; --green: #00e5b0;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; font-size: 16px; }
@@ -39,14 +43,15 @@
   .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
   .day-card.today { border-color: var(--accent); }
   .day-card.day-done { border-color: var(--green); }
+  .day-card.day-done .day-tag { background: rgba(0,229,176,0.15); color: var(--green); }
   .day-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; }
   .day-title { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
   .day-meta { font-size: 12px; color: var(--muted); }
   .day-tag { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-  .tag-push { background: rgba(232,255,59,0.12); color: var(--accent); }
-  .tag-pull { background: rgba(59,255,138,0.12); color: var(--green); }
-  .tag-legs { background: rgba(255,77,46,0.12); color: var(--accent2); }
-  .tag-rest { background: rgba(102,102,102,0.12); color: var(--muted); }
+  .tag-push { background: rgba(119,119,119,0.12); color: var(--muted); }
+  .tag-pull { background: rgba(119,119,119,0.12); color: var(--muted); }
+  .tag-legs { background: rgba(119,119,119,0.12); color: var(--muted); }
+  .tag-rest { background: rgba(119,119,119,0.12); color: var(--muted); }
   .day-body { padding: 0 16px 14px; }
   .exercise-preview { display: flex; flex-wrap: wrap; gap: 5px; }
   .ex-chip { font-size: 11px; color: var(--muted); background: #222; padding: 3px 8px; border-radius: 4px; }
@@ -62,8 +67,8 @@
   .ex-spec { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .ex-tip-btn { width: 28px; height: 28px; border-radius: 50%; background: #222; border: 1px solid var(--border); color: var(--muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .sets-head { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 8px 12px; font-size: 11px; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  .stepper { display: flex; align-items: center; background: #222; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-  .stepper-btn { width: 34px; height: 38px; background: #2a2a2a; border: none; color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
+  .stepper { display: flex; align-items: center; background: #1a1a1a; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .stepper-btn { width: 34px; height: 38px; background: #222; border: none; color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
   .stepper-btn:active { background: #333; }
   .stepper-val { flex: 1; font-size: 15px; font-weight: 600; color: var(--text); text-align: center; padding: 0 2px; background: transparent; border: none; outline: none; width: 100%; }
   .set-row { display: grid; grid-template-columns: 28px 1fr 1fr 36px; gap: 6px; padding: 9px 12px; align-items: center; border-bottom: 1px solid var(--border); transition: background .2s; }
@@ -114,8 +119,8 @@
   .vbar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width .6s ease; }
 
   /* MISC */
-  .meso-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; background: rgba(232,255,59,0.12); color: var(--accent); margin-bottom: 14px; }
-  .deload-banner { background: rgba(255,77,46,0.08); border: 1px solid var(--accent2); border-radius: 8px; padding: 12px 15px; margin-bottom: 14px; font-size: 13px; color: var(--accent2); }
+  .meso-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; background: rgba(0,200,255,0.12); color: var(--accent); margin-bottom: 14px; }
+  .deload-banner { background: rgba(0,102,255,0.08); border: 1px solid var(--accent2); border-radius: 8px; padding: 12px 15px; margin-bottom: 14px; font-size: 13px; color: var(--accent2); }
   .principle { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
   .principle:last-child { border-bottom: none; }
   .p-icon { font-size: 20px; flex-shrink: 0; }
@@ -130,8 +135,8 @@
 
 <header>
   <div>
-    <div class="logo">NIPP<span>ARD</span></div>
-    <div class="day-badge" id="headerDay">Science-Based Hypertrophy</div>
+    <div class="logo">PP<span>L</span></div>
+    <div class="day-badge" id="headerDay">Hypertrophy Program</div>
   </div>
   <div class="progress-ring">
     <svg width="56" height="56">
@@ -153,7 +158,7 @@
   <div class="week-row" id="weekRow"></div>
   <div id="programDays"></div>
   <div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:14px;">NIPPARD PRINCIPLES</div>
+    <div style="font-size:20px;font-weight:700;margin-bottom:14px;">Training Principles</div>
     <div class="principle"><div class="p-icon">📈</div><div><div class="p-title">Progressive Overload</div><div class="p-desc">Add weight or reps each week. The #1 driver of hypertrophy. Track everything.</div></div></div>
     <div class="principle"><div class="p-icon">🎯</div><div><div class="p-title">10–20 Sets Per Muscle / Week</div><div class="p-desc">Stay in the MEV–MRV range. Beginners: 10–12 sets. Advanced: up to 20.</div></div></div>
     <div class="principle"><div class="p-icon">⏱️</div><div><div class="p-title">Rest 3 Min Between Sets</div><div class="p-desc">Full recovery = more reps next set = more volume = more gains.</div></div></div>
@@ -488,7 +493,120 @@ function getMesoLabel(week) {
   return "DELOAD WEEK";
 }
 
-// ─── STATE ────────────────────────────────────────────────
+// ─── EXERCISE ALTERNATES ──────────────────────────────────
+const ALTERNATES = {
+  // Chest
+  "Barbell Bench Press": {name:"Dumbbell Bench Press",sets:4,reps:"8–10",rir:"RIR 2",tip:"DBs allow deeper stretch and independent arm movement. Great for balanced chest development.",muscle:"Chest",staple:true},
+  "Incline DB Press": {name:"Incline Barbell Press",sets:3,reps:"6–10",rir:"RIR 2",tip:"More stable than DBs, easier to go heavy. 30–45° incline for upper chest focus.",muscle:"Chest"},
+  "Cable Fly (Low to High)": {name:"Pec Deck Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Machine keeps constant tension. Pause 1 sec at the stretch for max stimulus.",muscle:"Chest"},
+  "DB Flat Press": {name:"Machine Chest Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Machine removes stability demand. Great for focusing purely on pec contraction.",muscle:"Chest"},
+  "Incline Cable Fly": {name:"Incline DB Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Wide arc motion, slight bend in elbows. Focus on the stretch at the bottom.",muscle:"Chest"},
+  "Pec Deck Fly": {name:"Cable Fly (Low to High)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Low cable for upper chest. Maintain slight elbow bend. Squeeze at top.",muscle:"Chest"},
+  // Shoulders
+  "Cable Lateral Raise": {name:"DB Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lead with pinkies up, slight forward lean. Control the negative. Pure medial delt.",muscle:"Shoulders"},
+  "Seated DB OHP": {name:"Machine Shoulder Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Full ROM, controlled eccentric. Great for tracking progressive overload.",muscle:"Shoulders"},
+  "DB Lateral Raise": {name:"Cable Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Cable keeps tension at the top unlike DBs. Lead with elbow.",muscle:"Shoulders"},
+  "Machine Lateral Raise": {name:"DB Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lead with pinkies up, slight forward lean. Control the negative.",muscle:"Shoulders"},
+  "Arnold Press": {name:"Seated DB OHP",sets:3,reps:"10–12",rir:"RIR 2",tip:"Neutral spine, press overhead without excessive lumbar extension. Full ROM.",muscle:"Shoulders"},
+  "Seated Cable Lateral Raise": {name:"Machine Lateral Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Machine keeps constant tension throughout. Pause at top for 1 sec.",muscle:"Shoulders"},
+  "Push Press": {name:"Barbell OHP",sets:4,reps:"6–8",rir:"RIR 2",tip:"Strict press, no leg drive. Pure shoulder strength builder.",muscle:"Shoulders"},
+  "Barbell OHP": {name:"Push Press",sets:3,reps:"6–8",rir:"RIR 2",tip:"Use leg drive to initiate, finish with shoulders. Allows heavier loading.",muscle:"Shoulders"},
+  // Triceps
+  "Tricep Rope Pushdown": {name:"Cable Tricep Pushdown (Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Straight bar, elbows tucked. Full lockout at bottom.",muscle:"Triceps"},
+  "Overhead Tricep Extension": {name:"Skull Crusher",sets:3,reps:"10–12",rir:"RIR 2",tip:"EZ bar to forehead, elbows stay locked. Great long head builder.",muscle:"Triceps"},
+  "Skull Crusher": {name:"Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Overhead position stretches the long head for max stimulus.",muscle:"Triceps"},
+  "Cable Tricep Kickback": {name:"DB Tricep Kickback",sets:3,reps:"15–20",rir:"RIR 1",tip:"Hinge forward, lock upper arm parallel to floor, fully extend.",muscle:"Triceps"},
+  "Close-Grip Bench Press": {name:"Tricep Dips (Weighted)",sets:3,reps:"8–12",rir:"RIR 2",tip:"Slight forward lean for more tricep emphasis. Full lockout at top.",muscle:"Triceps"},
+  "Single-Arm Tricep Pushdown": {name:"Tricep Rope Pushdown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Rope spread at bottom for peak contraction. Hinge slightly forward.",muscle:"Triceps"},
+  "Tricep Dips (Weighted)": {name:"Close-Grip Bench Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"Elbows tucked, hands shoulder-width. Great tricep mass builder.",muscle:"Triceps"},
+  "Overhead Cable Extension": {name:"DB Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Both hands on one DB overhead. Full stretch, extend completely.",muscle:"Triceps"},
+  "JM Press": {name:"Close-Grip Bench Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"Elbows tucked, hands shoulder-width. Great tricep mass builder.",muscle:"Triceps"},
+  "Tricep Pushdown (Straight Bar)": {name:"Tricep Rope Pushdown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Rope spread at bottom for peak contraction.",muscle:"Triceps"},
+  "Tate Press": {name:"Skull Crusher",sets:3,reps:"10–12",rir:"RIR 2",tip:"EZ bar to forehead, elbows stay locked. Great long head builder.",muscle:"Triceps"},
+  "Cable Overhead Tricep Extension": {name:"Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Overhead stretches the long head — highest growth stimulus for triceps.",muscle:"Triceps"},
+  // Back
+  "Barbell Row (Pendlay)": {name:"Barbell Row (Bent Over)",sets:4,reps:"6–8",rir:"RIR 2",tip:"Hinge at hips, bar stays off floor. More time under tension than Pendlay.",muscle:"Back",staple:true},
+  "Lat Pulldown (Wide Grip)": {name:"Assisted Pull-Up",sets:4,reps:"10–12",rir:"RIR 2",tip:"Full ROM, chest to bar. Better for lat length than pulldowns.",muscle:"Back"},
+  "Seated Cable Row": {name:"DB Seal Row",sets:3,reps:"10–12",rir:"RIR 2",tip:"Chest on bench, full dead-stop each rep. Zero momentum.",muscle:"Back"},
+  "Weighted Pull-Up": {name:"Lat Pulldown (Wide Grip)",sets:4,reps:"10–12",rir:"RIR 2",tip:"Lean back slightly, pull to upper chest. Full ROM for width.",muscle:"Back",staple:true},
+  "Chest-Supported DB Row": {name:"Machine Row",sets:4,reps:"10–12",rir:"RIR 2",tip:"Chest on pad removes lower back from equation. Full stretch at bottom.",muscle:"Back"},
+  "Straight-Arm Pulldown": {name:"Cable Pullover",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms straight throughout, pull from overhead to hips. Pure lat isolation.",muscle:"Back"},
+  "Single-Arm DB Row": {name:"Cable Row (Single Arm)",sets:4,reps:"10–12",rir:"RIR 2",tip:"Constant cable tension vs dumbbell. Great for lat stretch at full extension.",muscle:"Back"},
+  "Cable Pullover": {name:"Straight-Arm Pulldown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms straight, pull from overhead to hips. Pure lat isolation.",muscle:"Back"},
+  "T-Bar Row": {name:"Chest-Supported DB Row",sets:4,reps:"10–12",rir:"RIR 2",tip:"Takes lower back out. Full stretch at bottom, row to hip.",muscle:"Back"},
+  "Lat Pulldown (Neutral Grip)": {name:"Close-Grip Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"Hands close, elbows to sides. Big lat stretch at top.",muscle:"Back"},
+  "Meadows Row": {name:"Single-Arm DB Row",sets:4,reps:"8–10",rir:"RIR 2",tip:"Brace on bench, full stretch at bottom. Row to hip.",muscle:"Back"},
+  "Wide Grip Seated Row": {name:"Seated Cable Row",sets:3,reps:"10–12",rir:"RIR 1",tip:"Neutral grip, pull to belly button. Squeeze shoulder blades at end.",muscle:"Back"},
+  "Seal Row": {name:"Chest-Supported DB Row",sets:4,reps:"8–10",rir:"RIR 2",tip:"Chest on bench, full stretch at bottom, row to hip.",muscle:"Back"},
+  "Close-Grip Lat Pulldown": {name:"Lat Pulldown (Neutral Grip)",sets:3,reps:"10–12",rir:"RIR 1",tip:"Neutral grip allows more shoulder extension — great for lat length.",muscle:"Back"},
+  // Biceps
+  "DB Bicep Curl": {name:"EZ Bar Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Slightly supinated grip. Don't swing. Control the negative.",muscle:"Biceps"},
+  "Hammer Curl": {name:"Cable Hammer Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"Rope attachment, neutral grip. Constant tension from cable.",muscle:"Biceps"},
+  "Incline DB Curl": {name:"Cable Curl (Low Pulley)",sets:4,reps:"10–12",rir:"RIR 1",tip:"Constant tension from cable. Supinate at top. Great pump.",muscle:"Biceps"},
+  "Preacher Curl": {name:"Machine Preacher Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Machine version — more consistent tension. Don't cut the stretch short.",muscle:"Biceps"},
+  "EZ Bar Curl": {name:"DB Bicep Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Full supination at top, control the negative. Don't swing.",muscle:"Biceps"},
+  "Cable Curl (Low Pulley)": {name:"Incline DB Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Maximizes long head stretch. Let arm hang fully back, curl controlled.",muscle:"Biceps"},
+  "Spider Curl": {name:"Preacher Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Locks out momentum. Full extension — don't cut the stretch short.",muscle:"Biceps"},
+  "Reverse Curl": {name:"Hammer Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"Neutral grip hits brachialis and brachioradialis. Control the negative.",muscle:"Biceps"},
+  "Concentration Curl": {name:"Machine Bicep Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Constant tension, great for peak contraction focus.",muscle:"Biceps"},
+  "21s (DB Curl)": {name:"Cable Curl (Low Pulley)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Constant tension from cable. Supinate at top. Great pump.",muscle:"Biceps"},
+  "Zottman Curl": {name:"DB Bicep Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Full supination at top, control the negative. Don't swing.",muscle:"Biceps"},
+  "Cable Curl (High Pulley)": {name:"Incline DB Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Maximizes long head stretch. Let arm hang fully back.",muscle:"Biceps"},
+  // Rear Delts
+  "Face Pull": {name:"Rear Delt Fly (Pec Deck)",sets:4,reps:"15–20",rir:"RIR 1",tip:"Reverse the pec deck. Pull elbows BACK and squeeze rear delts.",muscle:"Rear Delts"},
+  "Rear Delt Fly (Pec Deck)": {name:"Face Pull",sets:4,reps:"15–20",rir:"RIR 1",tip:"Rope attachment, pull to forehead with external rotation.",muscle:"Rear Delts"},
+  "Band Pull-Apart": {name:"Face Pull",sets:4,reps:"15–20",rir:"RIR 1",tip:"Rope attachment, pull to forehead. Great shoulder health movement.",muscle:"Rear Delts"},
+  "Rear Delt Cable Fly": {name:"Rear Delt Fly (Pec Deck)",sets:4,reps:"15–20",rir:"RIR 1",tip:"Reverse the pec deck. Pull elbows BACK and squeeze rear delts.",muscle:"Rear Delts"},
+  "Cable Rear Delt Fly": {name:"Band Pull-Apart",sets:4,reps:"20–25",rir:"RIR 1",tip:"Pull band to chest, arms straight. Great rear delt and rotator cuff health.",muscle:"Rear Delts"},
+  "Prone Rear Delt Raise": {name:"Rear Delt Cable Fly",sets:4,reps:"15–20",rir:"RIR 1",tip:"Lean forward, pull elbows back and out. Squeeze hard at end range.",muscle:"Rear Delts"},
+  "Face Pull (Heavy)": {name:"Rear Delt Fly (Pec Deck)",sets:4,reps:"15–20",rir:"RIR 1",tip:"Reverse the pec deck. Pull elbows BACK and squeeze rear delts hard.",muscle:"Rear Delts"},
+  // Quads
+  "Barbell Back Squat": {name:"V-Squat Machine",sets:4,reps:"8–10",rir:"RIR 2",tip:"Similar movement to squat with less spinal load. Drive through heels, full depth.",muscle:"Quads",staple:true},
+  "Leg Press": {name:"Hack Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"Quad dominant, no spinal compression. Great for heavier loading.",muscle:"Quads"},
+  "Bulgarian Split Squat": {name:"Reverse Lunge",sets:3,reps:"10–12",rir:"RIR 1",tip:"Step back, lower knee to floor. More stable than forward lunge.",muscle:"Quads"},
+  "Leg Extension": {name:"Spanish Squat (Band)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Band around fixed object, squat with shins vertical. Destroys the quads.",muscle:"Quads"},
+  "Hack Squat": {name:"Leg Press",sets:3,reps:"10–15",rir:"RIR 1",tip:"High/wide foot = more glute. Low/narrow = more quad. Full range.",muscle:"Quads"},
+  "Front Squat": {name:"Goblet Squat",sets:3,reps:"10–12",rir:"RIR 2",tip:"Hold DB at chest. Upright torso, full depth. Great quad and upper back.",muscle:"Quads"},
+  "Sissy Squat": {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"Isolation for quad peak. Pause at top for extra contraction.",muscle:"Quads"},
+  "V-Squat Machine": {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Full depth, brace core, controlled eccentric. King of quad exercises.",muscle:"Quads",staple:true},
+  "Spanish Squat (Band)": {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"Isolation for quad peak. Pause at top for extra contraction.",muscle:"Quads"},
+  "Walking Lunges": {name:"Bulgarian Split Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"Rear foot elevated. Trunk upright = quads, lean forward = glutes.",muscle:"Quads"},
+  // Hamstrings
+  "Romanian Deadlift": {name:"Dumbbell Romanian Deadlift",sets:3,reps:"10–12",rir:"RIR 2",tip:"Same hip hinge pattern, DBs allow more range of motion.",muscle:"Hamstrings",staple:true},
+  "Seated Leg Curl": {name:"Lying Leg Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris involvement. Full stretch.",muscle:"Hamstrings"},
+  "Nordic Hamstring Curl": {name:"Glute-Ham Raise",sets:3,reps:"8–10",rir:"RIR 1",tip:"One of the best posterior chain exercises. Lower slowly, push back up.",muscle:"Hamstrings"},
+  "Lying Leg Curl": {name:"Seated Leg Curl",sets:4,reps:"10–12",rir:"RIR 1",tip:"Seated stretches hamstring at hip for more growth stimulus.",muscle:"Hamstrings"},
+  "Stiff-Leg Deadlift": {name:"Romanian Deadlift",sets:4,reps:"8–10",rir:"RIR 2",tip:"Hip hinge, soft knee, push hips back. Bar stays close to legs.",muscle:"Hamstrings"},
+  "Hamstring Curl (Machine)": {name:"Lying Leg Curl",sets:5,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris. Full stretch at top.",muscle:"Hamstrings"},
+  "Good Morning": {name:"Romanian Deadlift",sets:4,reps:"8–10",rir:"RIR 2",tip:"Hip hinge, soft knee, push hips back. Bar stays close to legs.",muscle:"Hamstrings"},
+  "Nordic Hamstring Curl": {name:"Glute-Ham Raise",sets:4,reps:"6–10",rir:"RIR 2",tip:"One of the best posterior chain exercises. Lower slowly, push back up.",muscle:"Hamstrings"},
+  "Glute-Ham Raise": {name:"Nordic Hamstring Curl",sets:3,reps:"6–10",rir:"RIR 2",tip:"Lower slowly, fight the negative. One of the best hamstring builders.",muscle:"Hamstrings"},
+  // Glutes
+  "Hip Thrust": {name:"Barbell Hip Thrust",sets:3,reps:"8–12",rir:"RIR 1",tip:"Shoulder blades on bench, bar over hip crease. Drive through heels, pause 1 sec.",muscle:"Glutes"},
+  "Barbell Hip Thrust": {name:"Hip Thrust",sets:4,reps:"10–15",rir:"RIR 1",tip:"Can use DB or machine if no barbell. Same movement pattern.",muscle:"Glutes"},
+  "Glute Kickback (Cable)": {name:"Donkey Kick (Machine)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Machine version, more stable. Drive knee back and up, squeeze at top.",muscle:"Glutes"},
+  "Cable Pull-Through": {name:"Good Morning",sets:3,reps:"12–15",rir:"RIR 2",tip:"Bar on traps, hip hinge. Hamstring and glute builder.",muscle:"Glutes"},
+  "Hip Thrust (Banded)": {name:"Barbell Hip Thrust",sets:3,reps:"10–15",rir:"RIR 1",tip:"Shoulder blades on bench, bar over hip crease. Pause 1 sec at top.",muscle:"Glutes"},
+  "Sumo Deadlift": {name:"Sumo Romanian Deadlift",sets:3,reps:"10–12",rir:"RIR 1",tip:"Wide stance RDL. Hits glutes and inner hamstrings from a different angle.",muscle:"Glutes"},
+  "Cable Glute Kickback": {name:"Glute Kickback (Cable)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, slight forward lean. Kick straight back, squeeze at top.",muscle:"Glutes"},
+  "Sumo Romanian Deadlift": {name:"Sumo Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Wide stance, toes pointed out. More glute and adductor involvement.",muscle:"Glutes"},
+  // Calves
+  "Standing Calf Raise": {name:"Leg Press Calf Raise",sets:4,reps:"15–20",rir:"RIR 1",tip:"Use leg press platform. Full stretch at bottom, pause, explode up.",muscle:"Calves"},
+  "Seated Calf Raise": {name:"Standing Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Full ROM, deep stretch at bottom. Pause 2 sec, explode up.",muscle:"Calves"},
+  "Donkey Calf Raise": {name:"Standing Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Full ROM, deep stretch at bottom. Pause 2 sec, explode up.",muscle:"Calves"},
+  "Single-Leg Calf Raise": {name:"Seated Calf Raise",sets:4,reps:"12–15",rir:"RIR 1",tip:"Targets the soleus. Slow and controlled, full stretch at bottom.",muscle:"Calves"},
+  "Leg Press Calf Raise": {name:"Standing Calf Raise",sets:4,reps:"10–15",rir:"RIR 1",tip:"Full ROM, deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"},
+  // Abs
+  "Cable Crunch": {name:"Hanging Leg Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Hang from bar, raise legs to 90 degrees. Control the negative. Avoid swinging.",muscle:"Abs"},
+  "Ab Wheel Rollout": {name:"Cable Crunch",sets:3,reps:"12–15",rir:"RIR 1",tip:"Rope attachment, kneel facing cable. Pull down with abs, not arms.",muscle:"Abs"},
+  "Hanging Leg Raise": {name:"Ab Wheel Rollout",sets:3,reps:"10–12",rir:"RIR 1",tip:"Kneel, roll out as far as you can control, pull back with abs.",muscle:"Abs"},
+  "Decline Crunch": {name:"Cable Crunch",sets:3,reps:"12–15",rir:"RIR 1",tip:"Rope attachment, kneel facing cable. Pull down with abs, not arms.",muscle:"Abs"},
+  // Adductors
+  "Machine Adductor": {name:"Cable Adduction",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, cable to the side. Pull leg across body. Squeeze at peak.",muscle:"Adductors"},
+  "Cable Adduction": {name:"Machine Adductor",sets:3,reps:"15–20",rir:"RIR 1",tip:"Seated adductor machine. Full ROM, controlled squeeze at the end.",muscle:"Adductors"}
+};
+
+
 let state = JSON.parse(localStorage.getItem('nippardState_v3') || 'null') || {
   currentDayIdx: 0,
   currentWeek: 1,
@@ -500,10 +618,32 @@ let state = JSON.parse(localStorage.getItem('nippardState_v3') || 'null') || {
   prs: [],
   pinnedPRs: [],
   completedDays: {},   // key: "week-dayIdx" → true
-  completedWeeks: []   // array of week numbers
+  completedWeeks: [],   // array of week numbers
+  swappedExercises: {}  // key: "week-dayIdx-ei" → true means using alternate
 };
 
 function saveState() { localStorage.setItem('nippardState_v3', JSON.stringify(state)); }
+
+function getSwapKey(ei) {
+  return `${state.currentWeek}-${state.currentDayIdx}-${ei}`;
+}
+
+function getActiveExercise(day, ei) {
+  const ex = day.exercises[ei];
+  const isSwapped = (state.swappedExercises || {})[getSwapKey(ei)];
+  if (isSwapped && ALTERNATES[ex.name]) return ALTERNATES[ex.name];
+  return ex;
+}
+
+function swapExercise(ei) {
+  if (!state.swappedExercises) state.swappedExercises = {};
+  const key = getSwapKey(ei);
+  state.swappedExercises[key] = !state.swappedExercises[key];
+  // Clear activeSets for this exercise so it reloads with new exercise suggestions
+  delete activeSets[ei];
+  saveState();
+  renderWorkout();
+}
 
 function saveActiveSets() {
   localStorage.setItem('nippardActiveSets', JSON.stringify({
@@ -681,7 +821,11 @@ function renderWorkout() {
 
   document.getElementById('finishBtn').style.display = 'block';
 
-  day.exercises.forEach((ex, ei) => {
+  day.exercises.forEach((baseEx, ei) => {
+    const ex = getActiveExercise(day, ei);
+    const isSwapped = (state.swappedExercises || {})[getSwapKey(ei)];
+    const hasAlternate = !!ALTERNATES[baseEx.name];
+
     if (!activeSets[ei]) {
       const sugW = getSuggestedWeight(ex.name);
       const sugR = getSuggestedReps(ex.name);
@@ -704,7 +848,6 @@ function renderWorkout() {
     card.className = 'exercise-card';
 
     let rowsHTML = activeSets[ei].map((s, si) => {
-      const prevSet = prev && prev[si] ? prev[si] : null;
       const prevHint = avgPrevWeight !== null;
       const wVal = s.weight || '0';
       const rVal = s.reps || '0';
@@ -732,7 +875,9 @@ function renderWorkout() {
       `;
     }).join('');
 
-    const stapleTag = ex.staple ? `<span style="font-family:'DM Mono',monospace;font-size:9px;background:rgba(232,255,59,0.15);color:var(--accent);padding:2px 6px;border-radius:2px;margin-left:6px;letter-spacing:1px;">STAPLE</span>` : '';
+    const stapleTag = ex.staple ? `<span style="font-size:9px;background:rgba(0,200,255,0.15);color:var(--accent);padding:2px 6px;border-radius:2px;margin-left:6px;">STAPLE</span>` : '';
+    const altName = isSwapped ? baseEx.name : (ALTERNATES[baseEx.name] ? ALTERNATES[baseEx.name].name : '');
+    const swapBtn = hasAlternate ? `<button onclick="swapExercise(${ei})" style="padding:4px 8px;background:${isSwapped ? 'rgba(0,200,255,0.15)' : '#1a1a1a'};border:1px solid ${isSwapped ? 'var(--accent)' : 'var(--border)'};color:${isSwapped ? 'var(--accent)' : 'var(--muted)'};border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;" title="Swap to ${altName}">⇄ ${isSwapped ? 'ORIG' : 'ALT'}</button>` : '';
 
     card.innerHTML = `
       <div class="ex-header">
@@ -740,8 +885,12 @@ function renderWorkout() {
         <div class="ex-info">
           <div class="ex-name">${ex.name}${stapleTag}</div>
           <div class="ex-spec">${ex.sets} SETS · ${ex.reps} REPS · ${ex.rir}</div>
+          ${isSwapped ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">Alt for: ${baseEx.name}</div>` : ''}
         </div>
-        <button class="ex-tip-btn" onclick="showTip(${ei})">💡</button>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          ${swapBtn}
+          <button class="ex-tip-btn" onclick="showTip(${ei})">💡</button>
+        </div>
       </div>
       <div class="sets-table">
         <div class="sets-head"><span>SET</span><span>WEIGHT</span><span>REPS</span><span>✓</span></div>
@@ -830,8 +979,8 @@ function finishWorkout() {
   if (!state.workoutHistory) state.workoutHistory = [];
   state.workoutHistory.unshift(workoutRecord); // newest first
 
-  // Save prev data and logs
-  day.exercises.forEach((ex, ei) => {
+  day.exercises.forEach((baseEx, ei) => {
+    const ex = getActiveExercise(day, ei);
     if (activeSets[ei]) {
       const key = ex.name;
       state.prevData[key] = activeSets[ei].map(s => ({ weight: s.weight, reps: s.reps }));
@@ -881,7 +1030,7 @@ function finishWorkout() {
 // ─── TIP MODAL ────────────────────────────────────────────
 function showTip(ei) {
   const day = getDayForWeekAndDayIndex(state.currentWeek, state.currentDayIdx);
-  const ex = day.exercises[ei];
+  const ex = getActiveExercise(day, ei);
   document.getElementById('tipTitle').textContent = ex.name.toUpperCase();
   document.getElementById('tipBody').textContent = ex.tip;
   document.getElementById('tipModal').classList.add('open');
@@ -1155,7 +1304,7 @@ function showStatDetail(type) {
 function clearAllData() {
   if (confirm('Are you sure? This will delete ALL your workout history and progress. This cannot be undone.')) {
     localStorage.removeItem('nippardState_v3');
-    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{}, prs:[], pinnedPRs:[], completedDays:{}, completedWeeks:[] };
+    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{}, prs:[], pinnedPRs:[], completedDays:{}, completedWeeks:[], swappedExercises:{} };
     activeSets = {};
     saveState();
     renderStats();
