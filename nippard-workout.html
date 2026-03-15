@@ -12,7 +12,7 @@
 <style>
   :root {
     --bg: #0a0a0a; --surface: #111111; --card: #161616; --border: #222;
-    --accent: #00c8ff; --accent2: #0066ff; --accent3: #00aaff; --text: #f0f0f0; --muted: #777; --green: #00e5b0;
+    --accent: #00c8ff; --accent2: #0066ff; --accent3: #00aaff; --text: #f0f0f0; --muted: #777; --green: #00c8ff;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; font-size: 16px; }
@@ -37,13 +37,13 @@
   .week-btn { flex-shrink: 0; padding: 7px 13px; background: var(--card); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; }
   .week-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
   .week-btn.deload { border-color: var(--accent2); color: var(--accent2); }
-  .week-btn.week-done { background: var(--green); color: #000; border-color: var(--green); }
+  .week-btn.week-done { background: var(--accent); color: #000; border-color: var(--accent); }
 
   /* DAY CARDS */
   .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
   .day-card.today { border-color: var(--accent); }
-  .day-card.day-done { border-color: var(--green); }
-  .day-card.day-done .day-tag { background: rgba(0,229,176,0.15); color: var(--green); }
+  .day-card.day-done { border-color: var(--accent); }
+  .day-card.day-done .day-tag { background: rgba(0,200,255,0.15); color: var(--accent); }
   .day-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; }
   .day-title { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
   .day-meta { font-size: 12px; color: var(--muted); }
@@ -1090,7 +1090,7 @@ function renderStats() {
   document.getElementById('volumeBars').innerHTML = Object.entries(muscleTargets).map(([m, target]) => {
     const done = muscleSets[m] || 0;
     const pct = Math.min(done / target * 100, 100);
-    const color = done >= target ? 'var(--green)' : done >= target * 0.7 ? 'var(--accent)' : 'var(--accent2)';
+    const color = 'var(--accent)';
     return `
       <div class="vbar-label"><span>${m.toUpperCase()}</span><span style="color:${color}">${done} / ${target} sets</span></div>
       <div class="vbar"><div class="vbar-fill" style="width:${pct}%;background:${color}"></div></div>
