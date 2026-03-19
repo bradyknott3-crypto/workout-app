@@ -188,11 +188,11 @@
     </div>
     <div class="stat-card" onclick="showStatDetail('sets')" style="cursor:pointer">
       <div class="stat-num" id="statSets">0</div>
-      <div class="stat-label">Total Sets 💪</div>
+      <div class="stat-label">Volume This Week 📊</div>
     </div>
     <div class="stat-card" onclick="showStatDetail('volume')" style="cursor:pointer">
       <div class="stat-num" id="statVol">0</div>
-      <div class="stat-label">Total Volume 📊</div>
+      <div class="stat-label">All-Time Volume 🏋️</div>
     </div>
     <div class="stat-card" onclick="showStatDetail('streak')" style="cursor:pointer">
       <div class="stat-num" id="statStreak">0</div>
@@ -1074,7 +1074,11 @@ function skipRest() {
 let editingWorkoutId = null;
 
 function renderStats() {
-  document.getElementById('statSets').textContent = state.logs.length;
+  // Volume This Week
+  const weekLogs = state.weeklyLogs || [];
+  const weeklyVol = weekLogs.reduce((a, l) => a + (parseFloat(l.weight)||0) * (parseFloat(l.reps)||0), 0);
+  document.getElementById('statSets').textContent = Math.round(weeklyVol).toLocaleString();
+
   document.getElementById('statStreak').textContent = state.streak || 0;
   document.getElementById('statsSub').textContent = getMesoLabel(state.currentWeek);
 
@@ -1088,6 +1092,7 @@ function renderStats() {
   });
   document.getElementById('statMaxes').textContent = total ? total.toLocaleString() : '—';
 
+  // Total Volume all time
   const totalVol = state.logs.reduce((a, l) => {
     return a + (parseFloat(l.weight) || 0) * (parseFloat(l.reps) || 0);
   }, 0);
@@ -1096,7 +1101,6 @@ function renderStats() {
   // Sets by muscle vs target — current week only
   const muscleTargets = { Chest:10, Back:14, Shoulders:14, Triceps:12, Biceps:12, 'Rear Delts':16, Quads:13, Hamstrings:13, Glutes:9, Calves:16 };
   const muscleSets = {};
-  const weekLogs = state.weeklyLogs || [];
   weekLogs.forEach(l => { muscleSets[l.muscle] = (muscleSets[l.muscle] || 0) + 1; });
   document.getElementById('volumeBars').innerHTML = Object.entries(muscleTargets).map(([m, target]) => {
     const done = muscleSets[m] || 0;
@@ -1108,37 +1112,66 @@ function renderStats() {
     `;
   }).join('');
 
-  // Recent workouts
+  // Recent workouts grouped by week
   const rl = document.getElementById('recentLog');
   const history = state.workoutHistory || [];
   if (!history.length) {
-    rl.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;text-align:center;font-family:\'DM Mono\',monospace;font-size:12px;color:var(--muted);">No workouts logged yet!</div>';
+    rl.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;text-align:center;font-size:12px;color:var(--muted);">No workouts logged yet!</div>';
     return;
   }
-  rl.innerHTML = history.slice(0, 10).map(w => {
-    const totalSets = w.exercises.reduce((a, ex) => a + ex.sets.length, 0);
-    const vol = w.exercises.reduce((a, ex) => a + ex.sets.reduce((b, s) => b + (parseFloat(s.weight)||0)*(parseFloat(s.reps)||0), 0), 0);
-    return `
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);">
-          <div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;">${w.dayName}</div>
-            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;">${w.date} · ${getMesoLabel(w.week)}</div>
-          </div>
-          <button onclick="openEditWorkout(${w.id})" style="padding:8px 14px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;">EDIT ✏️</button>
-          <button onclick="deleteWorkout(${w.id})" style="padding:8px 14px;background:transparent;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;">DEL ✕</button>
-        </div>
-        <div style="padding:10px 16px;">
-          ${w.exercises.map(ex => `
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1a1a1a;">
-              <div style="font-size:12px;font-weight:600;flex:1;">${ex.name}</div>
-              <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${ex.sets.map(s => `${s.weight}×${s.reps}`).join(' · ')}</div>
+
+  // Group by week
+  const byWeek = {};
+  history.forEach(w => {
+    const key = w.week || 1;
+    if (!byWeek[key]) byWeek[key] = [];
+    byWeek[key].push(w);
+  });
+
+  rl.innerHTML = Object.keys(byWeek).sort((a,b) => b-a).map(week => {
+    const workouts = byWeek[week];
+    const weekVol = workouts.reduce((a, w) => a + w.exercises.reduce((b, ex) => b + ex.sets.reduce((c, s) => c + (parseFloat(s.weight)||0)*(parseFloat(s.reps)||0), 0), 0), 0);
+    const weekSets = workouts.reduce((a, w) => a + w.exercises.reduce((b, ex) => b + ex.sets.length, 0), 0);
+    const mesoLabel = getMesoLabel(parseInt(week));
+    const workoutsHTML = workouts.map(w => {
+      const totalSets = w.exercises.reduce((a, ex) => a + ex.sets.length, 0);
+      const vol = w.exercises.reduce((a, ex) => a + ex.sets.reduce((b, s) => b + (parseFloat(s.weight)||0)*(parseFloat(s.reps)||0), 0), 0);
+      return `
+        <div style="background:var(--bg);border-radius:6px;margin-bottom:8px;overflow:hidden;border:1px solid var(--border);">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border);">
+            <div>
+              <div style="font-size:14px;font-weight:700;">${w.dayName}</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:1px;">${w.date} · ${totalSets} sets · ${Math.round(vol).toLocaleString()} lbs</div>
             </div>
-          `).join('')}
+            <div style="display:flex;gap:6px;">
+              <button onclick="openEditWorkout(${w.id})" style="padding:6px 10px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;font-size:11px;cursor:pointer;">✏️</button>
+              <button onclick="deleteWorkout(${w.id})" style="padding:6px 10px;background:transparent;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;font-size:11px;cursor:pointer;">✕</button>
+            </div>
+          </div>
+          <div style="padding:8px 14px;">
+            ${w.exercises.map(ex => `
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);">
+                <div style="font-size:12px;font-weight:600;flex:1;">${ex.name}</div>
+                <div style="font-size:11px;color:var(--muted);">${ex.sets.map(s => s.weight + '×' + s.reps).join(' · ')}</div>
+              </div>
+            `).join('')}
+          </div>
         </div>
-        <div style="display:flex;justify-content:space-between;padding:10px 16px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);">
-          <span>${totalSets} SETS</span>
-          <span>${Math.round(vol).toLocaleString()} LBS VOLUME</span>
+      `;
+    }).join('');
+
+    return `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;">
+        <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.chevron').textContent=this.nextElementSibling.style.display==='none'?'▶':'▼'"
+          style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
+          <div>
+            <div style="font-size:16px;font-weight:700;">Week ${week} <span style="font-size:12px;color:var(--accent);font-weight:400;">${mesoLabel}</span></div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">${workouts.length} workouts · ${weekSets} sets · ${Math.round(weekVol).toLocaleString()} lbs</div>
+          </div>
+          <span class="chevron" style="color:var(--muted);font-size:12px;">▶</span>
+        </div>
+        <div style="display:none;padding:0 10px 10px;">
+          ${workoutsHTML}
         </div>
       </div>
     `;
