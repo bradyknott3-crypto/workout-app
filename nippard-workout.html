@@ -253,185 +253,179 @@ const MESOS = [
     label: "MESO 1",
     days: [
       { day:1, name:"PUSH A", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
-        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Set up with a slight arch, retract scapulae, drive feet into the floor. Lower to lower chest, 2–3 sec eccentric.",muscle:"Chest",staple:true},
-        {name:"Incline DB Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"30–45° incline hits upper chest. Allow a deep stretch at the bottom.",muscle:"Chest"},
-        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Cable keeps tension at the top. Lead with elbows, slight forward lean.",muscle:"Shoulders"},
-        {name:"Seated DB OHP",sets:3,reps:"10–12",rir:"RIR 2",tip:"Neutral spine, press overhead without excessive lumbar extension. Full ROM.",muscle:"Shoulders"},
-        {name:"Tricep Rope Pushdown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Hinge forward slightly. Spread rope at bottom for peak contraction.",muscle:"Triceps"},
-        {name:"Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Overhead position stretches the long head — highest growth stimulus for triceps.",muscle:"Triceps"}
+        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Bar on lower chest, retract scapulae, drive feet into floor. 3 sec eccentric.",muscle:"Chest",staple:true},
+        {name:"Machine Chest Press",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Adjust seat so handles align with mid-chest. Full ROM, slow negative.",muscle:"Chest"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Cable at hip height, slight forward lean. Lead with elbow, pause at top.",muscle:"Shoulders"},
+        {name:"Seated DB OHP",sets:3,reps:"10–12",rir:"RIR 2",tip:"S tier. Neutral spine, press overhead. Full ROM, controlled eccentric.",muscle:"Shoulders"},
+        {name:"Cable Pressdown (Straight Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Hinge slightly forward. Full lockout at bottom, control the negative.",muscle:"Triceps"},
+        {name:"Overhead Cable Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier — Katana. Long head stretch at bottom. Extend fully, slow negative.",muscle:"Triceps"}
       ]},
       { day:2, name:"PULL A", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
-        {name:"Barbell Row (Pendlay)",sets:4,reps:"6–8",rir:"RIR 2",tip:"Bar dead-stops on floor each rep. Flat back, hip hinge, explode bar to lower chest.",muscle:"Back",staple:true},
-        {name:"Lat Pulldown (Wide Grip)",sets:3,reps:"10–12",rir:"RIR 2",tip:"Lean back slightly, pull to upper chest. Full ROM is key for width.",muscle:"Back"},
-        {name:"Seated Cable Row",sets:3,reps:"10–12",rir:"RIR 2",tip:"Neutral grip. Pull elbows back and squeeze mid-back.",muscle:"Back"},
-        {name:"DB Bicep Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Supinate at the top for full peak contraction. Don't swing.",muscle:"Biceps"},
-        {name:"Hammer Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"Neutral grip hits brachialis — adds arm thickness.",muscle:"Biceps"},
-        {name:"Face Pull",sets:3,reps:"15–20",rir:"RIR 1",tip:"Rope to forehead, elbows high and flared. External rotation at end. Key for shoulder health.",muscle:"Rear Delts"}
+        {name:"Barbell Row (Pendlay)",sets:4,reps:"6–8",rir:"RIR 2",tip:"Bar dead-stops on floor each rep. Flat back, hip hinge, explode to lower chest.",muscle:"Back",staple:true},
+        {name:"Neutral-Grip Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Neutral grip, pull elbows down and back. Big lat stretch at top.",muscle:"Back"},
+        {name:"Chest-Supported DB Row",sets:3,reps:"10–12",rir:"RIR 2",tip:"S tier. Chest on incline bench. Full stretch at bottom, row to hip. Zero lower back.",muscle:"Back"},
+        {name:"Bayesian Cable Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Cable behind you, elbow back. Massive stretch at bottom. Best bicep builder.",muscle:"Biceps"},
+        {name:"Preacher Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Locks out all momentum. Full extension every rep.",muscle:"Biceps"},
+        {name:"Reverse Pec Deck",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Reverse the machine. Pull elbows BACK, squeeze rear delts hard.",muscle:"Rear Delts"}
       ]},
       { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
-        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Bar on traps, brace core, break at hips and knees simultaneously. Hit parallel minimum. 3 sec down.",muscle:"Quads",staple:true},
+        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Brace core, break at hips and knees. Hit parallel minimum. 3 sec down.",muscle:"Quads",staple:true},
         {name:"Romanian Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Hip hinge, soft knee, push hips back. Bar stays close to legs.",muscle:"Hamstrings",staple:true},
-        {name:"Leg Press",sets:3,reps:"10–15",rir:"RIR 1",tip:"High/wide foot = more glute. Low/narrow = more quad. Full range.",muscle:"Quads"},
-        {name:"Seated Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Seated stretches hamstring at hip for more growth.",muscle:"Hamstrings"},
-        {name:"Hip Thrust",sets:3,reps:"10–15",rir:"RIR 1",tip:"Shoulder blades on bench, bar over hip crease. Drive through heels, pause 1 sec at top.",muscle:"Glutes"},
-        {name:"Standing Calf Raise",sets:3,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"}
+        {name:"Hack Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Feet shoulder-width, full depth. No spinal load. Great for overload.",muscle:"Quads"},
+        {name:"Seated Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Seated stretches hamstring at hip for superior growth. Full ROM.",muscle:"Hamstrings"},
+        {name:"Walking Lunges",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier for glutes. Long stride = more glute. Add weight as you progress.",muscle:"Glutes"},
+        {name:"Leg Press Calf Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Full stretch at bottom, pause, explosive up.",muscle:"Calves"}
       ]},
       { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
       { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
-        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple compound. Focus on progressive overload from Push A.",muscle:"Chest",staple:true},
-        {name:"Cable Fly (Low to High)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Low cable for upper chest. Maintain slight elbow bend. Squeeze at top.",muscle:"Chest"},
-        {name:"DB Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Lead with pinkies up. Don't let momentum take over.",muscle:"Shoulders"},
-        {name:"Machine Shoulder Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Full ROM, controlled eccentric. Great for progressive overload tracking.",muscle:"Shoulders"},
-        {name:"Skull Crusher",sets:3,reps:"10–12",rir:"RIR 2",tip:"EZ bar to forehead, elbows stay locked. Great long head builder.",muscle:"Triceps"},
-        {name:"Cable Tricep Kickback",sets:3,reps:"15–20",rir:"RIR 1",tip:"Constant cable tension. Hinge forward, lock upper arm parallel to floor, extend fully.",muscle:"Triceps"}
+        {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Focus on beating Push A numbers.",muscle:"Chest",staple:true},
+        {name:"Incline DB Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"S tier. 30-45 degree incline. Deep stretch at bottom, explosive press.",muscle:"Chest"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Behind the back version if available. Great stretch at bottom.",muscle:"Shoulders"},
+        {name:"Machine Shoulder Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"S tier. Full ROM, controlled eccentric. Easy to track overload.",muscle:"Shoulders"},
+        {name:"Skull Crusher",sets:3,reps:"10–12",rir:"RIR 2",tip:"A tier. EZ bar to forehead, elbows locked. Great long head builder.",muscle:"Triceps"},
+        {name:"Cable Pressdown (Straight Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Full lockout at bottom. Hinge forward slightly.",muscle:"Triceps"}
       ]},
       { day:6, name:"PULL B", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
-        {name:"Weighted Pull-Up",sets:4,reps:"6–10",rir:"RIR 2",tip:"Full hang at bottom, chin clears bar at top. Slight forward lean engages lats more.",muscle:"Back",staple:true},
-        {name:"Chest-Supported DB Row",sets:3,reps:"10–12",rir:"RIR 2",tip:"Takes lower back out of it. Full stretch at bottom. Row to hip, not chest.",muscle:"Back"},
-        {name:"Straight-Arm Pulldown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms straight throughout — isolates the lat. Great mind-muscle connection.",muscle:"Back"},
-        {name:"Incline DB Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Maximizes long head stretch. Let arm hang fully back, curl controlled.",muscle:"Biceps"},
-        {name:"Preacher Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Locks out momentum. Full extension — don't cut the stretch short.",muscle:"Biceps"},
-        {name:"Rear Delt Fly (Pec Deck)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Reverse the pec deck. Pull elbows BACK and squeeze rear delts.",muscle:"Rear Delts"}
+        {name:"Weighted Pull-Up",sets:4,reps:"6–10",rir:"RIR 2",tip:"Full hang at bottom, chin clears bar at top. Slight forward lean for more lat.",muscle:"Back",staple:true},
+        {name:"Meadows Row",sets:3,reps:"8–10",rir:"RIR 2",tip:"S tier. Landmine single arm row. Incredible ROM and lat stretch. Row to hip.",muscle:"Back"},
+        {name:"Single-Arm Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Lean slightly away, pull elbow to hip. Massive lat stretch at top.",muscle:"Back"},
+        {name:"Bayesian Cable Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Cable behind you, elbow back. Best stretch position for biceps.",muscle:"Biceps"},
+        {name:"Hammer Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"A tier. Neutral grip. Hits brachialis for arm thickness.",muscle:"Biceps"},
+        {name:"Reverse Cable Crossover",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Cross cables at shoulder height, pull apart and back. Squeeze rear delts hard.",muscle:"Rear Delts"}
       ]},
-      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
-        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple compound. Focus on progressive overload from Legs A.",muscle:"Quads",staple:true},
-        {name:"Nordic Hamstring Curl",sets:3,reps:"6–10",rir:"RIR 2",tip:"One of the best for hamstring hypertrophy AND injury prevention.",muscle:"Hamstrings"},
-        {name:"Bulgarian Split Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"Rear foot elevated. Trunk upright = quads; lean forward = glutes.",muscle:"Quads"},
-        {name:"Glute Kickback (Cable)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, slight forward lean, kick straight back. Squeeze at top.",muscle:"Glutes"},
-        {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"Isolation for quad peak. Pause at top for extra contraction.",muscle:"Quads"},
-        {name:"Seated Calf Raise",sets:3,reps:"10–15",rir:"RIR 1",tip:"Targets soleus. Pair with standing raises for complete calf development.",muscle:"Calves"}
+      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES · ADDUCTORS", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat Legs A numbers.",muscle:"Quads",staple:true},
+        {name:"Seated Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Seated stretches hamstring at the hip for superior growth.",muscle:"Hamstrings"},
+        {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"A tier. Quad isolation. Pause at top for extra contraction.",muscle:"Quads"},
+        {name:"Machine Hip Abduction",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier for glutes. Seated machine. Full ROM, controlled squeeze at end.",muscle:"Glutes"},
+        {name:"Seated Adduction Machine",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Full ROM, slow squeeze at end. Best adductor builder.",muscle:"Adductors"},
+        {name:"Seated Calf Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Targets soleus. Slow full ROM, deep stretch at bottom.",muscle:"Calves"}
       ]}
     ]
   },
 
-  // MESO 2 — Weeks 5–8 (accessories rotate)
+  // MESO 2 — Weeks 5–8
   {
     label: "MESO 2",
     days: [
       { day:1, name:"PUSH A", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
         {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Chest",staple:true},
-        {name:"DB Flat Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Deeper stretch than barbell. Let elbows drop below chest level for full pec stretch.",muscle:"Chest"},
-        {name:"Machine Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Machine keeps constant tension throughout. Pause at top for 1 sec.",muscle:"Shoulders"},
-        {name:"Arnold Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"Rotate from palms facing you to palms facing forward as you press. Hits all three delt heads.",muscle:"Shoulders"},
-        {name:"Close-Grip Bench Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"Elbows tucked, hands shoulder-width. Great mass builder for triceps.",muscle:"Triceps"},
-        {name:"Single-Arm Tricep Pushdown",sets:3,reps:"12–15",rir:"RIR 1",tip:"Eliminates dominant arm compensation. Full extension, control the negative.",muscle:"Triceps"},
-        {name:"Cable Crunch",sets:3,reps:"12–15",rir:"RIR 1",tip:"Rope attachment, kneel facing cable. Pull down with abs, not arms. Full stretch at top.",muscle:"Abs"}
+        {name:"Seated Cable Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Cables at chest height. Constant tension throughout. Squeeze at the crossover point.",muscle:"Chest"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Single cable, hip height. Lead with elbow, pause at top. No momentum.",muscle:"Shoulders"},
+        {name:"Seated DB OHP",sets:3,reps:"10–12",rir:"RIR 2",tip:"S tier. Beat Meso 1. Control the eccentric. Full ROM overhead.",muscle:"Shoulders"},
+        {name:"Overhead Cable Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier — Katana. Full stretch at bottom. Extend completely, slow on the way down.",muscle:"Triceps"},
+        {name:"Close-Grip Bench Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"A tier. Elbows tucked, hands shoulder-width. Great tricep mass builder.",muscle:"Triceps"},
+        {name:"Cable Crunch",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Rope attachment, kneel facing cable. Pull down with abs not arms. Full stretch at top.",muscle:"Abs"}
       ]},
       { day:2, name:"PULL A", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
         {name:"Barbell Row (Pendlay)",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Back",staple:true},
-        {name:"Single-Arm DB Row",sets:3,reps:"10–12",rir:"RIR 2",tip:"Brace on bench, full stretch at bottom. Row to hip. Big range of motion.",muscle:"Back"},
-        {name:"Cable Pullover",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms straight, pull from overhead to hips. Pure lat isolation.",muscle:"Back"},
-        {name:"EZ Bar Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Slightly supinated grip. Don't swing. Control the negative.",muscle:"Biceps"},
-        {name:"Cable Curl (Low Pulley)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Constant tension from cable. Supinate at top. Great pump.",muscle:"Biceps"},
-        {name:"Band Pull-Apart",sets:3,reps:"20–25",rir:"RIR 1",tip:"Pull band to chest level, arms straight. Great for rear delt and rotator cuff health.",muscle:"Rear Delts"},
-        {name:"Rear Delt Cable Fly",sets:3,reps:"15–20",rir:"RIR 1",tip:"Lean forward, pull elbows back and out. Squeeze hard at the end range.",muscle:"Rear Delts"}
+        {name:"Neutral-Grip Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Beat Meso 1. Pull elbows down and back. Full stretch at top.",muscle:"Back"},
+        {name:"Chest-Supported DB Row",sets:3,reps:"10–12",rir:"RIR 2",tip:"S tier. Beat Meso 1. Full stretch, row to hip. Zero momentum.",muscle:"Back"},
+        {name:"Bayesian Cable Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Beat Meso 1. Cable behind you, elbow back for max stretch.",muscle:"Biceps"},
+        {name:"EZ Bar Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"A tier. Slightly supinated grip. Don't swing. Control the negative.",muscle:"Biceps"},
+        {name:"Reverse Pec Deck",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Beat Meso 1. Elbows back, squeeze rear delts hard.",muscle:"Rear Delts"},
+        {name:"Reverse Cable Crossover",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Beat Meso 1. Pull cables apart at shoulder height. Squeeze rear delts.",muscle:"Rear Delts"}
       ]},
       { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
         {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Quads",staple:true},
-        {name:"Romanian Deadlift",sets:4,reps:"8–10",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers. Add a set this meso.",muscle:"Hamstrings",staple:true},
-        {name:"Hack Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"Quad dominant, no spinal compression. Great for heavier loading.",muscle:"Quads"},
-        {name:"Lying Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris involvement. Full stretch at top.",muscle:"Hamstrings"},
-        {name:"Cable Pull-Through",sets:3,reps:"15–20",rir:"RIR 1",tip:"Hip hinge movement. Squeeze glutes hard at lockout.",muscle:"Glutes"},
-        {name:"Glute Kickback (Cable)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, slight forward lean. Kick straight back, squeeze at top.",muscle:"Glutes"},
-        {name:"Donkey Calf Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Hip flexed position increases gastrocnemius stretch. Deep stretch every rep.",muscle:"Calves"},
-        {name:"Seated Calf Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Targets the soleus. Slow and controlled, full stretch at bottom.",muscle:"Calves"},
-        {name:"Machine Adductor",sets:3,reps:"15–20",rir:"RIR 1",tip:"Seated adductor machine. Full ROM, controlled squeeze at the end. Great for inner thigh development.",muscle:"Adductors"}
+        {name:"Romanian Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Hamstrings",staple:true},
+        {name:"Hack Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Go heavier than Meso 1. Full depth, no spinal compression.",muscle:"Quads"},
+        {name:"Seated Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Go heavier than Meso 1. Full ROM, squeeze at bottom.",muscle:"Hamstrings"},
+        {name:"45-Degree Back Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier for glutes. Hold a plate. Hip hinge at top, squeeze glutes hard at lockout.",muscle:"Glutes"},
+        {name:"Leg Press Calf Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Beat Meso 1. Full stretch at bottom, pause, explosive up.",muscle:"Calves"},
+        {name:"Seated Calf Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Targets soleus. Slow and controlled full ROM.",muscle:"Calves"},
+        {name:"Seated Adduction Machine",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Beat Meso 1. Full ROM, controlled squeeze.",muscle:"Adductors"}
       ]},
       { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
       { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
         {name:"Barbell Bench Press",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Push A numbers.",muscle:"Chest",staple:true},
-        {name:"Incline Cable Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Set cables low, press/fly upward. Constant tension on upper chest throughout.",muscle:"Chest"},
-        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Single cable at hip height. Lead with elbow, pause at top. No momentum. Best medial delt builder.",muscle:"Shoulders"},
-        {name:"DB Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Lead with pinkies up, slight forward lean. Control the negative. Pure medial delt.",muscle:"Shoulders"},
-        {name:"Tricep Dips (Weighted)",sets:3,reps:"8–12",rir:"RIR 2",tip:"Slight forward lean for more tricep emphasis. Full lockout at top.",muscle:"Triceps"},
-        {name:"Overhead Cable Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Cable from behind head. Full stretch at bottom, extend fully at top.",muscle:"Triceps"},
-        {name:"Ab Wheel Rollout",sets:3,reps:"10–12",rir:"RIR 1",tip:"Start on knees, roll out as far as you can control, pull back with abs. Best core exercise for hypertrophy.",muscle:"Abs"}
+        {name:"Machine Chest Press",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Go heavier than Meso 1. Full ROM, slow negative.",muscle:"Chest"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Go heavier than Meso 1. Pause at top.",muscle:"Shoulders"},
+        {name:"Machine Shoulder Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"S tier. Beat Meso 1. Full ROM.",muscle:"Shoulders"},
+        {name:"Cable Pressdown (Straight Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Beat Meso 1. Full lockout, hinge forward.",muscle:"Triceps"},
+        {name:"Tricep Dips (Weighted)",sets:3,reps:"8–12",rir:"RIR 2",tip:"A tier. Slight forward lean. Full lockout at top.",muscle:"Triceps"},
+        {name:"Ab Wheel Rollout",sets:3,reps:"10–12",rir:"RIR 1",tip:"A tier. Roll out as far as you can control. Pull back with abs.",muscle:"Abs"}
       ]},
       { day:6, name:"PULL B", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
         {name:"Weighted Pull-Up",sets:4,reps:"6–10",rir:"RIR 2",tip:"Staple. Beat your Meso 1 numbers.",muscle:"Back",staple:true},
-        {name:"T-Bar Row",sets:3,reps:"8–10",rir:"RIR 2",tip:"Chest on pad, pull to lower chest. Great for mid-back thickness.",muscle:"Back"},
-        {name:"Lat Pulldown (Neutral Grip)",sets:3,reps:"10–12",rir:"RIR 1",tip:"Neutral grip allows more shoulder extension — great for lat length.",muscle:"Back"},
-        {name:"Spider Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Chest on incline bench facing down. Eliminates all momentum. Pure bicep.",muscle:"Biceps"},
-        {name:"Reverse Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"Overhand grip. Hits brachioradialis and brachialis for complete arm development.",muscle:"Biceps"},
-        {name:"Cable Rear Delt Fly",sets:3,reps:"15–20",rir:"RIR 1",tip:"Cross cables, pull apart at shoulder height. Squeeze rear delts at end range.",muscle:"Rear Delts"},
-        {name:"Face Pull",sets:3,reps:"15–20",rir:"RIR 1",tip:"Rope attachment, pull to forehead with external rotation. Shoulder health and rear delt growth.",muscle:"Rear Delts"}
+        {name:"Meadows Row",sets:3,reps:"8–10",rir:"RIR 2",tip:"S tier. Go heavier than Meso 1. Full stretch, row to hip.",muscle:"Back"},
+        {name:"Single-Arm Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Beat Meso 1. Lean away, pull elbow to hip.",muscle:"Back"},
+        {name:"Preacher Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Beat Meso 1. Full extension every rep.",muscle:"Biceps"},
+        {name:"Incline DB Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"A tier. Max long head stretch. Arm fully back, curl controlled.",muscle:"Biceps"},
+        {name:"Reverse Pec Deck",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Beat Meso 1. Elbows back, squeeze hard.",muscle:"Rear Delts"},
+        {name:"Face Pull",sets:3,reps:"15–20",rir:"RIR 1",tip:"A tier. Rope to forehead, elbows high. External rotation at end.",muscle:"Rear Delts"}
       ]},
-      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
+      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES · ADDUCTORS", exercises:[
         {name:"Barbell Back Squat",sets:4,reps:"6–8",rir:"RIR 2",tip:"Staple. Beat your Legs A numbers.",muscle:"Quads",staple:true},
-        {name:"Stiff-Leg Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Legs completely straight — maximum hamstring stretch. Don't round back.",muscle:"Hamstrings"},
-        {name:"Front Squat",sets:3,reps:"8–10",rir:"RIR 2",tip:"More upright torso = more quad emphasis. Bar on front delts, elbows up.",muscle:"Quads"},
-        {name:"Sumo Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"Wide stance, toes pointed out. More glute and adductor involvement.",muscle:"Glutes"},
-        {name:"Hip Thrust (Banded)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Add a band around the knees for extra glute activation. Drive knees out.",muscle:"Glutes"},
-        {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"Isolation for quad peak. Pause at top for extra contraction. Control the negative.",muscle:"Quads"},
-        {name:"Standing Calf Raise",sets:3,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"},
-        {name:"Seated Calf Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Targets the soleus. Slow and controlled, full stretch at bottom, pause at top.",muscle:"Calves"},
-        {name:"Cable Adduction",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, cable to the side. Pull leg across body. Squeeze adductors at peak contraction.",muscle:"Adductors"}
+        {name:"Stiff-Leg Deadlift",sets:3,reps:"8–10",rir:"RIR 2",tip:"A tier. Legs straight, maximum hamstring stretch. Don't round back.",muscle:"Hamstrings"},
+        {name:"Bulgarian Split Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"A tier. Rear foot elevated. Upright = quads, lean forward = glutes.",muscle:"Quads"},
+        {name:"Walking Lunges",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier for glutes. Long stride. Beat Meso 1 weight.",muscle:"Glutes"},
+        {name:"Machine Hip Abduction",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Beat Meso 1. Full ROM, controlled squeeze.",muscle:"Glutes"},
+        {name:"Seated Adduction Machine",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Beat Meso 1. Full ROM, slow squeeze.",muscle:"Adductors"},
+        {name:"Seated Calf Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Beat Meso 1.",muscle:"Calves"}
       ]}
     ]
   },
 
-  // MESO 3 — Weeks 9–12 (fresh exercises again)
+  // MESO 3 — Weeks 9–12
   {
     label: "MESO 3",
     days: [
       { day:1, name:"PUSH A", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
-        {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers. Perfect form.",muscle:"Chest",staple:true},
-        {name:"Incline DB Press",sets:3,reps:"8–10",rir:"RIR 1",tip:"Heavier this meso. Deep stretch, explosive press.",muscle:"Chest"},
-        {name:"Seated Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Seated eliminates momentum entirely. Pure medial delt.",muscle:"Shoulders"},
-        {name:"Push Press",sets:3,reps:"6–8",rir:"RIR 2",tip:"Use leg drive to get the bar moving, finish with shoulders. Builds overhead strength.",muscle:"Shoulders"},
-        {name:"JM Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"Hybrid between skull crusher and close-grip press. Massive tricep builder.",muscle:"Triceps"},
-        {name:"Tricep Pushdown (Straight Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Straight bar allows more wrist supination. Full lockout, control the negative.",muscle:"Triceps"},
-        {name:"Hanging Leg Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"Hang from bar, raise legs to 90 degrees. Control the negative. Avoid swinging.",muscle:"Abs"}
+        {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heaviest. Beat all previous numbers.",muscle:"Chest",staple:true},
+        {name:"Incline DB Press",sets:3,reps:"8–10",rir:"RIR 1",tip:"S tier. Heaviest meso. Deep stretch, explosive press.",muscle:"Chest"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Pause at top every rep.",muscle:"Shoulders"},
+        {name:"Machine Shoulder Press",sets:3,reps:"8–10",rir:"RIR 1",tip:"S tier. Heaviest meso. Full ROM, controlled eccentric.",muscle:"Shoulders"},
+        {name:"Overhead Cable Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier — Katana. Heaviest meso. Full stretch, full extension.",muscle:"Triceps"},
+        {name:"JM Press",sets:3,reps:"8–10",rir:"RIR 2",tip:"A tier. Hybrid skull crusher and close grip. Massive tricep builder.",muscle:"Triceps"},
+        {name:"Hanging Leg Raise",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Hang from bar, raise legs to 90 degrees. Control the negative. Add weight when easy.",muscle:"Abs"}
       ]},
       { day:2, name:"PULL A", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
-        {name:"Barbell Row (Pendlay)",sets:4,reps:"5–7",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers.",muscle:"Back",staple:true},
-        {name:"Meadows Row",sets:3,reps:"8–10",rir:"RIR 2",tip:"Landmine row with one arm. Incredible range of motion and lat stretch.",muscle:"Back"},
-        {name:"Wide Grip Seated Row",sets:3,reps:"10–12",rir:"RIR 1",tip:"Wide grip targets mid traps and rhomboids more.",muscle:"Back"},
-        {name:"Concentration Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Elbow braced on inner thigh. Zero momentum. Peak contraction focus.",muscle:"Biceps"},
-        {name:"21s (DB Curl)",sets:3,reps:"21",rir:"RIR 0",tip:"7 bottom half + 7 top half + 7 full reps. Brutal pump and time under tension.",muscle:"Biceps"},
-        {name:"Prone Rear Delt Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Lie face down on incline bench. Arms slightly bent, raise to shoulder height.",muscle:"Rear Delts"},
-        {name:"Band Pull-Apart",sets:3,reps:"20–25",rir:"RIR 1",tip:"Pull band to chest level, arms straight. Great rear delt finisher.",muscle:"Rear Delts"}
+        {name:"Barbell Row (Pendlay)",sets:4,reps:"5–7",rir:"RIR 1",tip:"Meso 3 — go heaviest. Beat all previous numbers.",muscle:"Back",staple:true},
+        {name:"Neutral-Grip Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Heaviest meso. Pull elbows to hips. Full stretch at top.",muscle:"Back"},
+        {name:"Meadows Row",sets:3,reps:"8–10",rir:"RIR 1",tip:"S tier. Heaviest meso. Full stretch, row to hip.",muscle:"Back"},
+        {name:"Bayesian Cable Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Heaviest meso. Max stretch at bottom.",muscle:"Biceps"},
+        {name:"Preacher Curl",sets:3,reps:"8–10",rir:"RIR 1",tip:"S tier. Heaviest meso. Full extension, never cut the stretch.",muscle:"Biceps"},
+        {name:"Reverse Pec Deck",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Elbows back, hard squeeze.",muscle:"Rear Delts"},
+        {name:"Reverse Cable Crossover",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Pull apart at shoulder height, squeeze hard.",muscle:"Rear Delts"}
       ]},
       { day:3, name:"LEGS A", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
-        {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers.",muscle:"Quads",staple:true},
-        {name:"Romanian Deadlift",sets:4,reps:"6–8",rir:"RIR 1",tip:"Heavier this meso. Full stretch, controlled negative. Added a set.",muscle:"Hamstrings",staple:true},
-        {name:"V-Squat Machine",sets:3,reps:"10–12",rir:"RIR 1",tip:"Similar to hack squat but different bar path. Great quad isolation.",muscle:"Quads"},
-        {name:"Hamstring Curl (Machine)",sets:3,reps:"10–12",rir:"RIR 1",tip:"Try both seated and lying across meso 3 to see which you feel more.",muscle:"Hamstrings"},
-        {name:"Barbell Hip Thrust",sets:3,reps:"8–12",rir:"RIR 1",tip:"Heavier this meso. Pause 2 sec at top. Posterior pelvic tilt.",muscle:"Glutes"},
-        {name:"Cable Glute Kickback",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, slight forward lean, kick straight back. Squeeze at top.",muscle:"Glutes"},
-        {name:"Single-Leg Calf Raise",sets:3,reps:"10–12",rir:"RIR 0",tip:"Bodyweight or holding a DB. More ROM and balance challenge than bilateral.",muscle:"Calves"},
-        {name:"Leg Press Calf Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Use the leg press platform. Full stretch at bottom, pause, explode up.",muscle:"Calves"},
-        {name:"Machine Adductor",sets:3,reps:"15–20",rir:"RIR 1",tip:"Seated adductor machine. Full ROM, controlled squeeze at the end. Great for inner thigh development.",muscle:"Adductors"}
+        {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Meso 3 — go heaviest. Beat all previous numbers.",muscle:"Quads",staple:true},
+        {name:"Romanian Deadlift",sets:3,reps:"6–8",rir:"RIR 1",tip:"Heaviest meso. Full stretch, controlled negative.",muscle:"Hamstrings",staple:true},
+        {name:"Pendulum Squat",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Best quad machine. Full depth. Drive through heels.",muscle:"Quads"},
+        {name:"Seated Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Heaviest meso. Full ROM. Stretch at the top.",muscle:"Hamstrings"},
+        {name:"45-Degree Back Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier for glutes. Add weight. Hip hinge, squeeze glutes hard at lockout.",muscle:"Glutes"},
+        {name:"Walking Lunges",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Heaviest meso. Long stride for max glute activation.",muscle:"Glutes"},
+        {name:"Leg Press Calf Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Full stretch, pause, explosive up.",muscle:"Calves"},
+        {name:"Seated Adduction Machine",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Full ROM slow squeeze.",muscle:"Adductors"}
       ]},
       { day:4, name:"REST", tag:"rest", tagClass:"tag-rest", muscles:"ACTIVE RECOVERY", exercises:[] },
       { day:5, name:"PUSH B", tag:"push", tagClass:"tag-push", muscles:"CHEST · SHOULDERS · TRICEPS", exercises:[
-        {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Push A numbers.",muscle:"Chest",staple:true},
-        {name:"Pec Deck Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"Machine keeps constant tension. Pause 1 sec at stretch for max stimulus.",muscle:"Chest"},
-        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Single cable at hip height. Lead with elbow, slight forward lean. Pure medial delt.",muscle:"Shoulders"},
-        {name:"Barbell OHP",sets:3,reps:"6–8",rir:"RIR 2",tip:"Standing or seated. Press overhead, bar in front. Core stays tight.",muscle:"Shoulders"},
-        {name:"Tate Press",sets:3,reps:"10–12",rir:"RIR 2",tip:"DBs start together above chest, flare elbows out to sides. Unique tricep angle.",muscle:"Triceps"},
-        {name:"Cable Overhead Tricep Extension",sets:3,reps:"12–15",rir:"RIR 1",tip:"Long head focus. Full stretch overhead, extend fully.",muscle:"Triceps"},
-        {name:"Decline Crunch",sets:3,reps:"15–20",rir:"RIR 1",tip:"Decline bench, hands behind head. Full stretch at bottom, crunch up. Add weight when easy.",muscle:"Abs"}
+        {name:"Barbell Bench Press",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Heaviest meso. Beat Push A.",muscle:"Chest",staple:true},
+        {name:"Seated Cable Fly",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Heaviest meso. Constant tension. Squeeze at crossover.",muscle:"Chest"},
+        {name:"Cable Lateral Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Lead with elbow, pause at top.",muscle:"Shoulders"},
+        {name:"Seated DB OHP",sets:3,reps:"8–10",rir:"RIR 1",tip:"S tier. Heaviest meso. Full ROM overhead.",muscle:"Shoulders"},
+        {name:"Cable Pressdown (Straight Bar)",sets:3,reps:"12–15",rir:"RIR 1",tip:"S tier. Heaviest meso. Full lockout, hinge forward.",muscle:"Triceps"},
+        {name:"Skull Crusher",sets:3,reps:"8–10",rir:"RIR 2",tip:"A tier. Heaviest meso. EZ bar to forehead, elbows locked.",muscle:"Triceps"},
+        {name:"Decline Crunch",sets:3,reps:"15–20",rir:"RIR 1",tip:"A tier. Add weight when easy. Full stretch at bottom.",muscle:"Abs"}
       ]},
       { day:6, name:"PULL B", tag:"pull", tagClass:"tag-pull", muscles:"BACK · BICEPS · REAR DELTS", exercises:[
-        {name:"Weighted Pull-Up",sets:4,reps:"6–8",rir:"RIR 1",tip:"Meso 3 — go heavier. Beat all previous numbers.",muscle:"Back",staple:true},
-        {name:"Seal Row",sets:3,reps:"8–10",rir:"RIR 2",tip:"Chest on elevated bench, full dead-stop each rep. Zero momentum.",muscle:"Back"},
-        {name:"Close-Grip Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"Hands close together. Elbows to sides, big lat stretch at top.",muscle:"Back"},
-        {name:"Zottman Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Curl up with supinated grip, lower with pronated. Hits bicep and brachioradialis.",muscle:"Biceps"},
-        {name:"Cable Curl (High Pulley)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Arms extended out, curl toward your ears. Keeps tension at full contraction.",muscle:"Biceps"},
-        {name:"Face Pull (Heavy)",sets:3,reps:"12–15",rir:"RIR 1",tip:"Go heavier this meso. Still focus on external rotation at the end.",muscle:"Rear Delts"},
-        {name:"Rear Delt Fly (Pec Deck)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Reverse the pec deck. Pull elbows BACK and squeeze rear delts hard.",muscle:"Rear Delts"}
+        {name:"Weighted Pull-Up",sets:4,reps:"6–8",rir:"RIR 1",tip:"Heaviest meso. Beat all previous numbers.",muscle:"Back",staple:true},
+        {name:"Chest-Supported DB Row",sets:3,reps:"8–10",rir:"RIR 1",tip:"S tier. Heaviest meso. Full stretch, row to hip. No momentum.",muscle:"Back"},
+        {name:"Single-Arm Lat Pulldown",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Heaviest meso. Lean away, pull elbow to hip.",muscle:"Back"},
+        {name:"Bayesian Cable Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier. Heaviest meso. Max stretch at bottom.",muscle:"Biceps"},
+        {name:"Hammer Curl",sets:3,reps:"12–15",rir:"RIR 1",tip:"A tier. Heaviest meso. Neutral grip for brachialis thickness.",muscle:"Biceps"},
+        {name:"Reverse Pec Deck",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Squeeze rear delts hard.",muscle:"Rear Delts"},
+        {name:"Face Pull",sets:3,reps:"15–20",rir:"RIR 1",tip:"A tier. Rope to forehead, external rotation. Shoulder health.",muscle:"Rear Delts"}
       ]},
-      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES", exercises:[
-        {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Legs A numbers.",muscle:"Quads",staple:true},
-        {name:"Nordic Hamstring Curl",sets:3,reps:"6–10",rir:"RIR 2",tip:"One of the best for hamstring hypertrophy AND injury prevention. Lower slowly, fight the negative.",muscle:"Hamstrings"},
-        {name:"Walking Lunges",sets:3,reps:"10–12",rir:"RIR 1",tip:"Long stride for glutes, short stride for quads. Add weight as you progress.",muscle:"Quads"},
-        {name:"Glute-Ham Raise",sets:3,reps:"8–10",rir:"RIR 1",tip:"One of the best posterior chain exercises. Lower slowly, push back up.",muscle:"Glutes"},
-        {name:"Sumo Romanian Deadlift",sets:3,reps:"10–12",rir:"RIR 1",tip:"Wide stance RDL. Hits glutes and inner hamstrings from a different angle.",muscle:"Glutes"},
-        {name:"Spanish Squat (Band)",sets:3,reps:"15–20",rir:"RIR 1",tip:"Band around fixed object, squat with shins vertical. Destroys the quads.",muscle:"Quads"},
-        {name:"Standing Calf Raise",sets:3,reps:"10–15",rir:"RIR 1",tip:"Full ROM — deep stretch at bottom. Pause 2 sec at bottom, explode up.",muscle:"Calves"},
-        {name:"Leg Press Calf Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"Use the leg press platform. Full stretch at bottom, pause, explode up. Great gastrocnemius builder.",muscle:"Calves"},
-        {name:"Cable Adduction",sets:3,reps:"15–20",rir:"RIR 1",tip:"Ankle attachment, cable to the side. Pull leg across body. Squeeze adductors at peak contraction.",muscle:"Adductors"}
+      { day:7, name:"LEGS B", tag:"legs", tagClass:"tag-legs", muscles:"QUADS · HAMSTRINGS · GLUTES · CALVES · ADDUCTORS", exercises:[
+        {name:"Barbell Back Squat",sets:4,reps:"4–6",rir:"RIR 1",tip:"Staple. Heaviest meso. Beat Legs A.",muscle:"Quads",staple:true},
+        {name:"Lying Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"A tier. Heaviest meso. Full stretch, point toes slightly.",muscle:"Hamstrings"},
+        {name:"Leg Extension",sets:3,reps:"15–20",rir:"RIR 1",tip:"A tier. Heaviest meso. Pause at top for peak quad contraction.",muscle:"Quads"},
+        {name:"Smith Machine Lunge",sets:3,reps:"10–12",rir:"RIR 1",tip:"S tier for glutes. Front foot elevated on small plate for deficit. More glute stretch.",muscle:"Glutes"},
+        {name:"Machine Hip Abduction",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Full ROM, controlled squeeze.",muscle:"Glutes"},
+        {name:"Seated Adduction Machine",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Full ROM, slow squeeze.",muscle:"Adductors"},
+        {name:"Leg Press Calf Raise",sets:3,reps:"15–20",rir:"RIR 1",tip:"S tier. Heaviest meso. Full stretch, pause, explosive up.",muscle:"Calves"}
       ]}
     ]
   }
@@ -574,13 +568,11 @@ const ALTERNATES = {
   // Hamstrings
   "Romanian Deadlift": {name:"Dumbbell Romanian Deadlift",sets:3,reps:"10–12",rir:"RIR 2",tip:"Same hip hinge pattern, DBs allow more range of motion.",muscle:"Hamstrings",staple:true},
   "Seated Leg Curl": {name:"Lying Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris involvement. Full stretch.",muscle:"Hamstrings"},
-  "Nordic Hamstring Curl": {name:"Glute-Ham Raise",sets:3,reps:"8–10",rir:"RIR 1",tip:"One of the best posterior chain exercises. Lower slowly, push back up.",muscle:"Hamstrings"},
   "Lying Leg Curl": {name:"Seated Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Seated stretches hamstring at hip for more growth stimulus.",muscle:"Hamstrings"},
   "Stiff-Leg Deadlift": {name:"Romanian Deadlift",sets:4,reps:"8–10",rir:"RIR 2",tip:"Hip hinge, soft knee, push hips back. Bar stays close to legs.",muscle:"Hamstrings"},
   "Hamstring Curl (Machine)": {name:"Lying Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris. Full stretch at top.",muscle:"Hamstrings"},
   "Good Morning": {name:"Romanian Deadlift",sets:4,reps:"8–10",rir:"RIR 2",tip:"Hip hinge, soft knee, push hips back. Bar stays close to legs.",muscle:"Hamstrings"},
-  "Nordic Hamstring Curl": {name:"Glute-Ham Raise",sets:3,reps:"6–10",rir:"RIR 2",tip:"One of the best posterior chain exercises. Lower slowly, push back up.",muscle:"Hamstrings"},
-  "Glute-Ham Raise": {name:"Nordic Hamstring Curl",sets:3,reps:"6–10",rir:"RIR 2",tip:"Lower slowly, fight the negative. One of the best hamstring builders.",muscle:"Hamstrings"},
+  "Glute-Ham Raise": {name:"Lying Leg Curl",sets:3,reps:"10–12",rir:"RIR 1",tip:"Point toes slightly for more biceps femoris. Full stretch at top.",muscle:"Hamstrings"},
   // Glutes
   "Hip Thrust": {name:"Barbell Hip Thrust",sets:3,reps:"8–12",rir:"RIR 1",tip:"Shoulder blades on bench, bar over hip crease. Drive through heels, pause 1 sec.",muscle:"Glutes"},
   "Barbell Hip Thrust": {name:"Hip Thrust",sets:3,reps:"10–15",rir:"RIR 1",tip:"Can use DB or machine if no barbell. Same movement pattern.",muscle:"Glutes"},
