@@ -612,7 +612,8 @@ let state = JSON.parse(localStorage.getItem('nippardState_v3') || 'null') || {
   completedDays: {},   // key: "week-dayIdx" → true
   completedWeeks: [],   // array of week numbers
   swappedExercises: {},  // key: "week-dayIdx-ei" → true means using alternate
-  weeklyLogs: []  // logs for current week only, resets on week complete
+  weeklyLogs: [],  // logs for current week only, resets on week complete
+  dayOrders: {}   // key: week → [0,1,2,3,4,5,6] reordered
 };
 
 function saveState() { localStorage.setItem('nippardState_v3', JSON.stringify(state)); }
@@ -703,6 +704,17 @@ function showPage(name) {
 }
 
 // ─── PROGRAM PAGE ─────────────────────────────────────────
+function getDayOrder(week) {
+  if (!state.dayOrders) state.dayOrders = {};
+  return state.dayOrders[week] || [0,1,2,3,4,5,6];
+}
+
+function saveDayOrder(week, order) {
+  if (!state.dayOrders) state.dayOrders = {};
+  state.dayOrders[week] = order;
+  saveState();
+}
+
 function renderProgram() {
   const wr = document.getElementById('weekRow');
   wr.innerHTML = '';
@@ -729,36 +741,101 @@ function renderProgram() {
   badge.textContent = getMesoLabel(state.currentWeek);
   pd.appendChild(badge);
 
-  for (let i = 0; i < 7; i++) {
-    const d = getDayForWeekAndDayIndex(state.currentWeek, i);
-    const isToday = i === state.currentDayIdx;
-    const isDone = (state.completedDays || {})[state.currentWeek + '-' + i];
+  const hint = document.createElement('div');
+  hint.style.cssText = 'font-size:11px;color:var(--muted);margin-bottom:10px;text-align:center;';
+  hint.textContent = 'Hold & drag to reorder days';
+  pd.appendChild(hint);
+
+  const order = getDayOrder(state.currentWeek);
+  let dragSrcIdx = null;
+
+  order.forEach((dayOrigIdx, position) => {
+    const d = getDayForWeekAndDayIndex(state.currentWeek, dayOrigIdx);
+    const isToday = state.currentDayIdx === dayOrigIdx;
+    const isDone = (state.completedDays || {})[state.currentWeek + '-' + dayOrigIdx];
     const div = document.createElement('div');
     div.className = 'day-card' + (isToday ? ' today' : '') + (isDone ? ' day-done' : '');
+    div.draggable = true;
+    div.dataset.pos = position;
+    div.dataset.origIdx = dayOrigIdx;
+    div.style.cursor = 'grab';
     const exChips = d.exercises.slice(0, 4).map(e => `<span class="ex-chip">${e.name}</span>`).join('');
     div.innerHTML = `
       <div class="day-header">
         <div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px;">DAY ${d.day}${isToday ? ' · TODAY' : ''}${isDone ? ' · DONE' : ''}</div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">DAY ${position + 1}${isToday ? ' · TODAY' : ''}${isDone ? ' · DONE' : ''}</div>
           <div class="day-title">${d.name}</div>
           <div class="day-meta">${d.muscles}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
           ${isDone ? '<span style="font-size:20px;">✅</span>' : ''}
           <span class="day-tag ${d.tagClass}">${d.tag.toUpperCase()}</span>
+          <span style="color:var(--muted);font-size:16px;cursor:grab;">☰</span>
         </div>
       </div>
       ${d.exercises.length ? `<div class="day-body"><div class="exercise-preview">${exChips}${d.exercises.length > 4 ? `<span class="ex-chip">+${d.exercises.length - 4} more</span>` : ''}</div></div>` : ''}
     `;
+
+    // Drag events
+    div.addEventListener('dragstart', e => {
+      dragSrcIdx = position;
+      div.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    div.addEventListener('dragend', () => { div.style.opacity = '1'; });
+    div.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; div.style.borderColor = 'var(--accent)'; });
+    div.addEventListener('dragleave', () => { div.style.borderColor = ''; });
+    div.addEventListener('drop', e => {
+      e.preventDefault();
+      div.style.borderColor = '';
+      if (dragSrcIdx === null || dragSrcIdx === position) return;
+      const newOrder = [...order];
+      const [moved] = newOrder.splice(dragSrcIdx, 1);
+      newOrder.splice(position, 0, moved);
+      saveDayOrder(state.currentWeek, newOrder);
+      renderProgram();
+    });
+
+    // Touch drag for mobile
+    let touchStartY = 0;
+    let touchDragCard = null;
+    div.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+      dragSrcIdx = position;
+      div.style.opacity = '0.4';
+    }, { passive: true });
+    div.addEventListener('touchend', () => { div.style.opacity = '1'; });
+
     if (d.exercises.length) {
-      div.querySelector('.day-header').onclick = () => {
-        state.currentDayIdx = i;
+      div.querySelector('.day-header').addEventListener('click', () => {
+        state.currentDayIdx = dayOrigIdx;
         saveState();
         document.querySelectorAll('.tab')[1].click();
-      };
+      });
     }
     pd.appendChild(div);
-  }
+  });
+
+  // Touch drop logic
+  pd.addEventListener('touchmove', e => {
+    if (dragSrcIdx === null) return;
+    const touch = e.touches[0];
+    const cards = pd.querySelectorAll('.day-card');
+    cards.forEach((card, idx) => {
+      const rect = card.getBoundingClientRect();
+      if (touch.clientY > rect.top && touch.clientY < rect.bottom) {
+        const targetPos = parseInt(card.dataset.pos);
+        if (targetPos !== dragSrcIdx) {
+          const newOrder = [...getDayOrder(state.currentWeek)];
+          const [moved] = newOrder.splice(dragSrcIdx, 1);
+          newOrder.splice(targetPos, 0, moved);
+          saveDayOrder(state.currentWeek, newOrder);
+          dragSrcIdx = targetPos;
+          renderProgram();
+        }
+      }
+    });
+  }, { passive: true });
 
   // Complete Week button
   const weekDone = (state.completedWeeks || []).includes(state.currentWeek);
