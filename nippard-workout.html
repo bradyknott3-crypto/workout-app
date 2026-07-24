@@ -203,7 +203,12 @@
   <div id="volumeBars"></div>
   <div style="font-size:16px;font-weight:700;margin-bottom:12px;margin-top:20px;">Recent Workouts</div>
   <div id="recentLog"></div>
-  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);">
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px;">
+    <button onclick="exportData()" style="display:block;width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;">⬇️ Export My Data</button>
+    <label style="display:block;width:100%;padding:14px;background:transparent;border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;text-align:center;">
+      ⬆️ Import Data
+      <input type="file" accept=".json" onchange="importData(event)" style="display:none;">
+    </label>
     <button onclick="clearAllData()" style="display:block;width:100%;padding:14px;background:transparent;border:1px solid var(--accent2);color:var(--accent2);border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;">⚠️ Clear All Data</button>
   </div>
 </div>
@@ -1414,10 +1419,43 @@ function showStatDetail(type) {
   }
 }
 
+function exportData() {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ppl-data-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (confirm('This will replace all your current data with the imported data. Continue?')) {
+        state = imported;
+        saveState();
+        renderProgram();
+        renderWorkout();
+        renderStats();
+        alert('Data imported successfully! 💪');
+      }
+    } catch(err) {
+      alert('Invalid file. Make sure you\'re importing a PPL data export.');
+    }
+  };
+  reader.readAsText(file);
+}
+
 function clearAllData() {
   if (confirm('Are you sure? This will delete ALL your workout history and progress. This cannot be undone.')) {
     localStorage.removeItem('nippardState_v3');
-    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{}, prs:[], pinnedPRs:[], completedDays:{}, completedWeeks:[], swappedExercises:{}, weeklyLogs:[] };
+    state = { currentDayIdx:0, currentWeek:1, completedWorkouts:0, streak:0, logs:[], workoutHistory:[], prevData:{}, prs:[], pinnedPRs:[], completedDays:{}, completedWeeks:[], swappedExercises:{}, weeklyLogs:[], dayOrders:{} };
     activeSets = {};
     saveState();
     renderStats();
