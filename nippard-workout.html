@@ -775,7 +775,6 @@ function renderProgram() {
         <div style="display:flex;align-items:center;gap:8px;">
           ${isDone ? '<span style="font-size:20px;">✅</span>' : ''}
           <span class="day-tag ${d.tagClass}">${d.tag.toUpperCase()}</span>
-          <span style="color:var(--muted);font-size:16px;cursor:grab;">☰</span>
         </div>
       </div>
       ${d.exercises.length ? `<div class="day-body"><div class="exercise-preview">${exChips}${d.exercises.length > 4 ? `<span class="ex-chip">+${d.exercises.length - 4} more</span>` : ''}</div></div>` : ''}
