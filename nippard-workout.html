@@ -783,15 +783,31 @@ function renderProgram() {
     // Drag events
     div.addEventListener('dragstart', e => {
       dragSrcIdx = position;
-      div.style.opacity = '0.4';
+      setTimeout(() => {
+        div.style.opacity = '0.3';
+        div.style.transform = 'scale(0.97)';
+      }, 0);
       e.dataTransfer.effectAllowed = 'move';
     });
-    div.addEventListener('dragend', () => { div.style.opacity = '1'; });
-    div.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; div.style.borderColor = 'var(--accent)'; });
-    div.addEventListener('dragleave', () => { div.style.borderColor = ''; });
+    div.addEventListener('dragend', () => {
+      div.style.opacity = '1';
+      div.style.transform = '';
+      div.style.boxShadow = '';
+    });
+    div.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      div.style.borderColor = 'var(--accent)';
+      div.style.transform = 'scale(1.02)';
+    });
+    div.addEventListener('dragleave', () => {
+      div.style.borderColor = '';
+      div.style.transform = '';
+    });
     div.addEventListener('drop', e => {
       e.preventDefault();
       div.style.borderColor = '';
+      div.style.transform = '';
       if (dragSrcIdx === null || dragSrcIdx === position) return;
       const newOrder = [...order];
       const [moved] = newOrder.splice(dragSrcIdx, 1);
@@ -801,14 +817,35 @@ function renderProgram() {
     });
 
     // Touch drag for mobile
-    let touchStartY = 0;
-    let touchDragCard = null;
+    let longPressTimer = null;
+    let isDragging = false;
+    let startY = 0;
+
     div.addEventListener('touchstart', e => {
-      touchStartY = e.touches[0].clientY;
-      dragSrcIdx = position;
-      div.style.opacity = '0.4';
+      startY = e.touches[0].clientY;
+      longPressTimer = setTimeout(() => {
+        isDragging = true;
+        dragSrcIdx = position;
+        div.style.transform = 'scale(1.05)';
+        div.style.boxShadow = '0 8px 30px rgba(0,200,255,0.3)';
+        div.style.borderColor = 'var(--accent)';
+        div.style.zIndex = '99';
+        div.style.position = 'relative';
+        // Vibrate if available
+        if (navigator.vibrate) navigator.vibrate(40);
+      }, 400);
     }, { passive: true });
-    div.addEventListener('touchend', () => { div.style.opacity = '1'; });
+
+    div.addEventListener('touchend', () => {
+      clearTimeout(longPressTimer);
+      if (isDragging) {
+        isDragging = false;
+        div.style.transform = '';
+        div.style.boxShadow = '';
+        div.style.borderColor = '';
+        div.style.zIndex = '';
+      }
+    }, { passive: true });
 
     if (d.exercises.length) {
       div.querySelector('.day-header').addEventListener('click', () => {
